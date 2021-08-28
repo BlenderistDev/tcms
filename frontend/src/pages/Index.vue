@@ -1,22 +1,22 @@
 <template>
   <q-page class="row items-center justify-evenly">
-    <example-component
+    <login
       title="Example component"
       active
       :todos="todos"
       :meta="meta"
-    ></example-component>
+    ></Login>
   </q-page>
 </template>
 
 <script lang="ts">
 import { Todo, Meta } from 'components/models';
-import ExampleComponent from 'components/CompositionComponent.vue';
 import { defineComponent, ref } from 'vue';
+import Login from '../components/Login.vue';
 
 export default defineComponent({
   name: 'PageIndex',
-  components: { ExampleComponent },
+  components: { Login },
   setup() {
     const todos = ref<Todo[]>([
       {
