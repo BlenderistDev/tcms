@@ -1,11 +1,11 @@
 <template lang="pug">
-QForm(@submit="sign" v-if="isSign")
+QForm(@submit="formSign" v-if="isSign")
   QInput(
     v-model="code"
     type="number"
   )
   QBtn(type="submit") Submit
-QForm(@submit="login" v-else)
+QForm(@submit="formLogin" v-else)
   QInput(
     v-model="phone"
     type="tel"
@@ -19,7 +19,7 @@ import {
   defineComponent,
   ref,
 } from 'vue';
-import { api } from 'src/boot/axios';
+import { login, sign } from 'src/services/api';
 import { AxiosResponse } from 'axios';
 
 export default defineComponent({
@@ -33,19 +33,19 @@ export default defineComponent({
     const phone = ref('');
     const code = ref('');
     const isSign = ref(false);
-    function login():Promise<AxiosResponse> {
+    function formLogin():Promise<AxiosResponse> {
       isSign.value = true;
-      return api.post('/login', { phone: phone.value });
+      return login(phone.value);
     }
-    function sign():Promise<AxiosResponse> {
-      return api.post('/sign', { code: code.value });
+    function formSign():Promise<AxiosResponse> {
+      return sign(code.value);
     }
     return {
       phone,
       code,
       isSign,
-      login,
-      sign,
+      formLogin,
+      formSign,
     };
   },
 });
