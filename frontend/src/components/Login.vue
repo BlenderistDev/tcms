@@ -1,5 +1,11 @@
 <template lang="pug">
-QForm(@submit="login")
+QForm(@submit="sign" v-if="isSign")
+  QInput(
+    v-model="code"
+    type="number"
+  )
+  QBtn(type="submit") Submit
+QForm(@submit="login" v-else)
   QInput(
     v-model="phone"
     type="tel"
@@ -25,12 +31,21 @@ export default defineComponent({
   },
   setup() {
     const phone = ref('');
+    const code = ref('');
+    const isSign = ref(false);
     function login():Promise<AxiosResponse> {
+      isSign.value = true;
       return api.post('/login', { phone: phone.value });
+    }
+    function sign():Promise<AxiosResponse> {
+      return api.post('/sign', { code: code.value });
     }
     return {
       phone,
+      code,
+      isSign,
       login,
+      sign,
     };
   },
 });
