@@ -3,12 +3,14 @@ QForm(@submit="formSign" v-if="isSign")
   QInput(
     v-model="code"
     type="number"
+    label="Code"
   )
   QBtn(type="submit") Submit
 QForm(@submit="formLogin" v-else)
   QInput(
     v-model="phone"
-    type="tel"
+    type="number"
+    label="Phone"
   )
   QBtn(type="submit") Submit
 </template>
