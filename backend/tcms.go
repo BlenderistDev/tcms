@@ -24,11 +24,11 @@ func main() {
 		fmt.Println(err)
 	}
 	// LoadContacts
-	mtproto1, err := mtproto.NewMTProto(41994, "269069e15c81241f5670c397941016a2", mtproto.WithAuthFile(wd+"/.telegramgo", false))
+	mt, err := mtproto.NewMTProto(41994, "269069e15c81241f5670c397941016a2", mtproto.WithAuthFile(wd+"/.telegramgo", false))
 	if err != nil {
 		fmt.Println(err)
 	}
-	telegram, err := telegram.NewTelegram(mtproto1)
+	telegram, err := telegram.NewTelegram(mt)
 	if err != nil {
 		fmt.Println(err)
 	}
