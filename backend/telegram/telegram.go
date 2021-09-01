@@ -18,6 +18,12 @@ type Telegram struct {
 	phone     string
 }
 
+type User struct {
+	Id       int32
+	Phone    string
+	UserName string
+}
+
 func NewTelegram() (*Telegram, error) {
 	wd, err := os.Getwd()
 	if err != nil {
@@ -78,4 +84,17 @@ func (telegram *Telegram) Connect() error {
 	telegram.connected = true
 	fmt.Println("Connected to telegram server")
 	return nil
+}
+
+func (telegram *Telegram) CurrentUser() (*User, error) {
+	userFull, err := telegram.mtproto.UsersGetFullUsers(mtproto.TL_inputUserSelf{})
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println(userFull)
+	user := userFull.User.(mtproto.TL_user)
+	telegram.users[user.Id] = user
+
+	userData := User{Id: user.Id, Phone: user.Phone, UserName: user.Username}
+	return &userData, nil
 }

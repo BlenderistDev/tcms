@@ -46,5 +46,13 @@ func StartWebServer(telegram *telegram.Telegram) {
 		c.JSON(200, gin.H{"status": "ok"})
 	})
 
+	router.GET("/me", func(c *gin.Context) {
+		user, err := telegram.CurrentUser()
+		if err != nil {
+			fmt.Println(err)
+		}
+		c.JSON(200, user)
+	})
+
 	router.Run(":8080")
 }

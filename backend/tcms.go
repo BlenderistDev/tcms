@@ -18,4 +18,6 @@ func main() {
 	}
 
 	webserver.StartWebServer(telegram)
+
+	telegram.CurrentUser()
 }
