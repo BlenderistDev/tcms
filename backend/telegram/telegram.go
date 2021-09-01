@@ -2,8 +2,8 @@ package telegram
 
 import (
 	"fmt"
-
 	"github.com/shelomentsevd/mtproto"
+	"os"
 )
 
 type Telegram struct {
@@ -18,9 +18,18 @@ type Telegram struct {
 	phone     string
 }
 
-func NewTelegram(pMTProto *mtproto.MTProto) (*Telegram, error) {
+func NewTelegram() (*Telegram, error) {
+	wd, err := os.Getwd()
+	if err != nil {
+		fmt.Println(err)
+	}
+	// LoadContacts
+	mt, err := mtproto.NewMTProto(41994, "269069e15c81241f5670c397941016a2", mtproto.WithAuthFile(wd+"/.telegramgo", false))
+	if err != nil {
+		fmt.Println(err)
+	}
 	telegram := new(Telegram)
-	telegram.mtproto = pMTProto
+	telegram.mtproto = mt
 	telegram.read = make(chan struct{}, 1)
 	telegram.stop = make(chan struct{}, 1)
 	telegram.users = make(map[int32]mtproto.TL_user)
