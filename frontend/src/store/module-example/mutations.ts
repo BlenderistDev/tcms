@@ -1,9 +1,9 @@
 import { MutationTree } from 'vuex';
-import { ExampleStateInterface } from './state';
+import { ExampleStateInterface, User } from './state';
 
 const mutation: MutationTree<ExampleStateInterface> = {
-  someMutation(/* state: ExampleStateInterface */) {
-    // your code
+  setUser(state: ExampleStateInterface, user: User) {
+    state.user = user;
   },
 };
 

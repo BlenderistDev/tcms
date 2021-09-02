@@ -1,10 +1,16 @@
+export interface User {
+  id: number,
+  phone: string,
+  name: string
+}
+
 export interface ExampleStateInterface {
-  prop: boolean;
+  user: User|null;
 }
 
 function state(): ExampleStateInterface {
   return {
-    prop: false,
+    user: null,
   };
 }
 
