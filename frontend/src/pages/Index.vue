@@ -1,15 +1,15 @@
 <template lang="pug">
 QPage.row.items-center.justify-evenly
-  Login
+  UserData
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { QPage } from 'quasar';
-import Login from '../components/Login.vue';
+import UserData from '../components/UserData.vue';
 
 export default defineComponent({
   name: 'PageIndex',
-  components: { Login, QPage },
+  components: { UserData, QPage },
 });
 </script>
