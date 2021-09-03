@@ -4,13 +4,13 @@ Contacts
 </template>
 
 <script lang="ts">
-import Contacts from "components/Contacts.vue";
+import Contacts from 'components/Contacts.vue';
 import { defineComponent, computed } from 'vue';
 import { useStore } from 'src/store';
 
 export default defineComponent({
   components: {
-    Contacts
+    Contacts,
   },
   setup() {
     const store = useStore();
