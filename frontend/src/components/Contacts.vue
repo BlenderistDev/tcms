@@ -1,23 +1,19 @@
 <template lang="pug">
-div {{ user }}
-Contacts
+div {{ contacts }}
 </template>
 
 <script lang="ts">
-import Contacts from "components/Contacts.vue";
 import { defineComponent, computed } from 'vue';
 import { useStore } from 'src/store';
 
 export default defineComponent({
-  components: {
-    Contacts
-  },
+  name: 'Contacts',
   setup() {
     const store = useStore();
-    void store.dispatch('example/fetchUser');
-    const user = computed(() => store.state.example.user);
+    void store.dispatch('example/fetchContacts');
+    const contacts = computed(() => store.state.example.contacts);
     return {
-      user,
+      contacts,
     };
   },
 });
