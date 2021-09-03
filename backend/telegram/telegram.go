@@ -98,3 +98,23 @@ func (telegram *Telegram) CurrentUser() (*User, error) {
 	userData := User{Id: user.Id, Phone: user.Phone, UserName: user.Username}
 	return &userData, nil
 }
+
+func (telegram *Telegram) Contacts() (map[int32]mtproto.TL_user, error) {
+	tl, err := telegram.mtproto.ContactsGetContacts("")
+	if err != nil {
+		return nil, err
+	}
+	list, ok := (*tl).(mtproto.TL_contacts_contacts)
+	if !ok {
+		return nil, fmt.Errorf("RPC: %#v", tl)
+	}
+
+	contacts := make(map[int32]mtproto.TL_user)
+	for _, v := range list.Users {
+		if v, ok := v.(mtproto.TL_user); ok {
+			contacts[v.Id] = v
+		}
+	}
+
+	return contacts, nil
+}
