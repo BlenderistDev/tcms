@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
+    "@types/lodash": "^4.14.172",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "lodash": "^4.17.21",
     "pug": "^3.0.2",
     "pug-plain-loader": "^1.1.0",
     "quasar": "^2.0.0",
