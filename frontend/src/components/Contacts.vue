@@ -65,6 +65,30 @@ export default defineComponent({
         format: (val: string) => `${val}`,
         sortable: true,
       },
+      {
+        name: 'mutualContact',
+        label: 'Mutual contact',
+        align: 'left',
+        field: (row: Contact) => row.mutualContact,
+        format: (val: string) => `${val}`,
+        sortable: true,
+      },
+      {
+        name: 'deleted',
+        label: 'deleted',
+        align: 'left',
+        field: (row: Contact) => row.deleted,
+        format: (val: string) => `${val}`,
+        sortable: true,
+      },
+      {
+        name: 'bot',
+        label: 'bot',
+        align: 'left',
+        field: (row: Contact) => row.bot,
+        format: (val: string) => `${val}`,
+        sortable: true,
+      },
     ];
     return {
       columns,

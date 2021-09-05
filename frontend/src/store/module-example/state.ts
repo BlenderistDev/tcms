@@ -8,9 +8,11 @@ export interface Contact {
   id: number
   username: string,
   phone: string,
-  bot: boolean,
   firstName: string,
   lastName: string,
+  mutualContact: boolean,
+  bot: boolean,
+  deleted: boolean,
 }
 
 export type ContactMap = {
