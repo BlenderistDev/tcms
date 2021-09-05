@@ -5,9 +5,12 @@ export interface User {
 }
 
 export interface Contact {
-  Id: number
-  Username: string,
-  Phone: string,
+  id: number
+  username: string,
+  phone: string,
+  bot: boolean,
+  firstName: string,
+  lastName: string,
 }
 
 export type ContactMap = {
