@@ -9,4 +9,4 @@ export const getUser = () => api.get<User>('/me').then((response) => response.da
 export const getContacts = () => api.get<ContactMap>('/contacts')
   .then((response) => response.data)
   .then((data) => _.mapValues(data,
-    (contact) => _.mapKeys(contact, (value, key) => _.camelCase(key))));
+    (contact) => _.mapKeys(contact, (_value, key) => _.camelCase(key))));
