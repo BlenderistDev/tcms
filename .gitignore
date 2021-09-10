@@ -1,0 +1,4 @@
+backend/.env
+backend/session.json
+tcms.code-workspace
+backend/tg_public_keys.pem
