@@ -165,22 +165,33 @@ func (telega *Telega) AuthSignIn(code string, sentCode *telegram.AuthSentCode) e
 // 	return &userData, nil
 // }
 
-// func (telegram *Telega) Contacts() (map[int32]mtproto.TL_user, error) {
-// 	tl, err := telegram.mtproto.ContactsGetContacts("")
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	list, ok := (*tl).(mtproto.TL_contacts_contacts)
-// 	if !ok {
-// 		return nil, fmt.Errorf("RPC: %#v", tl)
-// 	}
+func (telega *Telega) Contacts() ([]telegram.User, error) {
+	resp, err := telega.client.AccountInitTakeoutSession(&telegram.AccountInitTakeoutSessionParams{
+		Contacts: true,
+	})
 
-// 	contacts := make(map[int32]mtproto.TL_user)
-// 	for _, v := range list.Users {
-// 		if v, ok := v.(mtproto.TL_user); ok {
-// 			contacts[v.Id] = v
-// 		}
-// 	}
+	if err != nil {
+		fmt.Println(err)
+	}
 
-// 	return contacts, nil
-// }
+	_, err = telega.client.MakeRequest(
+		&telegram.InvokeWithTakeoutParams{
+			TakeoutID: resp.ID,
+			Query:     &telegram.ContactsGetSavedParams{},
+		},
+	)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	contacts, err := telega.client.ContactsGetContacts(0)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	c := contacts.(*telegram.ContactsContactsObj)
+
+	return c.Users, nil
+}

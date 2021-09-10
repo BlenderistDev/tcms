@@ -54,13 +54,13 @@ func StartWebServer(telegramClient *telegramClient.Telega) {
 	// 	c.JSON(200, user)
 	// })
 
-	// router.GET("/contacts", func(c *gin.Context) {
-	// 	contacts, err := telegram.Contacts()
-	// 	if err != nil {
-	// 		fmt.Println(err)
-	// 	}
-	// 	c.JSON(200, contacts)
-	// })
+	router.GET("/contacts", func(c *gin.Context) {
+		contacts, err := telegramClient.Contacts()
+		if err != nil {
+			fmt.Println(err)
+		}
+		c.JSON(200, contacts)
+	})
 
 	router.Run(":8080")
 }
