@@ -142,28 +142,21 @@ func (telega *Telega) AuthSignIn(code string, sentCode *telegram.AuthSentCode) e
 	return err
 }
 
-// // Connects to telegram server
-// func (telegram *Telega) Connect() error {
-// 	if err := telegram.mtproto.Connect(); err != nil {
-// 		return err
-// 	}
-// 	telegram.connected = true
-// 	fmt.Println("Connected to telegram server")
-// 	return nil
-// }
+func (telega *Telega) GetUser(username string) (**telegram.ContactsResolvedPeer, error) {
+	userData, err := telega.client.ContactsResolveUsername(username)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return &userData, nil
+}
 
-// func (telegram *Telega) CurrentUser() (*User, error) {
-// 	userFull, err := telegram.mtproto.UsersGetFullUsers(mtproto.TL_inputUserSelf{})
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	fmt.Println(userFull)
-// 	user := userFull.User.(mtproto.TL_user)
-// 	telegram.users[user.Id] = user
-
-// 	userData := User{Id: user.Id, Phone: user.Phone, UserName: user.Username}
-// 	return &userData, nil
-// }
+func (telega *Telega) GetCurrentUser() (telegram.User, error) {
+	fullUser, err := telega.client.UsersGetFullUser(&telegram.InputUserSelf{})
+	if err != nil {
+		fmt.Println(err)
+	}
+	return fullUser.User, nil
+}
 
 func (telega *Telega) Contacts() ([]telegram.User, error) {
 	resp, err := telega.client.AccountInitTakeoutSession(&telegram.AccountInitTakeoutSessionParams{
