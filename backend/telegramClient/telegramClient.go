@@ -111,11 +111,11 @@ func prepareStorage() error {
 	return nil
 }
 
-func (telega *Telega) Authorization(phone string) (*telegram.AuthSentCode, error) {
-	setCode, err := telega.client.AuthSendCode(
-		phone, int32(telega.appId), telega.appHash, &telegram.CodeSettings{},
+func (telegramClient *Telega) Authorization(phone string) (*telegram.AuthSentCode, error) {
+	setCode, err := telegramClient.client.AuthSendCode(
+		phone, int32(telegramClient.appId), telegramClient.appHash, &telegram.CodeSettings{},
 	)
-	telega.phone = phone
+	telegramClient.phone = phone
 
 	if err != nil {
 		fmt.Println(err)
@@ -124,10 +124,10 @@ func (telega *Telega) Authorization(phone string) (*telegram.AuthSentCode, error
 	return setCode, nil
 }
 
-func (telega *Telega) AuthSignIn(code string, sentCode *telegram.AuthSentCode) error {
+func (telegramClient *Telega) AuthSignIn(code string, sentCode *telegram.AuthSentCode) error {
 
-	auth, err := telega.client.AuthSignIn(
-		telega.phone,
+	auth, err := telegramClient.client.AuthSignIn(
+		telegramClient.phone,
 		sentCode.PhoneCodeHash,
 		code,
 	)
@@ -141,24 +141,24 @@ func (telega *Telega) AuthSignIn(code string, sentCode *telegram.AuthSentCode) e
 	return err
 }
 
-func (telega *Telega) GetUser(username string) (**telegram.ContactsResolvedPeer, error) {
-	userData, err := telega.client.ContactsResolveUsername(username)
+func (telegramClient *Telega) GetUser(username string) (**telegram.ContactsResolvedPeer, error) {
+	userData, err := telegramClient.client.ContactsResolveUsername(username)
 	if err != nil {
 		fmt.Println(err)
 	}
 	return &userData, nil
 }
 
-func (telega *Telega) GetCurrentUser() (telegram.User, error) {
-	fullUser, err := telega.client.UsersGetFullUser(&telegram.InputUserSelf{})
+func (telegramClient *Telega) GetCurrentUser() (telegram.User, error) {
+	fullUser, err := telegramClient.client.UsersGetFullUser(&telegram.InputUserSelf{})
 	if err != nil {
 		fmt.Println(err)
 	}
 	return fullUser.User, nil
 }
 
-func (telega *Telega) Contacts() ([]telegram.User, error) {
-	resp, err := telega.client.AccountInitTakeoutSession(&telegram.AccountInitTakeoutSessionParams{
+func (telegramClient *Telega) Contacts() ([]telegram.User, error) {
+	resp, err := telegramClient.client.AccountInitTakeoutSession(&telegram.AccountInitTakeoutSessionParams{
 		Contacts: true,
 	})
 
@@ -166,7 +166,7 @@ func (telega *Telega) Contacts() ([]telegram.User, error) {
 		fmt.Println(err)
 	}
 
-	_, err = telega.client.MakeRequest(
+	_, err = telegramClient.client.MakeRequest(
 		&telegram.InvokeWithTakeoutParams{
 			TakeoutID: resp.ID,
 			Query:     &telegram.ContactsGetSavedParams{},
@@ -177,7 +177,7 @@ func (telega *Telega) Contacts() ([]telegram.User, error) {
 		fmt.Println(err)
 	}
 
-	contacts, err := telega.client.ContactsGetContacts(0)
+	contacts, err := telegramClient.client.ContactsGetContacts(0)
 
 	if err != nil {
 		fmt.Println(err)
