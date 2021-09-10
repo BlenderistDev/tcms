@@ -7,7 +7,6 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/k0kubun/pp"
 	"github.com/xelaj/mtproto/telegram"
 )
 
@@ -133,7 +132,7 @@ func (telega *Telega) AuthSignIn(code string, sentCode *telegram.AuthSentCode) e
 		code,
 	)
 	if err == nil {
-		pp.Println(auth)
+		fmt.Println(auth)
 
 		fmt.Println("Success! You've signed in!")
 	} else {
