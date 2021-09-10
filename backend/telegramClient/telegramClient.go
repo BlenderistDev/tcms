@@ -96,7 +96,10 @@ func prepareStorage() error {
 	_, err = os.Stat(publicKeys)
 	if err != nil {
 
-		resp, _ := http.Get(publicKeysForExamplesURL)
+		resp, err := http.Get(publicKeysForExamplesURL)
+		if err != nil {
+			fmt.Println(err)
+		}
 		defer resp.Body.Close()
 
 		out, _ := os.Create(publicKeys)
