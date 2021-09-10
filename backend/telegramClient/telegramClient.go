@@ -92,7 +92,7 @@ func prepareStorage() error {
 
 		resp, err := http.Get(publicKeysForExamplesURL)
 		if err != nil {
-			fmt.Println(err)
+			return err
 		}
 		defer resp.Body.Close()
 
@@ -166,5 +166,5 @@ func (telegramClient *TelegramClient) Contacts() ([]telegram.User, error) {
 
 	c := contacts.(*telegram.ContactsContactsObj)
 
-	return c.Users, nil
+	return c.Users, err
 }
