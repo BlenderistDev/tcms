@@ -17,7 +17,7 @@ const (
 	publicKeysForExamplesURL = "https://git.io/JtImk"
 )
 
-type Telega struct {
+type TelegramClient struct {
 	client  *telegram.Client
 	phone   string
 	appId   int
@@ -30,7 +30,7 @@ type User struct {
 	UserName string
 }
 
-func NewTelegram() (*Telega, error) {
+func NewTelegram() (*TelegramClient, error) {
 
 	wd, err := os.Getwd()
 	if err != nil {
@@ -62,7 +62,7 @@ func NewTelegram() (*Telega, error) {
 		InitWarnChannel: true,    // if we want to get errors, otherwise, client.Warnings will be set nil
 	})
 
-	telegram := new(Telega)
+	telegram := new(TelegramClient)
 	telegram.client = client
 	telegram.appId = appId
 	telegram.appHash = appHash
@@ -111,7 +111,7 @@ func prepareStorage() error {
 	return nil
 }
 
-func (telegramClient *Telega) Authorization(phone string) (*telegram.AuthSentCode, error) {
+func (telegramClient *TelegramClient) Authorization(phone string) (*telegram.AuthSentCode, error) {
 	setCode, err := telegramClient.client.AuthSendCode(
 		phone, int32(telegramClient.appId), telegramClient.appHash, &telegram.CodeSettings{},
 	)
@@ -124,7 +124,7 @@ func (telegramClient *Telega) Authorization(phone string) (*telegram.AuthSentCod
 	return setCode, nil
 }
 
-func (telegramClient *Telega) AuthSignIn(code string, sentCode *telegram.AuthSentCode) error {
+func (telegramClient *TelegramClient) AuthSignIn(code string, sentCode *telegram.AuthSentCode) error {
 
 	auth, err := telegramClient.client.AuthSignIn(
 		telegramClient.phone,
@@ -141,7 +141,7 @@ func (telegramClient *Telega) AuthSignIn(code string, sentCode *telegram.AuthSen
 	return err
 }
 
-func (telegramClient *Telega) GetUser(username string) (**telegram.ContactsResolvedPeer, error) {
+func (telegramClient *TelegramClient) GetUser(username string) (**telegram.ContactsResolvedPeer, error) {
 	userData, err := telegramClient.client.ContactsResolveUsername(username)
 	if err != nil {
 		fmt.Println(err)
@@ -149,7 +149,7 @@ func (telegramClient *Telega) GetUser(username string) (**telegram.ContactsResol
 	return &userData, nil
 }
 
-func (telegramClient *Telega) GetCurrentUser() (telegram.User, error) {
+func (telegramClient *TelegramClient) GetCurrentUser() (telegram.User, error) {
 	fullUser, err := telegramClient.client.UsersGetFullUser(&telegram.InputUserSelf{})
 	if err != nil {
 		fmt.Println(err)
@@ -157,7 +157,7 @@ func (telegramClient *Telega) GetCurrentUser() (telegram.User, error) {
 	return fullUser.User, nil
 }
 
-func (telegramClient *Telega) Contacts() ([]telegram.User, error) {
+func (telegramClient *TelegramClient) Contacts() ([]telegram.User, error) {
 	resp, err := telegramClient.client.AccountInitTakeoutSession(&telegram.AccountInitTakeoutSessionParams{
 		Contacts: true,
 	})

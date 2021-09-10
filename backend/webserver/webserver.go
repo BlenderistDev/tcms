@@ -17,7 +17,7 @@ type signData struct {
 	Code string `json:"code" binding:"required"`
 }
 
-func StartWebServer(telegramClient *telegramClient.Telega) {
+func StartWebServer(telegramClient *telegramClient.TelegramClient) {
 	router := gin.Default()
 
 	router.Use(cors.New(cors.Config{
