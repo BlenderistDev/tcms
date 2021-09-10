@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"tcms/m/dry"
 
 	"github.com/xelaj/mtproto/telegram"
 )
@@ -33,19 +34,14 @@ type User struct {
 func NewTelegram() (*TelegramClient, error) {
 
 	wd, err := os.Getwd()
-	if err != nil {
-		fmt.Println(err)
-	}
+	dry.HandleError(err)
 
 	appId, err := getAppId()
-	if err != nil {
-		return nil, err
-	}
+	dry.HandleError(err)
 
 	appHash, err := getAppHash()
-	if err != nil {
-		return nil, err
-	}
+	dry.HandleError(err)
+
 	prepareStorage()
 	sessionFile := wd + "/session.json"
 	publicKeys := wd + "/tg_public_keys.pem"
@@ -87,9 +83,7 @@ func getAppHash() (string, error) {
 
 func prepareStorage() error {
 	dir, err := os.Getwd()
-	if err != nil {
-		return err
-	}
+	dry.HandleError(err)
 
 	publicKeys := dir + "/tg_public_keys.pem"
 
@@ -119,11 +113,7 @@ func (telegramClient *TelegramClient) Authorization(phone string) (*telegram.Aut
 		phone, int32(telegramClient.appId), telegramClient.appHash, &telegram.CodeSettings{},
 	)
 	telegramClient.phone = phone
-
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(setCode)
+	dry.HandleError(err)
 	return setCode, nil
 }
 
@@ -146,18 +136,12 @@ func (telegramClient *TelegramClient) AuthSignIn(code string, sentCode *telegram
 
 func (telegramClient *TelegramClient) GetUser(username string) (**telegram.ContactsResolvedPeer, error) {
 	userData, err := telegramClient.client.ContactsResolveUsername(username)
-	if err != nil {
-		fmt.Println(err)
-	}
-	return &userData, nil
+	return &userData, err
 }
 
 func (telegramClient *TelegramClient) GetCurrentUser() (telegram.User, error) {
 	fullUser, err := telegramClient.client.UsersGetFullUser(&telegram.InputUserSelf{})
-	if err != nil {
-		fmt.Println(err)
-	}
-	return fullUser.User, nil
+	return fullUser.User, err
 }
 
 func (telegramClient *TelegramClient) Contacts() ([]telegram.User, error) {
@@ -165,9 +149,7 @@ func (telegramClient *TelegramClient) Contacts() ([]telegram.User, error) {
 		Contacts: true,
 	})
 
-	if err != nil {
-		fmt.Println(err)
-	}
+	dry.HandleError(err)
 
 	_, err = telegramClient.client.MakeRequest(
 		&telegram.InvokeWithTakeoutParams{
@@ -176,15 +158,11 @@ func (telegramClient *TelegramClient) Contacts() ([]telegram.User, error) {
 		},
 	)
 
-	if err != nil {
-		fmt.Println(err)
-	}
+	dry.HandleError(err)
 
 	contacts, err := telegramClient.client.ContactsGetContacts(0)
 
-	if err != nil {
-		fmt.Println(err)
-	}
+	dry.HandleError(err)
 
 	c := contacts.(*telegram.ContactsContactsObj)
 

@@ -1,7 +1,7 @@
 package webserver
 
 import (
-	"fmt"
+	"tcms/m/dry"
 	"tcms/m/telegramClient"
 
 	"github.com/gin-contrib/cors"
@@ -33,9 +33,7 @@ func StartWebServer(telegramClient *telegramClient.TelegramClient) {
 		c.BindJSON(&loginData)
 		var err error
 		sentCode, err = telegramClient.Authorization(loginData.Phone)
-		if err != nil {
-			fmt.Println(err)
-		}
+		dry.HandleError(err)
 		c.JSON(200, gin.H{"status": "ok"})
 	})
 
@@ -48,17 +46,13 @@ func StartWebServer(telegramClient *telegramClient.TelegramClient) {
 
 	router.GET("/me", func(c *gin.Context) {
 		user, err := telegramClient.GetCurrentUser()
-		if err != nil {
-			fmt.Println(err)
-		}
+		dry.HandleError(err)
 		c.JSON(200, user)
 	})
 
 	router.GET("/contacts", func(c *gin.Context) {
 		contacts, err := telegramClient.Contacts()
-		if err != nil {
-			fmt.Println(err)
-		}
+		dry.HandleError(err)
 		c.JSON(200, contacts)
 	})
 
