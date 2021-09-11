@@ -3,6 +3,7 @@ package telegramClient
 import (
 	"fmt"
 	"io"
+	"math/rand"
 	"net/http"
 	"os"
 	"strconv"
@@ -167,4 +168,22 @@ func (telegramClient *TelegramClient) Contacts() ([]telegram.User, error) {
 	c := contacts.(*telegram.ContactsContactsObj)
 
 	return c.Users, err
+}
+
+func (telegramClient *TelegramClient) SendMessage(message string, userId int32, accessHash int64) error {
+
+	inputPeerUser := &telegram.InputPeerUser{
+		UserID:     userId,
+		AccessHash: accessHash,
+	}
+	messageParams := &telegram.MessagesSendMessageParams{
+		Peer:     inputPeerUser,
+		Message:  message,
+		RandomID: rand.Int63(),
+	}
+
+	updates, err := telegramClient.client.MessagesSendMessage(messageParams)
+	dry.HandleError(err)
+	fmt.Println(updates)
+	return err
 }
