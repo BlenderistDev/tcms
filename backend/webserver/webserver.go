@@ -17,6 +17,12 @@ type signData struct {
 	Code string `json:"code" binding:"required"`
 }
 
+type sendMessageData struct {
+	AccessHash int64  `json:"accessHesh" binding:"required"`
+	Id         int32  `json:"id" binding:"required"`
+	Message    string `json:"message" binding:"required"`
+}
+
 func StartWebServer(telegramClient *telegramClient.TelegramClient) {
 	router := gin.Default()
 
@@ -54,6 +60,13 @@ func StartWebServer(telegramClient *telegramClient.TelegramClient) {
 		contacts, err := telegramClient.Contacts()
 		dry.HandleError(err)
 		c.JSON(200, contacts)
+	})
+
+	router.POST("/message", func(c *gin.Context) {
+		var messageData sendMessageData
+		c.BindJSON(&messageData)
+		telegramClient.SendMessage(messageData.Message, messageData.Id, messageData.AccessHash)
+		c.JSON(200, gin.H{"status": "ok"})
 	})
 
 	router.Run(":8080")
