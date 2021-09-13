@@ -17,6 +17,10 @@ const routes: RouteRecordRaw[] = [
         path: 'contacts',
         component: () => import('pages/Contacts.vue'),
       },
+      {
+        path: 'send',
+        component: () => import('pages/Send.vue'),
+      },
     ],
   },
   // Always leave this as last one,

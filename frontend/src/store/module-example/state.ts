@@ -13,6 +13,7 @@ export interface Contact {
   mutualContact: boolean,
   bot: boolean,
   deleted: boolean,
+  accessHash: number,
 }
 
 export type ContactMap = {
