@@ -20,6 +20,7 @@ QForm(@submit="onSubmit")
 import { defineComponent, computed, reactive } from 'vue';
 import { useStore } from 'src/store';
 import { ContactMap } from 'src/store/module-example/state';
+// eslint-disable-next-line object-curly-newline
 import { QForm, QSelect, QInput, QBtn } from 'quasar';
 import * as _ from 'lodash';
 import { sendMessage, SendMessage } from 'src/services/api';
@@ -45,9 +46,7 @@ export default defineComponent({
       formData,
       contacts,
       onSubmit: () => {
-        sendMessage(formData).catch((e) => {
-          console.error(e);
-        });
+        void sendMessage(formData);
       },
     };
   },
