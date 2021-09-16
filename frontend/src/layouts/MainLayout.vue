@@ -12,16 +12,14 @@ QLayout(view="lHh Lpr lFf")
       )
       QToolbarTitle Quasar App
       div Quasar v{{ $q.version }}
-  QDrawer(
+  QDrawer.bg-grey-1(
     v-model="leftDrawerOpen"
     show-if-above
     bordered
-    class="bg-grey-1"
   )
     QList
-      QItemLabel(
+      QItemLabel.text-grey-8(
         header
-        class="text-grey-8"
       ) Essential Links
       EssentialLink(
         v-for="link in essentialLinks"
