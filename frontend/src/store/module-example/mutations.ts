@@ -1,5 +1,6 @@
+import { User, ContactMap } from 'src/components/models';
 import { MutationTree } from 'vuex';
-import { ContactMap, ExampleStateInterface, User } from './state';
+import { ExampleStateInterface } from './state';
 
 const mutation: MutationTree<ExampleStateInterface> = {
   setUser(state: ExampleStateInterface, user: User) {

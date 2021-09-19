@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
 import _ from 'lodash';
 import { api } from 'src/boot/axios';
-import { Contact, ContactMap, User } from 'src/store/module-example/state';
+import { User, ContactMap, Contact } from 'src/components/models';
 
 export const login = (phone: string):Promise<AxiosResponse> => api.post('/login', { phone });
 export const sign = (code: string):Promise<AxiosResponse> => api.post('/sign', { code });

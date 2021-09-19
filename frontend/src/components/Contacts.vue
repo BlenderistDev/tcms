@@ -9,9 +9,9 @@ QTable(
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
 import { useStore } from 'src/store';
-import { ContactMap, Contact } from 'src/store/module-example/state';
 import { QTable } from 'quasar';
 import * as _ from 'lodash';
+import { ContactMap, Contact } from './models';
 
 export default defineComponent({
   name: 'Contacts',

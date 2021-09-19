@@ -1,24 +1,4 @@
-export interface User {
-  id: number,
-  phone: string,
-  name: string
-}
-
-export interface Contact {
-  id: number
-  username: string,
-  phone: string,
-  firstName: string,
-  lastName: string,
-  mutualContact: boolean,
-  bot: boolean,
-  deleted: boolean,
-  accessHash: number,
-}
-
-export type ContactMap = {
-  [key: number]: Contact
-}
+import { ContactMap, User } from 'src/components/models';
 
 export interface ExampleStateInterface {
   user: User|null;

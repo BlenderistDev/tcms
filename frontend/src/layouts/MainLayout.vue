@@ -32,6 +32,8 @@ QLayout(view="lHh Lpr lFf")
 
 <script lang="ts">
 import EssentialLink from 'components/EssentialLink.vue';
+// eslint-disable-next-line object-curly-newline
+import { QBtn, QToolbarTitle, QToolbar, QHeader, QList, QItemLabel, QDrawer, QPageContainer, QLayout } from 'quasar';
 
 const linksList = [
   {
@@ -85,6 +87,15 @@ export default defineComponent({
 
   components: {
     EssentialLink,
+    QBtn,
+    QToolbarTitle,
+    QToolbar,
+    QHeader,
+    QList,
+    QItemLabel,
+    QDrawer,
+    QPageContainer,
+    QLayout,
   },
 
   setup() {
