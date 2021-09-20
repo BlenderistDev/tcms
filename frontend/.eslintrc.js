@@ -71,6 +71,14 @@ module.exports = {
 
   // add your custom rules here
   rules: {
+    "comma-dangle": ["error", {
+      "arrays": "allways",
+      "objects": "never",
+      "imports": "allways",
+      "exports": "allways",
+      "functions": "allways"
+  }],
+    // 'object-curly-newline': 'off',
     'no-param-reassign': 'off',
     'no-void': 'off',
     'no-nested-ternary': 'off',
