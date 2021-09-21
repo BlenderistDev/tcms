@@ -33,7 +33,15 @@ QLayout(view="lHh Lpr lFf")
 <script lang="ts">
 import EssentialLink from 'components/EssentialLink.vue';
 import {
-  QBtn, QToolbarTitle, QToolbar, QHeader, QList, QItemLabel, QDrawer, QPageContainer, QLayout
+  QBtn,
+  QToolbarTitle,
+  QToolbar,
+  QHeader,
+  QList,
+  QItemLabel,
+  QDrawer,
+  QPageContainer,
+  QLayout
 } from 'quasar';
 
 const linksList = [
