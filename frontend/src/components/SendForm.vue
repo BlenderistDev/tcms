@@ -19,9 +19,12 @@ QForm(@submit="onSubmit")
 <script lang="ts">
 import { defineComponent, computed, reactive } from 'vue';
 import { useStore } from 'src/store';
-
-// eslint-disable-next-line object-curly-newline
-import { QForm, QSelect, QInput, QBtn } from 'quasar';
+import {
+  QForm,
+  QSelect,
+  QInput,
+  QBtn
+} from 'quasar';
 import * as _ from 'lodash';
 import { sendMessage, SendMessage } from 'src/services/api';
 import { ContactMap } from './models';
