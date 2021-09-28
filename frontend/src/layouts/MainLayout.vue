@@ -10,8 +10,7 @@ QLayout(view="lHh Lpr lFf")
         aria-label="Menu"
         @click="toggleLeftDrawer"
       )
-      QToolbarTitle Quasar App
-      div Quasar v{{ $q.version }}
+      QToolbarTitle Telegram client managment system
   QDrawer.bg-grey-1(
     v-model="leftDrawerOpen"
     show-if-above
