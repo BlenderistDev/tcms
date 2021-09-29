@@ -19,7 +19,7 @@ QLayout(view="lHh Lpr lFf")
     QList
       QItemLabel.text-grey-8(
         header
-      ) Essential Links
+      ) Menu
       EssentialLink(
         v-for="link in essentialLinks"
         :key="link.title"
