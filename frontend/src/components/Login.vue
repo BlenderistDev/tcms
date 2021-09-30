@@ -19,7 +19,7 @@ QForm(@submit="formLogin" v-else)
 import { QInput, QForm, QBtn } from 'quasar';
 import {
   defineComponent,
-  ref,
+  ref
 } from 'vue';
 import { login, sign } from 'src/services/api';
 import { AxiosResponse } from 'axios';

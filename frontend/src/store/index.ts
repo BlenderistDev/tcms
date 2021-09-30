@@ -3,7 +3,7 @@ import { InjectionKey } from 'vue';
 import {
   createStore,
   Store as VuexStore,
-  useStore as vuexUseStore,
+  useStore as vuexUseStore
 } from 'vuex';
 
 import example from './module-example';
