@@ -18,7 +18,7 @@ type signData struct {
 }
 
 type sendMessageData struct {
-	AccessHash int64  `json:"accessHesh" binding:"required"`
+	AccessHash int64  `json:"accessHash" binding:"required"`
 	Id         int32  `json:"id" binding:"required"`
 	Message    string `json:"message" binding:"required"`
 }
