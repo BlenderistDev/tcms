@@ -13,9 +13,9 @@ func main() {
 	if err := godotenv.Load(); err != nil {
 		fmt.Println("No .env file found")
 	}
-	telegramClient, err := telegramClient.NewTelegram()
+	telegram, err := telegramClient.NewTelegram()
 	if err != nil {
 		fmt.Println(err)
 	}
-	webserver.StartWebServer(telegramClient)
+	webserver.StartWebServer(telegram)
 }
