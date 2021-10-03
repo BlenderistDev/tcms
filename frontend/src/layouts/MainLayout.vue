@@ -46,8 +46,7 @@ import {
 const linksList = [
   {
     title: 'Main',
-    caption: 'main',
-    link: '#',
+    link: '',
   },
 ];
 
