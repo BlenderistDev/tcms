@@ -2,14 +2,15 @@
 QItem(
   clickable
   tag="a"
-  :to="{name: link}"
+  :to="{name: link.link}"
 )
-  QItemLabel {{ title }}
+  QItemLabel {{ link.title }}
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import { QItem, QItemLabel } from "quasar";
+import {MenuLink} from "components/models";
 
 export default defineComponent({
   name: 'EssentialLink',
@@ -18,12 +19,8 @@ export default defineComponent({
     QItemLabel,
   },
   props: {
-    title: {
-      type: String,
-      required: true,
-    },
     link: {
-      type: String,
+      type: Object as PropType<MenuLink>,
       required: true,
     },
   },

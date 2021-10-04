@@ -23,3 +23,8 @@ export interface Contact {
 export type ContactMap = {
   [key: number]: Contact
 }
+
+export type MenuLink = {
+  title: string,
+  link: string,
+}

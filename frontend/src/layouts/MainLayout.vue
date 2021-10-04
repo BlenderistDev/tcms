@@ -21,9 +21,9 @@ QLayout(view="lHh Lpr lFf")
         header
       ) Menu
       EssentialLink(
-        v-for="link in essentialLinks"
+        v-for="link in links"
         :key="link.title"
-        v-bind="link"
+        :link="link"
       )
   QPageContainer
     router-view
@@ -43,7 +43,7 @@ import {
   QLayout
 } from 'quasar';
 
-const linksList = [
+const links: MenuLink[] = [
   {
     title: 'Main',
     link: '',
@@ -59,10 +59,10 @@ const linksList = [
 ];
 
 import { defineComponent, ref } from 'vue';
+import { MenuLink } from "components/models";
 
 export default defineComponent({
   name: 'MainLayout',
-
   components: {
     EssentialLink,
     QBtn,
@@ -80,7 +80,7 @@ export default defineComponent({
     const leftDrawerOpen = ref(false);
 
     return {
-      essentialLinks: linksList,
+      links: links,
       leftDrawerOpen,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
