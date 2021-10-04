@@ -48,6 +48,14 @@ const linksList = [
     title: 'Main',
     link: '',
   },
+  {
+    title: 'Contacts',
+    link: 'contacts',
+  },
+  {
+    title: 'Send',
+    link: 'send',
+  },
 ];
 
 import { defineComponent, ref } from 'vue';

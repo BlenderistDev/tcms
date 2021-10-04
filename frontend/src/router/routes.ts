@@ -15,10 +15,12 @@ const routes: RouteRecordRaw[] = [
       },
       {
         path: 'contacts',
+        name: 'contacts',
         component: () => import('pages/Contacts.vue'),
       },
       {
         path: 'send',
+        name: 'send',
         component: () => import('pages/Send.vue'),
       },
     ],
