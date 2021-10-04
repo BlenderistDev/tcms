@@ -15,7 +15,7 @@ export default defineComponent({
   name: 'EssentialLink',
   components: {
     QItem,
-    QItemLabel
+    QItemLabel,
   },
   props: {
     title: {
