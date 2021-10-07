@@ -43,7 +43,10 @@ func NewTelegram() (*TelegramClient, error) {
 	appHash, err := getAppHash()
 	dry.HandleError(err)
 
-	prepareStorage()
+	err = prepareStorage()
+	if err != nil {
+		return nil, err
+	}
 	sessionFile := wd + "/session.json"
 	publicKeys := wd + "/tg_public_keys.pem"
 
