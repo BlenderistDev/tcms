@@ -62,6 +62,12 @@ func StartWebServer(telegramClient *telegramClient.TelegramClient) {
 		c.JSON(200, contacts)
 	})
 
+	router.GET("/chats", func(c *gin.Context) {
+		chats, err := telegramClient.Chats()
+		dry.HandleError(err)
+		c.JSON(200, chats)
+	})
+
 	router.POST("/message", func(c *gin.Context) {
 		var messageData sendMessageData
 		c.BindJSON(&messageData)

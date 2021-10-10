@@ -173,6 +173,24 @@ func (telegramClient *TelegramClient) Contacts() ([]telegram.User, error) {
 	return c.Users, err
 }
 
+func (telegramClient *TelegramClient) Chats() ([]telegram.Chat, error) {
+
+	_, err := telegramClient.client.AccountInitTakeoutSession(&telegram.AccountInitTakeoutSessionParams{
+		MessageChats: true,
+	})
+
+	dry.HandleError(err)
+
+	var exceptedIds []int32
+	chats, err := telegramClient.client.MessagesGetAllChats(exceptedIds)
+
+	dry.HandleError(err)
+
+	c := chats.(*telegram.MessagesChatsObj)
+
+	return c.Chats, err
+}
+
 func (telegramClient *TelegramClient) SendMessage(message string, userId int32, accessHash int64) error {
 
 	inputPeerUser := &telegram.InputPeerUser{
