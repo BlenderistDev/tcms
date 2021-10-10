@@ -9,8 +9,8 @@ QItem(
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { QItem, QItemLabel } from "quasar";
-import {MenuLink} from "components/models";
+import { QItem, QItemLabel } from 'quasar';
+import { MenuLink } from 'components/models';
 
 export default defineComponent({
   name: 'EssentialLink',

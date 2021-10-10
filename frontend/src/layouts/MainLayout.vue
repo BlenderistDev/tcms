@@ -59,7 +59,7 @@ const links: MenuLink[] = [
 ];
 
 import { defineComponent, ref } from 'vue';
-import { MenuLink } from "components/models";
+import { MenuLink } from 'components/models';
 
 export default defineComponent({
   name: 'MainLayout',
@@ -80,7 +80,7 @@ export default defineComponent({
     const leftDrawerOpen = ref(false);
 
     return {
-      links: links,
+      links,
       leftDrawerOpen,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
