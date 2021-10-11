@@ -1,4 +1,4 @@
-import { getContacts, getUser } from 'src/services/api';
+import { getChats, getContacts, getUser } from 'src/services/api';
 import { ActionTree } from 'vuex';
 import { StateInterface } from '../index';
 import { ExampleStateInterface } from './state';
@@ -12,6 +12,11 @@ const actions: ActionTree<ExampleStateInterface, StateInterface> = {
   fetchContacts({ commit }) {
     void getContacts().then((contacts) => {
       commit('setContacts', contacts);
+    });
+  },
+  fetchChats({ commit }) {
+    void getChats().then((chats) => {
+      commit('setChats', chats);
     });
   },
 };

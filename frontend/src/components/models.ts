@@ -28,3 +28,17 @@ export type MenuLink = {
   title: string,
   link: string,
 }
+
+export interface Chat {
+  id: number,
+  creator: boolean,
+  date: number,
+  deactivated: boolean,
+  kicked: boolean,
+  left: boolean,
+  title: string,
+}
+
+export type ChatMap = {
+  [key: number]: Chat
+}

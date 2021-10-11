@@ -56,6 +56,10 @@ const links: MenuLink[] = [
     link: 'contacts',
   },
   {
+    title: 'Chats',
+    link: 'chats',
+  },
+  {
     title: 'Send',
     link: 'send',
   },
