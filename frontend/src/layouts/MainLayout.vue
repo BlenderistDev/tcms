@@ -43,6 +43,9 @@ import {
   QLayout
 } from 'quasar';
 
+import { defineComponent, ref } from 'vue';
+import { MenuLink } from 'components/models';
+
 const links: MenuLink[] = [
   {
     title: 'Main',
@@ -57,9 +60,6 @@ const links: MenuLink[] = [
     link: 'send',
   },
 ];
-
-import { defineComponent, ref } from 'vue';
-import { MenuLink } from 'components/models';
 
 export default defineComponent({
   name: 'MainLayout',
