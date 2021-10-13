@@ -10,7 +10,7 @@ QLayout(view="lHh Lpr lFf")
         aria-label="Menu"
         @click="toggleLeftDrawer"
       )
-      QToolbarTitle Telegram client managment system
+      QToolbarTitle Telegram client management system
   QDrawer.bg-grey-1(
     v-model="leftDrawerOpen"
     show-if-above
