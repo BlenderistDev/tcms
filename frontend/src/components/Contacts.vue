@@ -1,6 +1,6 @@
 <template lang="pug">
 QTable(
-  title="Treats"
+  title="Contacts"
   :rows="rows"
   :columns="columns"
 )
