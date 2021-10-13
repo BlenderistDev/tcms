@@ -11,7 +11,7 @@ import { defineComponent, computed } from 'vue';
 import { useStore } from 'src/store';
 import { QTable } from 'quasar';
 import * as _ from 'lodash';
-import { ChatMap, Chat} from './models';
+import { ChatMap, Chat } from './models';
 
 export default defineComponent({
   name: 'Chats',
