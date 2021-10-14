@@ -191,6 +191,24 @@ func (telegramClient *TelegramClient) Chats() ([]telegram.Chat, error) {
 	return c.Chats, err
 }
 
+func (telegramClient *TelegramClient) Dialogs() ([]telegram.Dialog, error) {
+
+	_, err := telegramClient.client.AccountInitTakeoutSession(&telegram.AccountInitTakeoutSessionParams{
+		MessageChats: true,
+	})
+	dry.HandleError(err)
+
+	dialogs, err := telegramClient.client.MessagesGetDialogs(&telegram.MessagesGetDialogsParams{
+		OffsetPeer: &telegram.InputPeerUser{UserID: 133773580, AccessHash: -315366407886026984},
+	})
+
+	dry.HandleError(err)
+
+	c := dialogs.(*telegram.MessagesDialogsSlice)
+
+	return c.Dialogs, err
+}
+
 func (telegramClient *TelegramClient) SendMessage(message string, userId int32, accessHash int64) error {
 
 	inputPeerUser := &telegram.InputPeerUser{
