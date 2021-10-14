@@ -62,11 +62,11 @@ func NewTelegram() (*TelegramClient, error) {
 		InitWarnChannel: true,    // if we want to get errors, otherwise, client.Warnings will be set nil
 	})
 
-	telegram := new(TelegramClient)
-	telegram.client = client
-	telegram.appId = appId
-	telegram.appHash = appHash
-	return telegram, nil
+	telegramClient := new(TelegramClient)
+	telegramClient.client = client
+	telegramClient.appId = appId
+	telegramClient.appHash = appHash
+	return telegramClient, nil
 }
 
 func getAppId() (int, error) {
