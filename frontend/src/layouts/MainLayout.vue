@@ -60,6 +60,10 @@ const links: MenuLink[] = [
     link: 'chats',
   },
   {
+    title: 'Dialogs',
+    link: 'dialogs',
+  },
+  {
     title: 'Send',
     link: 'send',
   },

@@ -1,4 +1,6 @@
-import { User, ContactMap, ChatMap } from 'src/components/models';
+import {
+  User, ContactMap, ChatMap, DialogMap
+} from 'src/components/models';
 import { MutationTree } from 'vuex';
 import { ExampleStateInterface } from './state';
 
@@ -11,6 +13,9 @@ const mutation: MutationTree<ExampleStateInterface> = {
   },
   setChats(state: ExampleStateInterface, chats: ChatMap) {
     state.chats = chats;
+  },
+  setDialogs(state: ExampleStateInterface, dialogs: DialogMap) {
+    state.dialogs = dialogs;
   },
 };
 

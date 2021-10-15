@@ -42,3 +42,13 @@ export interface Chat {
 export type ChatMap = {
   [key: number]: Chat
 }
+
+export interface Dialog {
+  folderId: number,
+  pinned: boolean,
+  unreadCount: number
+}
+
+export type DialogMap = {
+  [key: number]: Dialog
+}
