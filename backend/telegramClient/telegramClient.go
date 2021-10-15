@@ -98,7 +98,10 @@ func prepareStorage() error {
 		if err != nil {
 			return err
 		}
-		defer resp.Body.Close()
+		defer func(Body io.ReadCloser) {
+			err := Body.Close()
+			dry.HandleError(err)
+		}(resp.Body)
 
 		out, _ := os.Create(publicKeys)
 
