@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"sync"
 	"tcms/m/dry"
 
 	"github.com/xelaj/mtproto/telegram"
@@ -228,4 +229,21 @@ func (telegramClient *TelegramClient) SendMessage(message string, userId int32, 
 	dry.HandleError(err)
 	fmt.Println(updates)
 	return err
+}
+
+func (telegramClient *TelegramClient) HandleUpdates() {
+	telegramClient.client.AddCustomServerRequestHandler(func(i interface{}) bool {
+		fmt.Println(i)
+		return false
+	})
+
+	// we need to call updates.getState, after that telegram server will send you updates
+	state, err := telegramClient.client.UpdatesGetState()
+	dry.HandleError(err)
+	// this state could be useful, if you want to get old unread updates
+	fmt.Println(state)
+
+	var wg sync.WaitGroup
+	wg.Add(1)
+	wg.Wait()
 }
