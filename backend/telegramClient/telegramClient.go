@@ -106,7 +106,12 @@ func prepareStorage() error {
 
 		out, _ := os.Create(publicKeys)
 
-		defer out.Close()
+		defer func(out *os.File) {
+			err := out.Close()
+			if err != nil {
+				dry.HandleError(err)
+			}
+		}(out)
 		_, err = io.Copy(out, resp.Body)
 		if err != nil {
 			return err
