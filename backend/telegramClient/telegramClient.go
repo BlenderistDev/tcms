@@ -2,9 +2,7 @@ package telegramClient
 
 import (
 	"fmt"
-	"io"
 	"math/rand"
-	"net/http"
 	"os"
 	"strconv"
 	"sync"
@@ -94,28 +92,7 @@ func prepareStorage() error {
 
 	_, err = os.Stat(publicKeys)
 	if err != nil {
-
-		resp, err := http.Get(publicKeysForExamplesURL)
-		if err != nil {
-			return err
-		}
-		defer func(Body io.ReadCloser) {
-			err := Body.Close()
-			dry.HandleError(err)
-		}(resp.Body)
-
-		out, _ := os.Create(publicKeys)
-
-		defer func(out *os.File) {
-			err := out.Close()
-			if err != nil {
-				dry.HandleError(err)
-			}
-		}(out)
-		_, err = io.Copy(out, resp.Body)
-		if err != nil {
-			return err
-		}
+		panic(fmt.Sprintf("no public key %s provided", publicKeys))
 	}
 
 	return nil
