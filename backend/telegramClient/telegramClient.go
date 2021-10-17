@@ -11,13 +11,6 @@ import (
 	"github.com/xelaj/mtproto/telegram"
 )
 
-const (
-	//! WARNING: please, DO NOT use this key downloading in production apps, THIS IS ABSOLUTELY INSECURE!
-	//! I mean, seriously, this way used just for examples, we can't create most secured app just for
-	//! these examples
-	publicKeysForExamplesURL = "https://git.io/JtImk"
-)
-
 type TelegramClient struct {
 	client  *telegram.Client
 	phone   string
