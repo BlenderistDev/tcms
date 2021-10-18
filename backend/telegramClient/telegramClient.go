@@ -35,6 +35,8 @@ func NewTelegram() (*TelegramClient, error) {
 	appHash, err := getAppHash()
 	dry.HandleError(err)
 
+	mtprotoHost, err := getMTProtoHost()
+
 	err = prepareStorage()
 	if err != nil {
 		return nil, err
@@ -46,7 +48,7 @@ func NewTelegram() (*TelegramClient, error) {
 		// where to store session configuration. must be set
 		SessionFile: sessionFile,
 		// host address of mtproto server. Actually, it can be any mtproxy, not only official
-		ServerHost: "149.154.167.40:443",
+		ServerHost: mtprotoHost,
 		// public keys file is path to file with public keys, which you must get from https://my.telegram.org
 		PublicKeysFile:  publicKeys,
 		AppID:           appId,   // app id, could be find at https://my.telegram.org
@@ -59,6 +61,14 @@ func NewTelegram() (*TelegramClient, error) {
 	telegramClient.appId = appId
 	telegramClient.appHash = appHash
 	return telegramClient, nil
+}
+
+func getMTProtoHost() (string, error) {
+	host, exists := os.LookupEnv("MTPROTO_HOST")
+	if !exists {
+		return "", fmt.Errorf("no mtproto host")
+	}
+	return host, nil
 }
 
 func getAppId() (int, error) {
