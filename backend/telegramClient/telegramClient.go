@@ -35,6 +35,7 @@ func NewTelegram() (*TelegramClient, error) {
 	dry.HandleError(err)
 
 	mtprotoHost, err := getMTProtoHost()
+	dry.HandleError(err)
 
 	err = prepareStorage()
 	if err != nil {
