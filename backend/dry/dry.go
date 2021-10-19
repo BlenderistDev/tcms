@@ -7,3 +7,9 @@ func HandleError(err error) {
 		fmt.Println(err)
 	}
 }
+
+func HandleErrorPanic(err error) {
+	if err != nil {
+		panic(fmt.Sprintf("%v", err))
+	}
+}
