@@ -90,5 +90,9 @@ func StartWebServer(telegramClient *telegramClient.TelegramClient) {
 		c.JSON(200, gin.H{"status": "ok"})
 	})
 
-	router.Run(":8080")
+	host, err := getApiHost()
+	dry.HandleErrorPanic(err)
+
+	err = router.Run(host)
+	dry.HandleErrorPanic(err)
 }
