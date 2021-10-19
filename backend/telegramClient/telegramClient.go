@@ -26,19 +26,19 @@ type User struct {
 func NewTelegram() (*TelegramClient, error) {
 
 	wd, err := os.Getwd()
-	dry.HandleError(err)
+	dry.HandleErrorPanic(err)
 
 	appId, err := getAppId()
-	dry.HandleError(err)
+	dry.HandleErrorPanic(err)
 
 	appHash, err := getAppHash()
-	dry.HandleError(err)
+	dry.HandleErrorPanic(err)
 
 	mtprotoHost, err := getMTProtoHost()
-	dry.HandleError(err)
+	dry.HandleErrorPanic(err)
 
 	err = prepareStorage()
-	dry.HandleError(err)
+	dry.HandleErrorPanic(err)
 
 	sessionFile := wd + "/session.json"
 	publicKeys := wd + "/tg_public_keys.pem"
