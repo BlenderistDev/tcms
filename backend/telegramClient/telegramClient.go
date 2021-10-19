@@ -59,6 +59,7 @@ func NewTelegram() (*TelegramClient, error) {
 	telegramClient.client = client
 	telegramClient.appId = appId
 	telegramClient.appHash = appHash
+
 	return telegramClient, nil
 }
 
@@ -87,18 +88,15 @@ func (telegramClient *TelegramClient) Authorization(phone string) (*telegram.Aut
 
 func (telegramClient *TelegramClient) AuthSignIn(code string, sentCode *telegram.AuthSentCode) error {
 
-	auth, err := telegramClient.client.AuthSignIn(
+	_, err := telegramClient.client.AuthSignIn(
 		telegramClient.phone,
 		sentCode.PhoneCodeHash,
 		code,
 	)
-	if err == nil {
-		fmt.Println(auth)
 
-		fmt.Println("Success! You've signed in!")
-	} else {
-		fmt.Println(err)
-	}
+	dry.HandleError(err)
+	fmt.Println("Success! You've signed in!")
+
 	return err
 }
 
