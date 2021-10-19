@@ -37,9 +37,8 @@ func StartWebServer(telegramClient *telegramClient.TelegramClient) {
 	router.POST("/login", func(c *gin.Context) {
 		var loginData loginData
 		err := c.BindJSON(&loginData)
-		if err != nil {
-			dry.HandleError(err)
-		}
+		dry.HandleError(err)
+
 		sentCode, err = telegramClient.Authorization(loginData.Phone)
 		dry.HandleError(err)
 		c.JSON(200, gin.H{"status": "ok"})
@@ -48,13 +47,11 @@ func StartWebServer(telegramClient *telegramClient.TelegramClient) {
 	router.POST("/sign", func(c *gin.Context) {
 		var signData signData
 		err := c.BindJSON(&signData)
-		if err != nil {
-			dry.HandleError(err)
-		}
+		dry.HandleError(err)
+
 		err = telegramClient.AuthSignIn(signData.Code, sentCode)
-		if err != nil {
-			dry.HandleError(err)
-		}
+		dry.HandleError(err)
+
 		c.JSON(200, gin.H{"status": "ok"})
 	})
 
@@ -85,13 +82,11 @@ func StartWebServer(telegramClient *telegramClient.TelegramClient) {
 	router.POST("/message", func(c *gin.Context) {
 		var messageData sendMessageData
 		err := c.BindJSON(&messageData)
-		if err != nil {
-			dry.HandleError(err)
-		}
+		dry.HandleError(err)
+
 		err = telegramClient.SendMessage(messageData.Message, messageData.Id, messageData.AccessHash)
-		if err != nil {
-			dry.HandleError(err)
-		}
+		dry.HandleError(err)
+
 		c.JSON(200, gin.H{"status": "ok"})
 	})
 
