@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
-	"sync"
 	"tcms/m/dry"
 
 	"github.com/xelaj/mtproto/telegram"
@@ -189,19 +188,14 @@ func (telegramClient *TelegramClient) SendMessage(message string, userId int32, 
 	return err
 }
 
-func (telegramClient *TelegramClient) HandleUpdates() {
+func (telegramClient *TelegramClient) HandleUpdates(updateChan chan interface{}) {
+
 	telegramClient.client.AddCustomServerRequestHandler(func(i interface{}) bool {
-		fmt.Println(i)
+		updateChan <- i
 		return false
 	})
 
 	// we need to call updates.getState, after that telegram server will send you updates
-	state, err := telegramClient.client.UpdatesGetState()
+	_, err := telegramClient.client.UpdatesGetState()
 	dry.HandleError(err)
-	// this state could be useful, if you want to get old unread updates
-	fmt.Println(state)
-
-	var wg sync.WaitGroup
-	wg.Add(1)
-	wg.Wait()
 }
