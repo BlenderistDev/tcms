@@ -183,9 +183,9 @@ func (telegramClient *TelegramClient) SendMessage(message string, userId int32, 
 		RandomID: rand.Int63(),
 	}
 
-	updates, err := telegramClient.client.MessagesSendMessage(messageParams)
+	_, err := telegramClient.client.MessagesSendMessage(messageParams)
 	dry.HandleError(err)
-	fmt.Println(updates)
+
 	return err
 }
 
