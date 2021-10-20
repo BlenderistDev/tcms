@@ -1,12 +1,13 @@
 package webserver
 
 import (
-	"tcms/m/dry"
-	"tcms/m/telegramClient"
-
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/websocket"
 	"github.com/xelaj/mtproto/telegram"
+	"net/http"
+	"tcms/m/dry"
+	"tcms/m/telegramClient"
 )
 
 type loginData struct {
@@ -23,7 +24,13 @@ type sendMessageData struct {
 	Message    string `json:"message" binding:"required"`
 }
 
-func StartWebServer(telegramClient *telegramClient.TelegramClient) {
+var upGrader = websocket.Upgrader{
+	CheckOrigin: func(r *http.Request) bool {
+		return true
+	},
+}
+
+func StartWebServer(telegramClient *telegramClient.TelegramClient, updateChan chan interface{}) {
 	router := gin.Default()
 
 	router.Use(cors.New(cors.Config{
@@ -88,6 +95,24 @@ func StartWebServer(telegramClient *telegramClient.TelegramClient) {
 		dry.HandleError(err)
 
 		c.JSON(200, gin.H{"status": "ok"})
+	})
+
+	router.GET("/ws", func(c *gin.Context) {
+		ws, err := upGrader.Upgrade(c.Writer, c.Request, nil)
+		dry.HandleError(err)
+
+		defer func(ws *websocket.Conn) {
+			err := ws.Close()
+			dry.HandleError(err)
+		}(ws)
+
+		for {
+			val, ok := <-updateChan
+			if ok {
+				err = ws.WriteJSON(val)
+				dry.HandleError(err)
+			}
+		}
 	})
 
 	host, err := getApiHost()

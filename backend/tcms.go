@@ -17,5 +17,7 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	webserver.StartWebServer(telegram)
+	updateChan := make(chan interface{})
+	go telegram.HandleUpdates(updateChan)
+	webserver.StartWebServer(telegram, updateChan)
 }
