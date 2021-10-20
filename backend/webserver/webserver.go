@@ -24,12 +24,6 @@ type sendMessageData struct {
 	Message    string `json:"message" binding:"required"`
 }
 
-var upGrader = websocket.Upgrader{
-	CheckOrigin: func(r *http.Request) bool {
-		return true
-	},
-}
-
 func StartWebServer(telegramClient *telegramClient.TelegramClient, updateChan chan interface{}) {
 	router := gin.Default()
 
@@ -98,7 +92,13 @@ func StartWebServer(telegramClient *telegramClient.TelegramClient, updateChan ch
 	})
 
 	router.GET("/ws", func(c *gin.Context) {
-		ws, err := upGrader.Upgrade(c.Writer, c.Request, nil)
+		upgrader := websocket.Upgrader{
+			CheckOrigin: func(r *http.Request) bool {
+				return true
+			},
+		}
+
+		ws, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 		dry.HandleError(err)
 
 		defer func(ws *websocket.Conn) {
