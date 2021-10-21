@@ -36,8 +36,7 @@ func NewTelegram() (*TelegramClient, error) {
 	mtprotoHost, err := getMTProtoHost()
 	dry.HandleErrorPanic(err)
 
-	err = prepareStorage()
-	dry.HandleErrorPanic(err)
+	prepareStorage()
 
 	sessionFile := wd + "/session.json"
 	publicKeys := wd + "/tg_public_keys.pem"
@@ -62,7 +61,7 @@ func NewTelegram() (*TelegramClient, error) {
 	return telegramClient, nil
 }
 
-func prepareStorage() error {
+func prepareStorage() {
 	dir, err := os.Getwd()
 	dry.HandleError(err)
 
@@ -72,8 +71,6 @@ func prepareStorage() error {
 	if err != nil {
 		panic(fmt.Sprintf("no public key %s provided", publicKeys))
 	}
-
-	return nil
 }
 
 func (telegramClient *TelegramClient) Authorization(phone string) (*telegram.AuthSentCode, error) {
@@ -81,8 +78,7 @@ func (telegramClient *TelegramClient) Authorization(phone string) (*telegram.Aut
 		phone, int32(telegramClient.appId), telegramClient.appHash, &telegram.CodeSettings{},
 	)
 	telegramClient.phone = phone
-	dry.HandleError(err)
-	return setCode, nil
+	return setCode, err
 }
 
 func (telegramClient *TelegramClient) AuthSignIn(code string, sentCode *telegram.AuthSentCode) error {
@@ -93,8 +89,9 @@ func (telegramClient *TelegramClient) AuthSignIn(code string, sentCode *telegram
 		code,
 	)
 
-	dry.HandleError(err)
-	fmt.Println("Success! You've signed in!")
+	if err == nil {
+		fmt.Println("Success! You've signed in!")
+	}
 
 	return err
 }
