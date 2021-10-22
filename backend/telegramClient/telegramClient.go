@@ -111,7 +111,9 @@ func (telegramClient *TelegramClient) Contacts() ([]telegram.User, error) {
 		Contacts: true,
 	})
 
-	dry.HandleError(err)
+	if err != nil {
+		return nil, err
+	}
 
 	_, err = telegramClient.client.MakeRequest(
 		&telegram.InvokeWithTakeoutParams{
@@ -120,11 +122,15 @@ func (telegramClient *TelegramClient) Contacts() ([]telegram.User, error) {
 		},
 	)
 
-	dry.HandleError(err)
+	if err != nil {
+		return nil, err
+	}
 
 	contacts, err := telegramClient.client.ContactsGetContacts(0)
 
-	dry.HandleError(err)
+	if err != nil {
+		return nil, err
+	}
 
 	c := contacts.(*telegram.ContactsContactsObj)
 
