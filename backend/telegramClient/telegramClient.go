@@ -22,7 +22,7 @@ type User struct {
 	UserName string
 }
 
-func NewTelegram() (*TelegramClient, error) {
+func NewTelegram() *TelegramClient {
 
 	wd, err := os.Getwd()
 	dry.HandleErrorPanic(err)
@@ -58,7 +58,7 @@ func NewTelegram() (*TelegramClient, error) {
 	telegramClient.appId = appId
 	telegramClient.appHash = appHash
 
-	return telegramClient, nil
+	return telegramClient
 }
 
 func prepareStorage() {
