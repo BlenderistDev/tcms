@@ -115,9 +115,7 @@ func StartWebServer(telegramClient *telegramClient.TelegramClient, updateChan ch
 		}
 	})
 
-	host, err := getApiHost()
-	dry.HandleErrorPanic(err)
+	host := getApiHost()
 
-	err = router.Run(host)
-	dry.HandleErrorPanic(err)
+	dry.HandleErrorPanic(router.Run(host))
 }

@@ -3,12 +3,13 @@ package webserver
 import (
 	"fmt"
 	"os"
+	"tcms/m/dry"
 )
 
-func getApiHost() (string, error) {
+func getApiHost() string {
 	host, exists := os.LookupEnv("API_HOST")
 	if !exists {
-		return "", fmt.Errorf("no api host provided")
+		dry.HandleErrorPanic(fmt.Errorf("no api host provided"))
 	}
-	return host, nil
+	return host
 }
