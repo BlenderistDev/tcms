@@ -1,10 +1,12 @@
 package telegramClient
 
 import (
+	"context"
 	"fmt"
 	"math/rand"
 	"os"
 	"tcms/m/dry"
+	"tcms/m/redis"
 
 	"github.com/xelaj/mtproto/telegram"
 )
@@ -192,8 +194,11 @@ func (telegramClient *TelegramClient) SendMessage(message string, userId int32, 
 }
 
 func (telegramClient *TelegramClient) HandleUpdates(updateChan chan interface{}) {
-
+	var ctx = context.Background()
+	redisClient := redis.GetClient()
 	telegramClient.client.AddCustomServerRequestHandler(func(i interface{}) bool {
+		_, err := redisClient.Publish(ctx, "update", i)
+		dry.HandleError(err)
 		updateChan <- i
 		return false
 	})
