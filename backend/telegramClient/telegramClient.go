@@ -193,13 +193,13 @@ func (telegramClient *TelegramClient) SendMessage(message string, userId int32, 
 	return err
 }
 
-func (telegramClient *TelegramClient) HandleUpdates(updateChan chan interface{}) {
+func (telegramClient *TelegramClient) HandleUpdates() {
 	var ctx = context.Background()
 	redisClient := redis.GetClient()
 	telegramClient.client.AddCustomServerRequestHandler(func(i interface{}) bool {
-		_, err := redisClient.Publish(ctx, "update", i)
+		res, err := redisClient.Publish(ctx, "update", i)
+		fmt.Println(res)
 		dry.HandleError(err)
-		updateChan <- i
 		return false
 	})
 

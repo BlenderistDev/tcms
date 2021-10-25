@@ -16,6 +16,6 @@ func main() {
 	telegram := telegramClient.NewTelegram()
 
 	updateChan := make(chan interface{})
-	go telegram.HandleUpdates(updateChan)
+	go telegram.HandleUpdates()
 	webserver.StartWebServer(telegram, updateChan)
 }
