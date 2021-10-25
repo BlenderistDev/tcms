@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	redis2 "github.com/go-redis/redis/v8"
 	"github.com/gorilla/websocket"
 	"github.com/xelaj/mtproto/telegram"
 	"net/http"
@@ -113,7 +114,10 @@ func StartWebServer(telegramClient *telegramClient.TelegramClient) {
 		var ctx = context.Background()
 
 		pubsub := redisClient.Subscribe(ctx, "update")
-		defer pubsub.Close()
+		defer func(pubsub *redis2.PubSub) {
+			err := pubsub.Close()
+			dry.HandleError(err)
+		}(pubsub)
 
 		for {
 			msg, err := pubsub.ReceiveMessage(ctx)
