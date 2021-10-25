@@ -14,8 +14,7 @@ func main() {
 	dry.HandleErrorPanic(err)
 
 	telegram := telegramClient.NewTelegram()
-
-	updateChan := make(chan interface{})
 	go telegram.HandleUpdates()
-	webserver.StartWebServer(telegram, updateChan)
+
+	webserver.StartWebServer(telegram)
 }

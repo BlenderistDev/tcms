@@ -1,12 +1,14 @@
 package webserver
 
 import (
+	"context"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/xelaj/mtproto/telegram"
 	"net/http"
 	"tcms/m/dry"
+	"tcms/m/redis"
 	"tcms/m/telegramClient"
 )
 
@@ -24,7 +26,7 @@ type sendMessageData struct {
 	Message    string `json:"message" binding:"required"`
 }
 
-func StartWebServer(telegramClient *telegramClient.TelegramClient, updateChan chan interface{}) {
+func StartWebServer(telegramClient *telegramClient.TelegramClient) {
 	router := gin.Default()
 
 	router.Use(cors.New(cors.Config{
@@ -91,6 +93,8 @@ func StartWebServer(telegramClient *telegramClient.TelegramClient, updateChan ch
 		c.JSON(200, gin.H{"status": "ok"})
 	})
 
+	redisClient := redis.GetClient()
+
 	router.GET("/ws", func(c *gin.Context) {
 		upgrader := websocket.Upgrader{
 			CheckOrigin: func(r *http.Request) bool {
@@ -106,12 +110,16 @@ func StartWebServer(telegramClient *telegramClient.TelegramClient, updateChan ch
 			dry.HandleError(err)
 		}(ws)
 
+		var ctx = context.Background()
+
+		pubsub := redisClient.Subscribe(ctx, "update")
+		defer pubsub.Close()
+
 		for {
-			val, ok := <-updateChan
-			if ok {
-				err = ws.WriteJSON(val)
-				dry.HandleError(err)
-			}
+			msg, err := pubsub.ReceiveMessage(ctx)
+			dry.HandleError(err)
+			err = ws.WriteJSON(msg)
+			dry.HandleError(err)
 		}
 	})
 
