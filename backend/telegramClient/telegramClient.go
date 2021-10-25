@@ -197,8 +197,7 @@ func (telegramClient *TelegramClient) HandleUpdates() {
 	var ctx = context.Background()
 	redisClient := redis.GetClient()
 	telegramClient.client.AddCustomServerRequestHandler(func(i interface{}) bool {
-		res, err := redisClient.Publish(ctx, "update", i)
-		fmt.Println(res)
+		_, err := redisClient.Publish(ctx, "update", i)
 		dry.HandleError(err)
 		return false
 	})
