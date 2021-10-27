@@ -70,9 +70,7 @@ func prepareStorage() {
 	publicKeys := dir + "/tg_public_keys.pem"
 
 	_, err = os.Stat(publicKeys)
-	if err != nil {
-		panic(fmt.Sprintf("no public key %s provided", publicKeys))
-	}
+	dry.HandleErrorPanic(err)
 }
 
 func (telegramClient *TelegramClient) Authorization(phone string) (*telegram.AuthSentCode, error) {
