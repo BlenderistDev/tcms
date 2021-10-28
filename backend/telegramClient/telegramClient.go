@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"tcms/m/automation"
 	"tcms/m/dry"
 	"tcms/m/redis"
 
@@ -203,7 +204,22 @@ func (telegramClient *TelegramClient) HandleUpdates() {
 	var ctx = context.Background()
 	redisClient := redis.GetClient()
 	telegramClient.client.AddCustomServerRequestHandler(func(i interface{}) bool {
-		_, err := redisClient.Publish(ctx, "update", i)
+		var triggerType string
+		switch message := i.(type) {
+		case *telegram.UpdateShort:
+			switch message.Update.(type) {
+			case *telegram.UpdateUserStatus:
+				triggerType = "UpdateUserStatus"
+			default:
+				triggerType = "unknown"
+			}
+		}
+		trigger := automation.TelegramUpdateTrigger{
+			Name:    triggerType,
+			KeyList: nil,
+			Data:    nil,
+		}
+		_, err := redisClient.Publish(ctx, "update", trigger)
 		dry.HandleError(err)
 		return false
 	})
