@@ -204,16 +204,7 @@ func (telegramClient *TelegramClient) HandleUpdates() {
 	var ctx = context.Background()
 	redisClient := redis.GetClient()
 	telegramClient.client.AddCustomServerRequestHandler(func(i interface{}) bool {
-		var triggerType string
-		switch message := i.(type) {
-		case *telegram.UpdateShort:
-			switch message.Update.(type) {
-			case *telegram.UpdateUserStatus:
-				triggerType = "UpdateUserStatus"
-			default:
-				triggerType = "unknown"
-			}
-		}
+		triggerType := getTriggerType(i)
 		trigger := automation.TelegramUpdateTrigger{
 			Name:    triggerType,
 			KeyList: nil,
