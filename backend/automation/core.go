@@ -9,5 +9,5 @@ type Trigger interface {
 }
 
 func HandleTrigger(trigger Trigger) {
-	fmt.Printf("Trigger with type %s", trigger.GetName())
+	fmt.Printf("Trigger with type %s\n", trigger.GetName())
 }
