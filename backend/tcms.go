@@ -1,6 +1,7 @@
 package main
 
 import (
+	"tcms/m/automation"
 	"tcms/m/dry"
 	"tcms/m/telegramClient"
 	"tcms/m/webserver"
@@ -15,6 +16,6 @@ func main() {
 
 	telegram := telegramClient.NewTelegram()
 	go telegram.HandleUpdates()
-
+	go automation.UpdateTriggerFactory()
 	webserver.StartWebServer(telegram)
 }
