@@ -5,7 +5,7 @@ import "fmt"
 type Trigger interface {
 	GetName() string
 	GetKeyList() []string
-	GetData() map[string]string
+	GetData() interface{}
 }
 
 func HandleTrigger(trigger Trigger) {
