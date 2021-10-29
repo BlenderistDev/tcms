@@ -29,7 +29,6 @@ func recognizeTrigger(i interface{}) []automation.TelegramUpdateTrigger {
 		}
 
 	default:
-		pp.Println(i)
 		triggerType = "unknown"
 	}
 
