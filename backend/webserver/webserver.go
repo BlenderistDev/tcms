@@ -122,7 +122,7 @@ func StartWebServer(telegramClient *telegramClient.TelegramClient) {
 		for {
 			msg, err := pubsub.ReceiveMessage(ctx)
 			dry.HandleError(err)
-			err = ws.WriteJSON(msg)
+			err = ws.WriteJSON(msg.Payload)
 			dry.HandleError(err)
 		}
 	})
