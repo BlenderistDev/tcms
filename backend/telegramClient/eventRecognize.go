@@ -29,6 +29,7 @@ func recognizeTrigger(i interface{}) []automation.TelegramUpdateTrigger {
 		}
 
 	default:
+		pp.Println(i)
 		triggerType = "unknown"
 	}
 
@@ -42,6 +43,8 @@ func getTriggerType(i interface{}) string {
 		triggerType = "UpdateUserStatus"
 	case *telegram.UpdateNewMessage:
 		triggerType = "UpdateNewMessage"
+	case *telegram.UpdateNewChannelMessage:
+		triggerType = "UpdateNewChannelMessage"
 	default:
 		triggerType = "unknown"
 	}
