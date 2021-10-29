@@ -45,6 +45,8 @@ func getTriggerType(i interface{}) string {
 		triggerType = "UpdateNewMessage"
 	case *telegram.UpdateNewChannelMessage:
 		triggerType = "UpdateNewChannelMessage"
+	case *telegram.UpdateReadChannelInbox:
+		triggerType = "UpdateReadChannelInbox"
 	default:
 		triggerType = "unknown"
 	}
