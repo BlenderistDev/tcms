@@ -2,6 +2,8 @@ package telegramClient
 
 import (
 	"github.com/xelaj/mtproto/telegram"
+	"reflect"
+	"strings"
 	"tcms/m/automation"
 )
 
@@ -36,21 +38,5 @@ func recognizeTrigger(i interface{}) []automation.TelegramUpdateTrigger {
 }
 
 func getTriggerType(i interface{}) string {
-	var triggerType string
-	switch i.(type) {
-	case *telegram.UpdateUserStatus:
-		triggerType = "UpdateUserStatus"
-	case *telegram.UpdateNewMessage:
-		triggerType = "UpdateNewMessage"
-	case *telegram.UpdateNewChannelMessage:
-		triggerType = "UpdateNewChannelMessage"
-	case *telegram.UpdateReadChannelInbox:
-		triggerType = "UpdateReadChannelInbox"
-	case *telegram.UpdateEditChannelMessage:
-		triggerType = "UpdateEditChannelMessage"
-	default:
-		triggerType = "unknown"
-	}
-
-	return triggerType
+	return strings.Replace(reflect.TypeOf(i).String(), "*telegram.", "", 1)
 }
