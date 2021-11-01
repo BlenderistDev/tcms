@@ -11,7 +11,7 @@ import (
 type TelegramUpdateTrigger struct {
 	Name    string
 	KeyList []string
-	Data    interface{}
+	Data    map[string]interface{}
 }
 
 func (t TelegramUpdateTrigger) GetName() string {
