@@ -9,17 +9,12 @@ import (
 )
 
 type TelegramUpdateTrigger struct {
-	Name    string
-	KeyList []string
-	Data    map[string]interface{}
+	Name string
+	Data map[string]interface{}
 }
 
 func (t TelegramUpdateTrigger) GetName() string {
 	return t.Name
-}
-
-func (t TelegramUpdateTrigger) GetKeyList() []string {
-	return t.KeyList
 }
 
 func (t TelegramUpdateTrigger) GetData() interface{} {

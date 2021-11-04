@@ -4,7 +4,6 @@ import "fmt"
 
 type Trigger interface {
 	GetName() string
-	GetKeyList() []string
 	GetData() interface{}
 }
 
