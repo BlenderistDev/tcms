@@ -42,19 +42,47 @@ func getTriggerType(i interface{}) string {
 	return strings.Replace(reflect.TypeOf(i).String(), "*telegram.", "", 1)
 }
 
-func getTriggerData(i interface{}) map[string]interface{} {
+func getTriggerData(i interface{}, prefixArr ...string) map[string]interface{} {
 
-	v := reflect.ValueOf(i)
-
-	values := make([]interface{}, reflect.Indirect(v).NumField())
-
-	for i := 0; i < reflect.Indirect(v).NumField(); i++ {
-		values[i] = reflect.Indirect(v).Field(i).Interface()
+	if i == nil {
+		return nil
 	}
 
-	fmt.Printf("%v", values)
+	prefix := ""
 
-	var inInterface map[string]interface{}
+	if len(prefixArr) > 0 {
+		prefix = prefixArr[0]
+	}
 
-	return inInterface
+	if prefix != "" {
+		prefix += "."
+	}
+
+	v := reflect.Indirect(reflect.ValueOf(i))
+
+	values := make(map[string]interface{}, v.NumField())
+
+	for i := 0; i < v.NumField(); i++ {
+
+		valueType := v.Field(i).Kind().String()
+
+		switch valueType {
+		case "interface":
+			data := getTriggerData(v.Field(i).Interface(), v.Type().Field(i).Name)
+			for key, value := range data {
+				values[prefix+key] = value
+			}
+		case "slice":
+			if v.Field(i).IsZero() || v.Field(i).IsNil() {
+				values[prefix+v.Type().Field(i).Name] = nil
+			} else {
+				fmt.Println("slice")
+			}
+		case "ptr":
+			fmt.Println("ptr")
+		default:
+			values[prefix+v.Type().Field(i).Name] = v.Field(i).Interface()
+		}
+	}
+	return values
 }
