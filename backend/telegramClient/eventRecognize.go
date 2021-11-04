@@ -16,9 +16,8 @@ func recognizeTrigger(i interface{}) []automation.TelegramUpdateTrigger {
 		triggerType = getTriggerType(message.Update)
 		triggerData := getTriggerData(message.Update)
 		trigger := automation.TelegramUpdateTrigger{
-			Name:    triggerType,
-			KeyList: nil,
-			Data:    triggerData,
+			Name: triggerType,
+			Data: triggerData,
 		}
 		triggerList = append(triggerList, trigger)
 	case *telegram.UpdatesObj:
@@ -26,9 +25,8 @@ func recognizeTrigger(i interface{}) []automation.TelegramUpdateTrigger {
 			triggerType = getTriggerType(event)
 			triggerData := getTriggerData(event)
 			trigger := automation.TelegramUpdateTrigger{
-				Name:    triggerType,
-				KeyList: nil,
-				Data:    triggerData,
+				Name: triggerType,
+				Data: triggerData,
 			}
 			triggerList = append(triggerList, trigger)
 		}
