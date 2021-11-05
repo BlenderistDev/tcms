@@ -88,9 +88,7 @@ func parseUnknown(i interface{}, prefixArr ...string) map[string]interface{} {
 			values[prefix+"."+key] = value
 		}
 	case reflect.Slice:
-		fmt.Println("slice")
 		data := parseSlice(i)
-		fmt.Println(data)
 		if len(data) > 0 {
 			for key, value := range data {
 				values[prefix+"."+key] = value
@@ -114,20 +112,10 @@ func parseUnknown(i interface{}, prefixArr ...string) map[string]interface{} {
 	return values
 }
 
-func parseSlice(i interface{}, prefixArr ...string) map[string]interface{} {
+func parseSlice(i interface{}) map[string]interface{} {
 
 	if i == nil {
 		return nil
-	}
-
-	prefix := ""
-
-	if len(prefixArr) > 0 {
-		prefix = prefixArr[0]
-	}
-
-	if prefix != "" {
-		prefix += "."
 	}
 
 	listVal := reflect.ValueOf(i)
@@ -135,7 +123,10 @@ func parseSlice(i interface{}, prefixArr ...string) map[string]interface{} {
 	values := make(map[string]interface{}, listVal.Len())
 
 	for key := 0; key < listVal.Len(); key++ {
-		values[prefix+strconv.Itoa(key)] = parseUnknown(listVal.Interface())
+		data := parseUnknown(listVal.Index(key).Interface(), strconv.Itoa(key))
+		for key, value := range data {
+			values[key] = value
+		}
 	}
 
 	return values
