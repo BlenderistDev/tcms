@@ -66,44 +66,6 @@ func parsePtr(i interface{}, prefixArr ...string) map[string]interface{} {
 		for key, value := range data {
 			values[prefix+key] = value
 		}
-		//switch message := fieldData.(type) {
-		//case interface{}:
-		//	valueType := v.Field(i).Kind()
-		//
-		//	switch valueType {
-		//	case reflect.Interface:
-		//		data := parsePtr(message, v.Type().Field(i).Name)
-		//		for key, value := range data {
-		//			values[prefix+key] = value
-		//		}
-		//	case reflect.Slice:
-		//			fmt.Println("SSSSSLLLLLIIIIICCCCCEEEEE")
-		//			data := parseSlice(message, v.Type().Field(i).Name)
-		//			pp.Println(message)
-		//			pp.Println(data)
-		//		fmt.Println("SSSSSLLLLLIIIIICCCCCEEEEE22222")
-		//			for key, value := range data {
-		//				values[prefix+key] = value
-		//			}
-		//
-		//
-		//		//fmt.Println("11111slice11111")
-		//		//pp.Println(message)
-		//		//fmt.Println("22222slice22222")
-		//	case reflect.Ptr:
-		//		fmt.Println("ptr")
-		//	default:
-		//		values[prefix+v.Type().Field(i).Name] = message
-		//	}
-		//case []interface{}:
-		//	if v.Field(i).IsZero() || v.Field(i).IsNil() {
-		//		values[prefix+v.Type().Field(i).Name] = nil
-		//	} else {
-		//		fmt.Println("slice")
-		//	}
-		//default:
-		//	values[prefix+v.Type().Field(i).Name] = v.Field(i).Interface()
-		//}
 	}
 	return values
 }
