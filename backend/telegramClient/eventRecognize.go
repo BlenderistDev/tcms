@@ -102,6 +102,10 @@ func parseUnknown(i interface{}, prefixArr ...string) map[string]interface{} {
 	case reflect.Map:
 	case reflect.Array:
 	case reflect.Struct:
+		data := parseStruct(i)
+		for key, value := range data {
+			values[prefix+"."+key] = value
+		}
 
 	default:
 		values[prefix] = i
@@ -134,6 +138,26 @@ func parseSlice(i interface{}, prefixArr ...string) map[string]interface{} {
 		values[prefix+strconv.Itoa(key)] = parseUnknown(listVal.Interface())
 	}
 
+	return values
+}
+
+func parseStruct(i interface{}) map[string]interface{} {
+	if i == nil {
+		return nil
+	}
+
+	v := reflect.ValueOf(i)
+
+	values := make(map[string]interface{}, v.NumField())
+
+	for i := 0; i < v.NumField(); i++ {
+		fieldData := v.Field(i).Interface()
+		filedName := v.Type().Field(i).Name
+		data := parseUnknown(fieldData, filedName)
+		for key, value := range data {
+			values[key] = value
+		}
+	}
 	return values
 }
 
