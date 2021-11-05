@@ -2,7 +2,6 @@ package telegramClient
 
 import (
 	"fmt"
-	"github.com/k0kubun/pp"
 	"github.com/xelaj/mtproto/telegram"
 	"reflect"
 	"strconv"
