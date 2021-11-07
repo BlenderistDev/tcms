@@ -21,20 +21,12 @@ func recognizeTrigger(i interface{}) []automation.TelegramUpdateTrigger {
 	case *telegram.UpdateShort:
 		triggerType = getTriggerType(message.Update)
 		triggerData := parsePtr(message)
-		trigger := automation.TelegramUpdateTrigger{
-			Name: triggerType,
-			Data: triggerData,
-		}
-		triggerList = append(triggerList, trigger)
+		triggerList = appendTrigger(triggerType, triggerData, triggerList)
 	case *telegram.UpdatesObj:
 		for _, event := range message.Updates {
 			triggerType = getTriggerType(event)
 			triggerData := parsePtr(event)
-			trigger := automation.TelegramUpdateTrigger{
-				Name: triggerType,
-				Data: triggerData,
-			}
-			triggerList = append(triggerList, trigger)
+			triggerList = appendTrigger(triggerType, triggerData, triggerList)
 		}
 	default:
 		jsonStr, err := json.Marshal(i)
@@ -43,21 +35,22 @@ func recognizeTrigger(i interface{}) []automation.TelegramUpdateTrigger {
 		err = json.Unmarshal(jsonStr, &jsonData)
 		if err == nil {
 			triggerData := parseUnknown(jsonData.Obj)
-			trigger := automation.TelegramUpdateTrigger{
-				Name: triggerType,
-				Data: triggerData,
-			}
-			triggerList = append(triggerList, trigger)
+			triggerList = appendTrigger(triggerType, triggerData, triggerList)
 		} else {
 			triggerData := parseUnknown(i)
-			trigger := automation.TelegramUpdateTrigger{
-				Name: triggerType,
-				Data: triggerData,
-			}
-			triggerList = append(triggerList, trigger)
+			triggerList = appendTrigger(triggerType, triggerData, triggerList)
 		}
 	}
 
+	return triggerList
+}
+
+func appendTrigger(triggerType string, triggerData map[string]interface{}, triggerList []automation.TelegramUpdateTrigger) []automation.TelegramUpdateTrigger {
+	trigger := automation.TelegramUpdateTrigger{
+		Name: triggerType,
+		Data: triggerData,
+	}
+	triggerList = append(triggerList, trigger)
 	return triggerList
 }
 
