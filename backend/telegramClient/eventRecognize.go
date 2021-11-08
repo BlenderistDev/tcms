@@ -1,18 +1,12 @@
 package telegramClient
 
 import (
-	"encoding/json"
 	"github.com/xelaj/mtproto/telegram"
 	"reflect"
 	"strconv"
 	"strings"
 	"tcms/m/automation"
-	"tcms/m/dry"
 )
-
-type GzipedEvent struct {
-	Obj interface{}
-}
 
 func recognizeTrigger(i interface{}) []automation.TelegramUpdateTrigger {
 	var triggerType string
@@ -29,15 +23,13 @@ func recognizeTrigger(i interface{}) []automation.TelegramUpdateTrigger {
 			triggerList = appendTrigger(triggerType, triggerData, triggerList)
 		}
 	default:
-		jsonStr, err := json.Marshal(i)
-		dry.HandleError(err)
-		var jsonData = GzipedEvent{}
-		err = json.Unmarshal(jsonStr, &jsonData)
-		if err == nil {
-			triggerData := parseUnknown(jsonData.Obj)
+		val := reflect.ValueOf(i).Elem().FieldByName("Obj")
+
+		if val.IsNil() || val.IsZero() {
+			triggerData := parseUnknown(i)
 			triggerList = appendTrigger(triggerType, triggerData, triggerList)
 		} else {
-			triggerData := parseUnknown(i)
+			triggerData := parseUnknown(val.Interface())
 			triggerList = appendTrigger(triggerType, triggerData, triggerList)
 		}
 	}
