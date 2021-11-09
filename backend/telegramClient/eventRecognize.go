@@ -29,8 +29,7 @@ func recognizeTrigger(i interface{}) []automation.TelegramUpdateTrigger {
 			triggerData := parseUnknown(i)
 			triggerList = appendTrigger(triggerType, triggerData, triggerList)
 		} else {
-			triggerData := parseUnknown(val.Interface())
-			triggerList = appendTrigger(triggerType, triggerData, triggerList)
+			triggerList = recognizeTrigger(val.Interface())
 		}
 	}
 
