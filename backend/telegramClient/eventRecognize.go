@@ -93,7 +93,7 @@ func parseUnknown(i interface{}, prefixArr ...string) map[string]interface{} {
 		data := parseSlice(i)
 		if len(data) > 0 {
 			for key, value := range data {
-				values[prefix+"."+key] = value
+				values[prefix+key] = value
 			}
 		} else {
 			values[prefix] = nil
