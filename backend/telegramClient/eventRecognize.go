@@ -5,12 +5,16 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
-	"tcms/m/automation"
 )
 
-func recognizeTrigger(i interface{}) []automation.TelegramUpdateTrigger {
+type updateTrigger struct {
+	Name string
+	Data map[string]interface{}
+}
+
+func recognizeTrigger(i interface{}) []updateTrigger {
 	var triggerType string
-	var triggerList []automation.TelegramUpdateTrigger
+	var triggerList []updateTrigger
 	switch message := i.(type) {
 	case *telegram.UpdateShort:
 		triggerType = getTriggerType(message.Update)
@@ -36,8 +40,8 @@ func recognizeTrigger(i interface{}) []automation.TelegramUpdateTrigger {
 	return triggerList
 }
 
-func appendTrigger(triggerType string, triggerData map[string]interface{}, triggerList []automation.TelegramUpdateTrigger) []automation.TelegramUpdateTrigger {
-	trigger := automation.TelegramUpdateTrigger{
+func appendTrigger(triggerType string, triggerData map[string]interface{}, triggerList []updateTrigger) []updateTrigger {
+	trigger := updateTrigger{
 		Name: triggerType,
 		Data: triggerData,
 	}
