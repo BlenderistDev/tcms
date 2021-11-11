@@ -105,7 +105,7 @@ func parseUnknown(i interface{}, prefixArr ...string) map[string]interface{} {
 			values[prefix+key] = value
 		}
 	case reflect.Array:
-		panic("array in recognize!")
+		panic("array in parse unknown!")
 	case reflect.Struct:
 		data := parseStruct(i)
 		for key, value := range data {
