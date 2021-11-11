@@ -32,6 +32,9 @@ func UpdateTriggerFactory() {
 		dry.HandleError(err)
 	}(subscribe)
 
+	automationService := Service{}
+	automationService.Start()
+
 	for {
 		msg, err := subscribe.ReceiveMessage(ctx)
 		dry.HandleError(err)
@@ -40,7 +43,6 @@ func UpdateTriggerFactory() {
 		var trigger TelegramUpdateTrigger
 		err = json.Unmarshal(bytes, &trigger)
 		dry.HandleError(err)
-
-		HandleTrigger(trigger)
+		automationService.HandleTrigger(trigger)
 	}
 }
