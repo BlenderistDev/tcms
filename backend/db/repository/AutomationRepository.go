@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"tcms/m/db/model"
@@ -28,7 +27,6 @@ func (r automationRepository) GetAll(ctx context.Context) ([]model.Automation, e
 	}
 	list := make([]model.Automation, cur.RemainingBatchLength())
 	for i := 0; cur.Next(ctx); i++ {
-		fmt.Println(i)
 		var automation model.Automation
 		err := cur.Decode(&automation)
 		if err != nil {
