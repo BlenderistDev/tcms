@@ -1,5 +1,7 @@
 package core
 
+import "fmt"
+
 type Trigger interface {
 	GetName() string
 	GetData() interface{}
@@ -15,6 +17,10 @@ type Automation struct {
 
 func (a Automation) Execute(trigger Trigger) {
 	for _, action := range a.Actions {
-		action.Execute(trigger)
+		err := action.Execute(trigger)
+		if err != nil {
+			fmt.Println("Error while executing action")
+			fmt.Println(err)
+		}
 	}
 }
