@@ -10,9 +10,11 @@ type Action interface {
 }
 
 type Automation struct {
-	Action Action
+	Actions []Action
 }
 
 func (a Automation) Execute(trigger Trigger) {
-	a.Action.Execute(trigger)
+	for _, action := range a.Actions {
+		action.Execute(trigger)
+	}
 }
