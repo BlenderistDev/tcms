@@ -1,6 +1,7 @@
 package telegramClient
 
 import (
+	"fmt"
 	"github.com/xelaj/mtproto/telegram"
 	"reflect"
 	"strconv"
@@ -117,7 +118,7 @@ func parseUnknown(i interface{}, prefixArr ...string) map[string]interface{} {
 		}
 
 	default:
-		values[originalPrefix] = i
+		values[originalPrefix] = fmt.Sprintf("%v", i)
 	}
 
 	return values
