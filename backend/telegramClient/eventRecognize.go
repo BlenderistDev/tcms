@@ -10,7 +10,7 @@ import (
 
 type updateTrigger struct {
 	Name string
-	Data map[string]interface{}
+	Data map[string]string
 }
 
 func recognizeTrigger(i interface{}) []updateTrigger {
@@ -41,7 +41,7 @@ func recognizeTrigger(i interface{}) []updateTrigger {
 	return triggerList
 }
 
-func appendTrigger(triggerType string, triggerData map[string]interface{}, triggerList []updateTrigger) []updateTrigger {
+func appendTrigger(triggerType string, triggerData map[string]string, triggerList []updateTrigger) []updateTrigger {
 	trigger := updateTrigger{
 		Name: triggerType,
 		Data: triggerData,
@@ -54,7 +54,7 @@ func getTriggerType(i interface{}) string {
 	return strings.Replace(reflect.TypeOf(i).String(), "*telegram.", "", 1)
 }
 
-func parsePtr(i interface{}) map[string]interface{} {
+func parsePtr(i interface{}) map[string]string {
 	if i == nil {
 		return nil
 	}
@@ -64,7 +64,7 @@ func parsePtr(i interface{}) map[string]interface{} {
 
 	v := reflect.Indirect(reflect.ValueOf(i))
 
-	values := make(map[string]interface{}, v.NumField())
+	values := make(map[string]string, v.NumField())
 
 	for i := 0; i < v.NumField(); i++ {
 		fieldData := v.Field(i).Interface()
@@ -77,14 +77,14 @@ func parsePtr(i interface{}) map[string]interface{} {
 	return values
 }
 
-func parseUnknown(i interface{}, prefixArr ...string) map[string]interface{} {
+func parseUnknown(i interface{}, prefixArr ...string) map[string]string {
 	if i == nil {
 		return nil
 	}
 
 	prefix, originalPrefix := getPrefix(prefixArr...)
 
-	values := make(map[string]interface{})
+	values := make(map[string]string)
 
 	valueType := reflect.ValueOf(i).Kind()
 
@@ -92,29 +92,29 @@ func parseUnknown(i interface{}, prefixArr ...string) map[string]interface{} {
 	case reflect.Ptr:
 		data := parsePtr(i)
 		for key, value := range data {
-			values[prefix+key] = value
+			values[prefix+key] = fmt.Sprintf("%v", value)
 		}
 	case reflect.Slice:
 		data := parseSlice(i)
 		if len(data) > 0 {
 			for key, value := range data {
-				values[prefix+key] = value
+				values[prefix+key] = fmt.Sprintf("%v", value)
 			}
 		} else {
-			values[prefix] = nil
+			values[prefix] = ""
 		}
 
 	case reflect.Map:
 		data := parseMap(i)
 		for key, value := range data {
-			values[prefix+key] = value
+			values[prefix+key] = fmt.Sprintf("%v", value)
 		}
 	case reflect.Array:
 		panic("array in parse unknown!")
 	case reflect.Struct:
 		data := parseStruct(i)
 		for key, value := range data {
-			values[prefix+key] = value
+			values[prefix+key] = fmt.Sprintf("%v", value)
 		}
 
 	default:
