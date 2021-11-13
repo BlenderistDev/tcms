@@ -22,9 +22,20 @@ func recognizeTrigger(i interface{}) []updateTrigger {
 		triggerData := parsePtr(message)
 		triggerList = appendTrigger(triggerType, triggerData, triggerList)
 	case *telegram.UpdatesObj:
+		users := make(map[string]string, len(message.Users))
+		for userIndex, user := range message.Users {
+			userMap := parsePtr(user)
+			for key, value := range userMap {
+				users[strconv.Itoa(userIndex)+"."+key] = value
+			}
+		}
+
 		for _, event := range message.Updates {
 			triggerType = getTriggerType(event)
 			triggerData := parsePtr(event)
+			for userIndex, value := range users {
+				triggerData["users."+userIndex] = value
+			}
 			triggerList = appendTrigger(triggerType, triggerData, triggerList)
 		}
 	default:
