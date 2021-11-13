@@ -4,7 +4,7 @@ import "fmt"
 
 type Trigger interface {
 	GetName() string
-	GetData() interface{}
+	GetData() map[string]string
 }
 
 type Action interface {

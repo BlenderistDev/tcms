@@ -10,14 +10,14 @@ import (
 
 type TelegramUpdateTrigger struct {
 	Name string
-	Data map[string]interface{}
+	Data map[string]string
 }
 
 func (t TelegramUpdateTrigger) GetName() string {
 	return t.Name
 }
 
-func (t TelegramUpdateTrigger) GetData() interface{} {
+func (t TelegramUpdateTrigger) GetData() map[string]string {
 	return t.Data
 }
 
