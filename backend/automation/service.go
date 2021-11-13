@@ -30,7 +30,7 @@ func (s *Service) Start() {
 	for _, automation := range automations {
 		actions := make([]core.Action, len(automation.Actions))
 		for i, action := range automation.Actions {
-			action, err := action2.CreateAction(action.Name)
+			action, err := action2.CreateAction(action)
 			if err == nil {
 				actions[i] = action
 			} else {
