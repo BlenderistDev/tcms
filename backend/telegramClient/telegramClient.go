@@ -3,12 +3,11 @@ package telegramClient
 import (
 	"context"
 	"fmt"
+	"github.com/xelaj/mtproto/telegram"
 	"math/rand"
 	"os"
 	"tcms/m/dry"
 	"tcms/m/redis"
-
-	"github.com/xelaj/mtproto/telegram"
 )
 
 type TelegramClient struct {
@@ -24,7 +23,12 @@ type User struct {
 	UserName string
 }
 
+var client *TelegramClient = nil
+
 func NewTelegram() *TelegramClient {
+	if client != nil {
+		return client
+	}
 
 	wd, err := os.Getwd()
 	dry.HandleErrorPanic(err)
@@ -43,7 +47,7 @@ func NewTelegram() *TelegramClient {
 	sessionFile := wd + "/session.json"
 	publicKeys := wd + "/tg_public_keys.pem"
 
-	client, _ := telegram.NewClient(telegram.ClientConfig{
+	c, _ := telegram.NewClient(telegram.ClientConfig{
 		// where to store session configuration. must be set
 		SessionFile: sessionFile,
 		// host address of mtproto server. Actually, it can be any mtproxy, not only official
@@ -56,9 +60,11 @@ func NewTelegram() *TelegramClient {
 	})
 
 	telegramClient := new(TelegramClient)
-	telegramClient.client = client
+	telegramClient.client = c
 	telegramClient.appId = appId
 	telegramClient.appHash = appHash
+
+	client = telegramClient
 
 	return telegramClient
 }
