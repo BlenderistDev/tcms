@@ -6,7 +6,7 @@ type Trigger interface {
 }
 
 type Action interface {
-	Execute(trigger Trigger)
+	Execute(trigger Trigger) error
 }
 
 type Automation struct {

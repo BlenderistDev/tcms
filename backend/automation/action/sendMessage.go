@@ -5,7 +5,6 @@ import (
 	"strconv"
 	"tcms/m/automation/core"
 	"tcms/m/db/model"
-	"tcms/m/dry"
 	"tcms/m/telegramClient"
 )
 
@@ -22,26 +21,28 @@ func CreateSendMessageAction(action model.Action) core.Action {
 	}
 }
 
-func (a sendMessageAction) Execute(_ core.Trigger) {
+func (a sendMessageAction) Execute(_ core.Trigger) error {
 	peer, err := a.getFromMapInt("peer")
 	if err != nil {
-		dry.HandleError(err)
+		return err
 	}
 
 	accessHash, err := a.getFromMapInt("accessHash")
 	if err != nil {
-		dry.HandleError(err)
+		return err
 	}
 
 	message, err := a.getFromMap("message")
 	if err != nil {
-		dry.HandleError(err)
+		return err
 	}
 
 	err = a.telegram.SendMessage(message, int32(peer), int64(accessHash))
 	if err != nil {
-		fmt.Printf("Send message error")
+		return fmt.Errorf("send message error")
 	}
+
+	return nil
 }
 
 func (a sendMessageAction) getFromMapInt(key string) (int, error) {
