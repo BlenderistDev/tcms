@@ -21,6 +21,10 @@ func recognizeTrigger(i interface{}) []updateTrigger {
 		triggerType = getTriggerType(message.Update)
 		triggerData := parsePtr(message)
 		triggerList = appendTrigger(triggerType, triggerData, triggerList)
+	case *telegram.UpdateShortMessage:
+		triggerType = getTriggerType(message)
+		triggerData := parsePtr(message)
+		triggerList = appendTrigger(triggerType, triggerData, triggerList)
 	case *telegram.UpdatesObj:
 		users := make(map[string]string, len(message.Users))
 		for userIndex, user := range message.Users {
