@@ -41,7 +41,7 @@ func recognizeTrigger(i interface{}) []updateTrigger {
 	default:
 		val := reflect.ValueOf(i).Elem().FieldByName("Obj")
 
-		if val.IsNil() || val.IsZero() {
+		if !val.IsValid() {
 			triggerData := parseUnknown(i)
 			triggerList = appendTrigger(triggerType, triggerData, triggerList)
 		} else {
