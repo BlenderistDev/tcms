@@ -6,6 +6,7 @@ import (
 	"github.com/xelaj/mtproto/telegram"
 	"math/rand"
 	"os"
+	"sync"
 	"tcms/m/dry"
 	"tcms/m/redis"
 )
@@ -25,10 +26,14 @@ type User struct {
 
 var client *TelegramClient = nil
 
+var lock = &sync.Mutex{}
+
 func NewTelegram() *TelegramClient {
 	if client != nil {
 		return client
 	}
+	lock.Lock()
+	defer lock.Unlock()
 
 	wd, err := os.Getwd()
 	dry.HandleErrorPanic(err)
