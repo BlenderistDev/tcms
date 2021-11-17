@@ -18,12 +18,6 @@ type TelegramClient struct {
 	appHash string
 }
 
-type User struct {
-	Id       int32
-	Phone    string
-	UserName string
-}
-
 var client *TelegramClient = nil
 
 var lock = &sync.Mutex{}
