@@ -8,15 +8,17 @@ import (
 )
 
 func TestGetFromMap_simpleMapping(t *testing.T) {
+	const name = "name"
+	const value = "value"
+
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	const name = "value"
 
 	mapping := map[string]model.Mapping{
-		"name": {
+		name: {
 			Simple: true,
-			Name:   "name",
-			Value:  name,
+			Name:   name,
+			Value:  value,
 		},
 	}
 	action := model.Action{
@@ -27,12 +29,55 @@ func TestGetFromMap_simpleMapping(t *testing.T) {
 
 	datamapper := DataMapper{Action: action}
 
-	value, err := datamapper.getFromMap(trigger, "name")
+	mapValue, err := datamapper.getFromMap(trigger, "name")
 	if err != nil {
 		t.Error(err)
 	}
 
-	if value != name {
-		t.Errorf("expected: %s, actual: %s", name, value)
+	if mapValue != value {
+		t.Errorf("expected: %s, actual: %s", value, mapValue)
+	}
+}
+
+func TestGetFromMap_notSimpleMapping(t *testing.T) {
+	const value = "value"
+	const name = "name"
+	const resultValue = "test_value"
+
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mapping := map[string]model.Mapping{
+		name: {
+			Simple: false,
+			Name:   name,
+			Value:  value,
+		},
+	}
+
+	action := model.Action{
+		Name:    "test",
+		Mapping: mapping,
+	}
+
+	triggerData := map[string]string{
+		"value": resultValue,
+	}
+
+	trigger := core.NewMockTrigger(ctrl)
+	trigger.
+		EXPECT().
+		GetData().
+		Return(triggerData)
+
+	datamapper := DataMapper{Action: action}
+
+	mapValue, err := datamapper.getFromMap(trigger, name)
+	if err != nil {
+		t.Error(err)
+	}
+
+	if mapValue != resultValue {
+		t.Errorf("expected: %s, actual: %s", resultValue, mapValue)
 	}
 }
