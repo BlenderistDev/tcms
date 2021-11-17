@@ -8,7 +8,7 @@ import (
 )
 
 type sendMessageAction struct {
-	telegram *telegramClient.TelegramClient
+	telegram telegramClient.TelegramClient
 	DataMapper
 }
 

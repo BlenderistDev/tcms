@@ -27,7 +27,7 @@ type sendMessageData struct {
 	Message    string `json:"message" binding:"required"`
 }
 
-func StartWebServer(telegramClient *telegramClient.TelegramClient) {
+func StartWebServer(telegramClient telegramClient.TelegramClient) {
 	router := gin.Default()
 
 	router.Use(cors.New(cors.Config{

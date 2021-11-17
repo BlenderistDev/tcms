@@ -11,18 +11,30 @@ import (
 	"tcms/m/redis"
 )
 
-type TelegramClient struct {
+type TelegramClient interface {
+	Authorization(phone string) (*telegram.AuthSentCode, error)
+	AuthSignIn(code string, sentCode *telegram.AuthSentCode) error
+	GetUser(username string) (**telegram.ContactsResolvedPeer, error)
+	GetCurrentUser() (telegram.User, error)
+	Contacts() ([]telegram.User, error)
+	Chats() ([]telegram.Chat, error)
+	Dialogs() ([]telegram.Dialog, error)
+	SendMessage(message string, userId int32, accessHash int64) error
+	HandleUpdates()
+}
+
+type telegramClient struct {
 	client  *telegram.Client
 	phone   string
 	appId   int
 	appHash string
 }
 
-var client *TelegramClient = nil
+var client TelegramClient = nil
 
 var lock = &sync.Mutex{}
 
-func NewTelegram() *TelegramClient {
+func NewTelegram() TelegramClient {
 	if client != nil {
 		return client
 	}
@@ -58,14 +70,14 @@ func NewTelegram() *TelegramClient {
 		InitWarnChannel: true,    // if we want to get errors, otherwise, client.Warnings will be set nil
 	})
 
-	telegramClient := new(TelegramClient)
-	telegramClient.client = c
-	telegramClient.appId = appId
-	telegramClient.appHash = appHash
+	t := new(telegramClient)
+	t.client = c
+	t.appId = appId
+	t.appHash = appHash
 
-	client = telegramClient
+	client = t
 
-	return telegramClient
+	return client
 }
 
 func prepareStorage() {
@@ -80,7 +92,7 @@ func prepareStorage() {
 	}
 }
 
-func (telegramClient *TelegramClient) Authorization(phone string) (*telegram.AuthSentCode, error) {
+func (telegramClient *telegramClient) Authorization(phone string) (*telegram.AuthSentCode, error) {
 	setCode, err := telegramClient.client.AuthSendCode(
 		phone, int32(telegramClient.appId), telegramClient.appHash, &telegram.CodeSettings{},
 	)
@@ -88,7 +100,7 @@ func (telegramClient *TelegramClient) Authorization(phone string) (*telegram.Aut
 	return setCode, err
 }
 
-func (telegramClient *TelegramClient) AuthSignIn(code string, sentCode *telegram.AuthSentCode) error {
+func (telegramClient *telegramClient) AuthSignIn(code string, sentCode *telegram.AuthSentCode) error {
 
 	_, err := telegramClient.client.AuthSignIn(
 		telegramClient.phone,
@@ -103,17 +115,17 @@ func (telegramClient *TelegramClient) AuthSignIn(code string, sentCode *telegram
 	return err
 }
 
-func (telegramClient *TelegramClient) GetUser(username string) (**telegram.ContactsResolvedPeer, error) {
+func (telegramClient *telegramClient) GetUser(username string) (**telegram.ContactsResolvedPeer, error) {
 	userData, err := telegramClient.client.ContactsResolveUsername(username)
 	return &userData, err
 }
 
-func (telegramClient *TelegramClient) GetCurrentUser() (telegram.User, error) {
+func (telegramClient *telegramClient) GetCurrentUser() (telegram.User, error) {
 	fullUser, err := telegramClient.client.UsersGetFullUser(&telegram.InputUserSelf{})
 	return fullUser.User, err
 }
 
-func (telegramClient *TelegramClient) Contacts() ([]telegram.User, error) {
+func (telegramClient *telegramClient) Contacts() ([]telegram.User, error) {
 	resp, err := telegramClient.client.AccountInitTakeoutSession(&telegram.AccountInitTakeoutSessionParams{
 		Contacts: true,
 	})
@@ -144,7 +156,7 @@ func (telegramClient *TelegramClient) Contacts() ([]telegram.User, error) {
 	return c.Users, err
 }
 
-func (telegramClient *TelegramClient) Chats() ([]telegram.Chat, error) {
+func (telegramClient *telegramClient) Chats() ([]telegram.Chat, error) {
 
 	_, err := telegramClient.client.AccountInitTakeoutSession(&telegram.AccountInitTakeoutSessionParams{
 		MessageChats: true,
@@ -166,7 +178,7 @@ func (telegramClient *TelegramClient) Chats() ([]telegram.Chat, error) {
 	return c.Chats, nil
 }
 
-func (telegramClient *TelegramClient) Dialogs() ([]telegram.Dialog, error) {
+func (telegramClient *telegramClient) Dialogs() ([]telegram.Dialog, error) {
 
 	_, err := telegramClient.client.AccountInitTakeoutSession(&telegram.AccountInitTakeoutSessionParams{
 		MessageChats: true,
@@ -189,7 +201,7 @@ func (telegramClient *TelegramClient) Dialogs() ([]telegram.Dialog, error) {
 	return c.Dialogs, nil
 }
 
-func (telegramClient *TelegramClient) SendMessage(message string, userId int32, accessHash int64) error {
+func (telegramClient *telegramClient) SendMessage(message string, userId int32, accessHash int64) error {
 
 	inputPeerUser := &telegram.InputPeerUser{
 		UserID:     userId,
@@ -206,7 +218,7 @@ func (telegramClient *TelegramClient) SendMessage(message string, userId int32, 
 	return err
 }
 
-func (telegramClient *TelegramClient) HandleUpdates() {
+func (telegramClient *telegramClient) HandleUpdates() {
 	var ctx = context.Background()
 	redisClient := redis.GetClient()
 	telegramClient.client.AddCustomServerRequestHandler(func(i interface{}) bool {
