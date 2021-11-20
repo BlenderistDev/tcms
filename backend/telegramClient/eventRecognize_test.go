@@ -27,3 +27,15 @@ func TestParseUnknown_setInt32(t *testing.T) {
 		t.Errorf("expect %v, got %v", expected, result)
 	}
 }
+
+func TestParseUnknown_setInt64(t *testing.T) {
+	var input int64 = 12
+	prefix := "test"
+	result := parseUnknown(input, "test")
+	expected := map[string]string{
+		prefix: "12",
+	}
+	if reflect.DeepEqual(result, expected) == false {
+		t.Errorf("expect %v, got %v", expected, result)
+	}
+}
