@@ -16,24 +16,21 @@ func TestGetPrefix(t *testing.T) {
 	}
 }
 
-func TestParseUnknown_setInt32(t *testing.T) {
-	var input int32 = 12
+func TestParseUnknown_setInt64(t *testing.T) {
 	prefix := "test"
-	result := parseUnknown(input, "test")
-	expected := map[string]string{
-		prefix: "12",
-	}
-	if reflect.DeepEqual(result, expected) == false {
-		t.Errorf("expect %v, got %v", expected, result)
-	}
+	var inputInt64 int64 = 12
+	result := "12"
+	testParseUnknownSimple(t, inputInt64, prefix, result)
+
+	var inputInt32 int32 = 12
+	result = "12"
+	testParseUnknownSimple(t, inputInt32, prefix, result)
 }
 
-func TestParseUnknown_setInt64(t *testing.T) {
-	var input int64 = 12
-	prefix := "test"
-	result := parseUnknown(input, "test")
+func testParseUnknownSimple(t *testing.T, in interface{}, prefix string, parsed string) {
+	result := parseUnknown(in, prefix)
 	expected := map[string]string{
-		prefix: "12",
+		prefix: parsed,
 	}
 	if reflect.DeepEqual(result, expected) == false {
 		t.Errorf("expect %v, got %v", expected, result)
