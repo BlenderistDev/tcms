@@ -26,6 +26,18 @@ func TestParseUnknown_setInt64(t *testing.T) {
 	result = "12"
 	testParseUnknownSimple(t, inputInt32, prefix, result)
 
+	var inputInt = 12
+	result = "12"
+	testParseUnknownSimple(t, inputInt, prefix, result)
+
+	var inputInt8 int8 = 12
+	result = "12"
+	testParseUnknownSimple(t, inputInt8, prefix, result)
+
+	var inputInt16 int16 = 12
+	result = "12"
+	testParseUnknownSimple(t, inputInt16, prefix, result)
+
 	var inputString = "test"
 	result = "test"
 	testParseUnknownSimple(t, inputString, prefix, result)
