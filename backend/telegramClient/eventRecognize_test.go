@@ -17,58 +17,48 @@ func TestGetPrefix(t *testing.T) {
 }
 
 func TestParseUnknown_setInt64(t *testing.T) {
-	prefix := "test"
+	const prefix = "test"
+	const intResult = "12"
+	const floatResult = "12.12"
+
 	var inputInt64 int64 = 12
-	result := "12"
-	testParseUnknownSimple(t, inputInt64, prefix, result)
+	testParseUnknownSimple(t, inputInt64, prefix, intResult)
 
 	var inputInt32 int32 = 12
-	result = "12"
-	testParseUnknownSimple(t, inputInt32, prefix, result)
+	testParseUnknownSimple(t, inputInt32, prefix, intResult)
 
 	var inputInt = 12
-	result = "12"
-	testParseUnknownSimple(t, inputInt, prefix, result)
+	testParseUnknownSimple(t, inputInt, prefix, intResult)
 
 	var inputInt8 int8 = 12
-	result = "12"
-	testParseUnknownSimple(t, inputInt8, prefix, result)
+	testParseUnknownSimple(t, inputInt8, prefix, intResult)
 
 	var inputInt16 int16 = 12
-	result = "12"
-	testParseUnknownSimple(t, inputInt16, prefix, result)
+	testParseUnknownSimple(t, inputInt16, prefix, intResult)
 
 	var inputUint uint = 12
-	result = "12"
-	testParseUnknownSimple(t, inputUint, prefix, result)
+	testParseUnknownSimple(t, inputUint, prefix, intResult)
 
 	var inputUint8 uint8 = 12
-	result = "12"
-	testParseUnknownSimple(t, inputUint8, prefix, result)
+	testParseUnknownSimple(t, inputUint8, prefix, intResult)
 
 	var inputUint16 uint16 = 12
-	result = "12"
-	testParseUnknownSimple(t, inputUint16, prefix, result)
+	testParseUnknownSimple(t, inputUint16, prefix, intResult)
 
 	var inputUint32 uint32 = 12
-	result = "12"
-	testParseUnknownSimple(t, inputUint32, prefix, result)
+	testParseUnknownSimple(t, inputUint32, prefix, intResult)
 
 	var inputUint64 uint32 = 12
-	result = "12"
-	testParseUnknownSimple(t, inputUint64, prefix, result)
+	testParseUnknownSimple(t, inputUint64, prefix, intResult)
 
 	var inputString = "test"
-	result = "test"
-	testParseUnknownSimple(t, inputString, prefix, result)
+	testParseUnknownSimple(t, inputString, prefix, "test")
 
 	var inputFloat32 float32 = 12.12
-	result = "12.12"
-	testParseUnknownSimple(t, inputFloat32, prefix, result)
+	testParseUnknownSimple(t, inputFloat32, prefix, floatResult)
 
 	var inputFloat64 float32 = 12.12
-	result = "12.12"
-	testParseUnknownSimple(t, inputFloat64, prefix, result)
+	testParseUnknownSimple(t, inputFloat64, prefix, floatResult)
 }
 
 func testParseUnknownSimple(t *testing.T, in interface{}, prefix string, parsed string) {
