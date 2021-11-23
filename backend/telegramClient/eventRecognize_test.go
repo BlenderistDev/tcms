@@ -66,6 +66,9 @@ func TestParseUnknown_setInt64(t *testing.T) {
 
 	var inputComplex128 complex128 = 3i + 1
 	testParseUnknownSimple(t, inputComplex128, prefix, complexResult)
+
+	testParseUnknownSimple(t, true, prefix, "true")
+	testParseUnknownSimple(t, false, prefix, "false")
 }
 
 func testParseUnknownSimple(t *testing.T, in interface{}, prefix string, parsed string) {
