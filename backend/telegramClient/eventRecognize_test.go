@@ -20,6 +20,7 @@ func TestParseUnknown_setInt64(t *testing.T) {
 	const prefix = "test"
 	const intResult = "12"
 	const floatResult = "12.12"
+	const complexResult = "(1+3i)"
 
 	var inputInt64 int64 = 12
 	testParseUnknownSimple(t, inputInt64, prefix, intResult)
@@ -59,6 +60,12 @@ func TestParseUnknown_setInt64(t *testing.T) {
 
 	var inputFloat64 float32 = 12.12
 	testParseUnknownSimple(t, inputFloat64, prefix, floatResult)
+
+	var inputComplex64 complex64 = 3i + 1
+	testParseUnknownSimple(t, inputComplex64, prefix, complexResult)
+
+	var inputComplex128 complex128 = 3i + 1
+	testParseUnknownSimple(t, inputComplex128, prefix, complexResult)
 }
 
 func testParseUnknownSimple(t *testing.T, in interface{}, prefix string, parsed string) {
