@@ -80,6 +80,21 @@ func TestParseUnknown_setInt64(t *testing.T) {
 	if reflect.DeepEqual(result, expected) == false {
 		t.Errorf("expect %v, got %v", expected, result)
 	}
+
+	inputMap := map[string]int{
+		"test1": 1,
+		"test2": 2,
+		"test3": 3,
+	}
+	result = parseUnknown(inputMap, prefix)
+	expected = map[string]string{
+		prefix + "." + "test1": "1",
+		prefix + "." + "test2": "2",
+		prefix + "." + "test3": "3",
+	}
+	if reflect.DeepEqual(result, expected) == false {
+		t.Errorf("expect %v, got %v", expected, result)
+	}
 }
 
 func testParseUnknownSimple(t *testing.T, in interface{}, prefix string, parsed string) {
