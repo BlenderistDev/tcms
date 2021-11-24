@@ -5,6 +5,8 @@ import (
 	"testing"
 )
 
+const prefix = "test"
+
 func TestGetPrefix(t *testing.T) {
 	expected := "test"
 	prefix, originalPrefix := getPrefix(expected)
@@ -16,11 +18,8 @@ func TestGetPrefix(t *testing.T) {
 	}
 }
 
-func TestParseUnknown_setInt64(t *testing.T) {
-	const prefix = "test"
+func TestParseUnknown_setInt(t *testing.T) {
 	const intResult = "12"
-	const floatResult = "12.12"
-	const complexResult = "(1+3i)"
 
 	var inputInt64 int64 = 12
 	testParseUnknownSimple(t, inputInt64, prefix, intResult)
@@ -30,6 +29,9 @@ func TestParseUnknown_setInt64(t *testing.T) {
 
 	var inputInt = 12
 	testParseUnknownSimple(t, inputInt, prefix, intResult)
+
+	var inputNegativeInt = -12
+	testParseUnknownSimple(t, inputNegativeInt, prefix, "-12")
 
 	var inputInt8 int8 = 12
 	testParseUnknownSimple(t, inputInt8, prefix, intResult)
@@ -51,25 +53,39 @@ func TestParseUnknown_setInt64(t *testing.T) {
 
 	var inputUint64 uint32 = 12
 	testParseUnknownSimple(t, inputUint64, prefix, intResult)
+}
 
+func TestParseUnknown_setString(t *testing.T) {
 	var inputString = "test"
 	testParseUnknownSimple(t, inputString, prefix, "test")
+}
+
+func TestParseUnknown_setFloat(t *testing.T) {
+	const floatResult = "12.12"
 
 	var inputFloat32 float32 = 12.12
 	testParseUnknownSimple(t, inputFloat32, prefix, floatResult)
 
 	var inputFloat64 float32 = 12.12
 	testParseUnknownSimple(t, inputFloat64, prefix, floatResult)
+}
+
+func TestParseUnknown_setComplex(t *testing.T) {
+	const complexResult = "(1+3i)"
 
 	var inputComplex64 complex64 = 3i + 1
 	testParseUnknownSimple(t, inputComplex64, prefix, complexResult)
 
 	var inputComplex128 complex128 = 3i + 1
 	testParseUnknownSimple(t, inputComplex128, prefix, complexResult)
+}
 
+func TestParseUnknown_setBool(t *testing.T) {
 	testParseUnknownSimple(t, true, prefix, "true")
 	testParseUnknownSimple(t, false, prefix, "false")
+}
 
+func TestParseUnknown_setSlice(t *testing.T) {
 	inputSlice := []int{11, 22, 33}
 	result := parseUnknown(inputSlice, prefix)
 	expected := map[string]string{
@@ -80,14 +96,16 @@ func TestParseUnknown_setInt64(t *testing.T) {
 	if reflect.DeepEqual(result, expected) == false {
 		t.Errorf("expect %v, got %v", expected, result)
 	}
+}
 
+func TestParseUnknown_setMap(t *testing.T) {
 	inputMap := map[string]int{
 		"test1": 1,
 		"test2": 2,
 		"test3": 3,
 	}
-	result = parseUnknown(inputMap, prefix)
-	expected = map[string]string{
+	result := parseUnknown(inputMap, prefix)
+	expected := map[string]string{
 		prefix + "." + "test1": "1",
 		prefix + "." + "test2": "2",
 		prefix + "." + "test3": "3",
@@ -95,7 +113,9 @@ func TestParseUnknown_setInt64(t *testing.T) {
 	if reflect.DeepEqual(result, expected) == false {
 		t.Errorf("expect %v, got %v", expected, result)
 	}
+}
 
+func TestParseUnknown_setStruct(t *testing.T) {
 	type testStruct struct {
 		Data      string
 		OtherData int
@@ -104,8 +124,8 @@ func TestParseUnknown_setInt64(t *testing.T) {
 		Data:      "test",
 		OtherData: 1,
 	}
-	result = parseUnknown(inputStruct, prefix)
-	expected = map[string]string{
+	result := parseUnknown(inputStruct, prefix)
+	expected := map[string]string{
 		prefix + "." + "Data":      "test",
 		prefix + "." + "OtherData": "1",
 	}
