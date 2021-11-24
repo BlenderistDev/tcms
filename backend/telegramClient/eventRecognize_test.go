@@ -95,6 +95,23 @@ func TestParseUnknown_setInt64(t *testing.T) {
 	if reflect.DeepEqual(result, expected) == false {
 		t.Errorf("expect %v, got %v", expected, result)
 	}
+
+	type testStruct struct {
+		Data      string
+		OtherData int
+	}
+	inputStruct := testStruct{
+		Data:      "test",
+		OtherData: 1,
+	}
+	result = parseUnknown(inputStruct, prefix)
+	expected = map[string]string{
+		prefix + "." + "Data":      "test",
+		prefix + "." + "OtherData": "1",
+	}
+	if reflect.DeepEqual(result, expected) == false {
+		t.Errorf("expect %v, got %v", expected, result)
+	}
 }
 
 func testParseUnknownSimple(t *testing.T, in interface{}, prefix string, parsed string) {
