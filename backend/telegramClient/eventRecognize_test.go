@@ -69,6 +69,17 @@ func TestParseUnknown_setInt64(t *testing.T) {
 
 	testParseUnknownSimple(t, true, prefix, "true")
 	testParseUnknownSimple(t, false, prefix, "false")
+
+	inputSlice := []int{11, 22, 33}
+	result := parseUnknown(inputSlice, prefix)
+	expected := map[string]string{
+		prefix + "." + "0": "11",
+		prefix + "." + "1": "22",
+		prefix + "." + "2": "33",
+	}
+	if reflect.DeepEqual(result, expected) == false {
+		t.Errorf("expect %v, got %v", expected, result)
+	}
 }
 
 func testParseUnknownSimple(t *testing.T, in interface{}, prefix string, parsed string) {
