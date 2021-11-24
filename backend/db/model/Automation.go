@@ -11,8 +11,14 @@ type Action struct {
 	Mapping map[string]Mapping `bson:"mapping"`
 }
 
+type Condition struct {
+	Name    string             `bson:"name"`
+	Mapping map[string]Mapping `bson:"mapping"`
+}
+
 type Automation struct {
-	Id       string   `bson:"_id"`
-	Triggers []string `bson:"triggers"`
-	Actions  []Action `bson:"actions"`
+	Id        string    `bson:"_id"`
+	Triggers  []string  `bson:"triggers"`
+	Condition Condition `bson:"condition"`
+	Actions   []Action  `bson:"actions"`
 }
