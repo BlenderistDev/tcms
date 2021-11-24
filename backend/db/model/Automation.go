@@ -17,8 +17,8 @@ type Condition struct {
 }
 
 type Automation struct {
-	Id        string    `bson:"_id"`
-	Triggers  []string  `bson:"triggers"`
-	Condition Condition `bson:"condition"`
-	Actions   []Action  `bson:"actions"`
+	Id        string     `bson:"_id"`
+	Triggers  []string   `bson:"triggers"`
+	Condition *Condition `bson:"condition"`
+	Actions   []Action   `bson:"actions"`
 }

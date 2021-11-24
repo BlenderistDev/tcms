@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	action2 "tcms/m/automation/action"
+	condition2 "tcms/m/automation/condition"
 	"tcms/m/automation/core"
 	"tcms/m/db"
 	"tcms/m/db/repository"
@@ -37,8 +38,16 @@ func (s *Service) Start() {
 				fmt.Println(err)
 			}
 		}
+
+		coreAutomation := core.Automation{Actions: actions}
+
+		if automation.Condition != nil {
+			condition, err := condition2.CreateCondition(automation.Condition)
+			dry.HandleError(err)
+			coreAutomation.Condition = condition
+		}
 		for _, trigger := range automation.Triggers {
-			s.list[trigger] = append(s.list[trigger], core.Automation{Actions: actions})
+			s.list[trigger] = append(s.list[trigger], coreAutomation)
 		}
 	}
 }
