@@ -97,3 +97,41 @@ func (mr *MockActionMockRecorder) Execute(trigger interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Execute", reflect.TypeOf((*MockAction)(nil).Execute), trigger)
 }
+
+// MockCondition is a mock of Condition interface.
+type MockCondition struct {
+	ctrl     *gomock.Controller
+	recorder *MockConditionMockRecorder
+}
+
+// MockConditionMockRecorder is the mock recorder for MockCondition.
+type MockConditionMockRecorder struct {
+	mock *MockCondition
+}
+
+// NewMockCondition creates a new mock instance.
+func NewMockCondition(ctrl *gomock.Controller) *MockCondition {
+	mock := &MockCondition{ctrl: ctrl}
+	mock.recorder = &MockConditionMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockCondition) EXPECT() *MockConditionMockRecorder {
+	return m.recorder
+}
+
+// Check mocks base method.
+func (m *MockCondition) Check(trigger Trigger) (bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Check", trigger)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Check indicates an expected call of Check.
+func (mr *MockConditionMockRecorder) Check(trigger interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Check", reflect.TypeOf((*MockCondition)(nil).Check), trigger)
+}
