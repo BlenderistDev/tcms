@@ -8,11 +8,11 @@ import (
 )
 
 func GetConnection(ctx context.Context) *mongo.Database {
-	const url = "mongodb://127.0.0.1:27017"
+	url, err := getMongoHost()
+	dry.HandleErrorPanic(err)
+
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(url))
-	if err != nil {
-		dry.HandleErrorPanic(err)
-	}
+	dry.HandleErrorPanic(err)
 	err = client.Database("tcms").CreateCollection(ctx, "automation")
 	if err != nil {
 		cmdErr, ok := err.(mongo.CommandError)
