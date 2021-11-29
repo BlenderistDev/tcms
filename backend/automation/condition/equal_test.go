@@ -7,7 +7,7 @@ import (
 )
 
 func TestCreateSendMessageAction(t *testing.T) {
-	conditionModel := model.Condition{
+	conditionModel := &model.Condition{
 		Name:    "name",
 		Mapping: nil,
 	}

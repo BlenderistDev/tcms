@@ -8,7 +8,7 @@ import (
 )
 
 type DataMapper struct {
-	Condition model.Condition
+	Condition *model.Condition
 }
 
 func (a DataMapper) getFromMapInt(trigger core.Trigger, key string) (int, error) {

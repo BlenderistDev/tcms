@@ -21,7 +21,7 @@ func TestGetFromMap_simpleMapping(t *testing.T) {
 			Value:  value,
 		},
 	}
-	condition := model.Condition{
+	condition := &model.Condition{
 		Name:    "test",
 		Mapping: mapping,
 	}
@@ -55,7 +55,7 @@ func TestGetFromMap_notSimpleMapping(t *testing.T) {
 		},
 	}
 
-	condition := model.Condition{
+	condition := &model.Condition{
 		Name:    "test",
 		Mapping: mapping,
 	}
@@ -97,7 +97,7 @@ func TestGetFromInt_simpleMapping(t *testing.T) {
 			Value:  value,
 		},
 	}
-	condition := model.Condition{
+	condition := &model.Condition{
 		Name:    "test",
 		Mapping: mapping,
 	}
@@ -132,7 +132,7 @@ func TestGetFromMapInt_notSimpleMapping(t *testing.T) {
 		},
 	}
 
-	condition := model.Condition{
+	condition := &model.Condition{
 		Name:    "test",
 		Mapping: mapping,
 	}
