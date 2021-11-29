@@ -11,7 +11,7 @@ func TestCreateSendMessageAction(t *testing.T) {
 		Name:    "name",
 		Mapping: nil,
 	}
-	createdAction := CreateSendMessageAction(actionModel)
+	createdAction := createSendMessageAction(actionModel)
 
 	switch action := createdAction.(type) {
 	case sendMessageAction:

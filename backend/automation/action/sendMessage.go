@@ -12,7 +12,7 @@ type sendMessageAction struct {
 	DataMapper
 }
 
-func CreateSendMessageAction(action model.Action) core.Action {
+func createSendMessageAction(action model.Action) core.Action {
 	return sendMessageAction{
 		telegram: telegramClient.NewTelegram(),
 		DataMapper: DataMapper{
