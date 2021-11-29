@@ -11,7 +11,7 @@ func TestCreateSendMessageAction(t *testing.T) {
 		Name:    "name",
 		Mapping: nil,
 	}
-	createdCondition := CreateEqualCondition(conditionModel)
+	createdCondition := createEqualCondition(conditionModel)
 
 	switch condition := createdCondition.(type) {
 	case equalCondition:
