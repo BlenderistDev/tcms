@@ -4,6 +4,7 @@ import (
 	"github.com/golang/mock/gomock"
 	"tcms/m/internal/automation/core"
 	"tcms/m/internal/db/model"
+	"tcms/m/internal/dry"
 	"testing"
 )
 
@@ -30,9 +31,7 @@ func TestGetFromMap_simpleMapping(t *testing.T) {
 	datamapper := DataMapper{Condition: condition}
 
 	mapValue, err := datamapper.getFromMap(trigger, "name")
-	if err != nil {
-		t.Error(err)
-	}
+	dry.TestHandleError(t, err)
 
 	if mapValue != value {
 		t.Errorf("expected: %s, actual: %s", value, mapValue)
@@ -73,9 +72,7 @@ func TestGetFromMap_notSimpleMapping(t *testing.T) {
 	datamapper := DataMapper{Condition: condition}
 
 	mapValue, err := datamapper.getFromMap(trigger, name)
-	if err != nil {
-		t.Error(err)
-	}
+	dry.TestHandleError(t, err)
 
 	if mapValue != resultValue {
 		t.Errorf("expected: %s, actual: %s", resultValue, mapValue)
@@ -106,9 +103,7 @@ func TestGetFromInt_simpleMapping(t *testing.T) {
 	datamapper := DataMapper{Condition: condition}
 
 	mapValue, err := datamapper.getFromMapInt(trigger, "name")
-	if err != nil {
-		t.Error(err)
-	}
+	dry.TestHandleError(t, err)
 
 	if mapValue != valueInt {
 		t.Errorf("expected: %d, actual: %d", valueInt, mapValue)
@@ -150,9 +145,7 @@ func TestGetFromMapInt_notSimpleMapping(t *testing.T) {
 	datamapper := DataMapper{Condition: condition}
 
 	mapValue, err := datamapper.getFromMapInt(trigger, name)
-	if err != nil {
-		t.Error(err)
-	}
+	dry.TestHandleError(t, err)
 
 	if mapValue != resultValueInt {
 		t.Errorf("expected: %d, actual: %d", resultValueInt, mapValue)
