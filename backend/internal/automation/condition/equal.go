@@ -1,8 +1,8 @@
 package condition
 
 import (
-	"tcms/m/automation/core"
-	"tcms/m/db/model"
+	"tcms/m/internal/automation/core"
+	"tcms/m/internal/db/model"
 )
 
 type equalCondition struct {

@@ -2,9 +2,9 @@ package action
 
 import (
 	"fmt"
-	"tcms/m/automation/core"
-	"tcms/m/db/model"
-	"tcms/m/telegramClient"
+	"tcms/m/internal/automation/core"
+	"tcms/m/internal/db/model"
+	"tcms/m/internal/telegramClient"
 )
 
 type sendMessageAction struct {

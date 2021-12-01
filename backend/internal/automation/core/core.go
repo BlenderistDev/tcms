@@ -2,7 +2,7 @@ package core
 
 import (
 	"fmt"
-	"tcms/m/dry"
+	"tcms/m/internal/dry"
 )
 
 type Trigger interface {

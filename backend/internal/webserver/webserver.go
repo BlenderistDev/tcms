@@ -8,9 +8,9 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/xelaj/mtproto/telegram"
 	"net/http"
-	"tcms/m/dry"
-	"tcms/m/redis"
-	"tcms/m/telegramClient"
+	"tcms/m/internal/dry"
+	"tcms/m/internal/redis"
+	"tcms/m/internal/telegramClient"
 )
 
 type loginData struct {

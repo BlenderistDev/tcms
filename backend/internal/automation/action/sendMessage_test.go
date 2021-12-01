@@ -2,7 +2,7 @@ package action
 
 import (
 	"reflect"
-	"tcms/m/db/model"
+	"tcms/m/internal/db/model"
 	"testing"
 )
 

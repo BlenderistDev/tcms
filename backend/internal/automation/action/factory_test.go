@@ -1,8 +1,8 @@
 package action
 
 import (
-	"tcms/m/db/model"
-	"tcms/m/dry"
+	"tcms/m/internal/db/model"
+	"tcms/m/internal/dry"
 	"testing"
 )
 

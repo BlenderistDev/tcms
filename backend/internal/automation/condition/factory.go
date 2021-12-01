@@ -2,8 +2,8 @@ package condition
 
 import (
 	"fmt"
-	"tcms/m/automation/core"
-	"tcms/m/db/model"
+	"tcms/m/internal/automation/core"
+	"tcms/m/internal/db/model"
 )
 
 func CreateCondition(conditionData *model.Condition) (core.Condition, error) {

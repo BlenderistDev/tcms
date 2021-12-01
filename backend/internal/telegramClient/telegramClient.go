@@ -7,8 +7,8 @@ import (
 	"math/rand"
 	"os"
 	"sync"
-	"tcms/m/dry"
-	"tcms/m/redis"
+	"tcms/m/internal/dry"
+	"tcms/m/internal/redis"
 )
 
 type TelegramClient interface {

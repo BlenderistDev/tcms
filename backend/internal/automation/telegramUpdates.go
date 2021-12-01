@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	redis2 "github.com/go-redis/redis/v8"
-	"tcms/m/dry"
-	"tcms/m/redis"
+	"tcms/m/internal/dry"
+	"tcms/m/internal/redis"
 )
 
 type TelegramUpdateTrigger struct {

@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/go-redis/redis/v8"
-	"tcms/m/dry"
+	"tcms/m/internal/dry"
 )
 
 type Client interface {

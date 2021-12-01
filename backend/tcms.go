@@ -1,12 +1,11 @@
 package main
 
 import (
-	"tcms/m/automation"
-	"tcms/m/dry"
-	"tcms/m/telegramClient"
-	"tcms/m/webserver"
-
 	"github.com/joho/godotenv"
+	"tcms/m/internal/automation"
+	"tcms/m/internal/dry"
+	"tcms/m/internal/telegramClient"
+	"tcms/m/internal/webserver"
 )
 
 func main() {

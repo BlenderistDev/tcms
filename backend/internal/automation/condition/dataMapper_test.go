@@ -2,8 +2,8 @@ package condition
 
 import (
 	"github.com/golang/mock/gomock"
-	"tcms/m/automation/core"
-	"tcms/m/db/model"
+	"tcms/m/internal/automation/core"
+	"tcms/m/internal/db/model"
 	"testing"
 )
 

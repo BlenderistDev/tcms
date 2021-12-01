@@ -4,7 +4,7 @@ import (
 	"context"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"tcms/m/dry"
+	"tcms/m/internal/dry"
 )
 
 func GetConnection(ctx context.Context) *mongo.Database {

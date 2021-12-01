@@ -3,8 +3,8 @@ package condition
 import (
 	"fmt"
 	"strconv"
-	"tcms/m/automation/core"
-	"tcms/m/db/model"
+	"tcms/m/internal/automation/core"
+	"tcms/m/internal/db/model"
 )
 
 type DataMapper struct {

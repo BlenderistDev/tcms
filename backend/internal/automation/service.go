@@ -3,12 +3,12 @@ package automation
 import (
 	"context"
 	"fmt"
-	action2 "tcms/m/automation/action"
-	condition2 "tcms/m/automation/condition"
-	"tcms/m/automation/core"
-	"tcms/m/db"
-	"tcms/m/db/repository"
-	"tcms/m/dry"
+	action2 "tcms/m/internal/automation/action"
+	condition2 "tcms/m/internal/automation/condition"
+	"tcms/m/internal/automation/core"
+	"tcms/m/internal/db"
+	"tcms/m/internal/db/repository"
+	"tcms/m/internal/dry"
 )
 
 type Service struct {

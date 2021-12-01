@@ -3,7 +3,7 @@ package webserver
 import (
 	"fmt"
 	"os"
-	"tcms/m/dry"
+	"tcms/m/internal/dry"
 )
 
 func getApiHost() string {
