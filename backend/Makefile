@@ -7,3 +7,6 @@ test:
 
 format:
 	@go fmt ./...
+
+run:
+	@go run cmd/tcms/main.go
