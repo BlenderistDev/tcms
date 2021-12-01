@@ -4,3 +4,4 @@ tcms.code-workspace
 backend/tg_public_keys.pem
 .idea
 .vscode
+backend/bin

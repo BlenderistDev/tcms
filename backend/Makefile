@@ -10,3 +10,8 @@ format:
 
 run:
 	@go run cmd/tcms/main.go
+
+build:
+	@echo "Building tcms"
+	@mkdir -p ./bin
+	@go build -o bin/tcms ./cmd/tcms
