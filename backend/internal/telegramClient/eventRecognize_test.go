@@ -1,7 +1,7 @@
 package telegramClient
 
 import (
-	"reflect"
+	"tcms/m/internal/dry"
 	"testing"
 )
 
@@ -93,9 +93,7 @@ func TestParseUnknown_setSlice(t *testing.T) {
 		prefix + "." + "1": "22",
 		prefix + "." + "2": "33",
 	}
-	if reflect.DeepEqual(result, expected) == false {
-		t.Errorf("expect %v, got %v", expected, result)
-	}
+	dry.TestCheckEqual(t, expected, result)
 }
 
 func TestParseUnknown_setMap(t *testing.T) {
@@ -110,9 +108,7 @@ func TestParseUnknown_setMap(t *testing.T) {
 		prefix + "." + "test2": "2",
 		prefix + "." + "test3": "3",
 	}
-	if reflect.DeepEqual(result, expected) == false {
-		t.Errorf("expect %v, got %v", expected, result)
-	}
+	dry.TestCheckEqual(t, expected, result)
 }
 
 func TestParseUnknown_setStruct(t *testing.T) {
@@ -129,9 +125,7 @@ func TestParseUnknown_setStruct(t *testing.T) {
 		prefix + "." + "Data":      "test",
 		prefix + "." + "OtherData": "1",
 	}
-	if reflect.DeepEqual(result, expected) == false {
-		t.Errorf("expect %v, got %v", expected, result)
-	}
+	dry.TestCheckEqual(t, expected, result)
 }
 
 func testParseUnknownSimple(t *testing.T, in interface{}, prefix string, parsed string) {
@@ -139,7 +133,5 @@ func testParseUnknownSimple(t *testing.T, in interface{}, prefix string, parsed 
 	expected := map[string]string{
 		prefix: parsed,
 	}
-	if reflect.DeepEqual(result, expected) == false {
-		t.Errorf("expect %v, got %v", expected, result)
-	}
+	dry.TestCheckEqual(t, expected, result)
 }

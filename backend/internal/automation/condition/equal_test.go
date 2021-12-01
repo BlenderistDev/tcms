@@ -1,8 +1,8 @@
 package condition
 
 import (
-	"reflect"
 	"tcms/m/internal/db/model"
+	"tcms/m/internal/dry"
 	"testing"
 )
 
@@ -15,9 +15,7 @@ func TestCreateSendMessageAction(t *testing.T) {
 
 	switch condition := createdCondition.(type) {
 	case equalCondition:
-		if !reflect.DeepEqual(condition.DataMapper.Condition, conditionModel) {
-			t.Errorf("expected %v, got %v", conditionModel, condition.DataMapper.Condition)
-		}
+		dry.TestCheckEqual(t, conditionModel, condition.DataMapper.Condition)
 	default:
 		t.Errorf("condition type is not sendMessageAction")
 	}
