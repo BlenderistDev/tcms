@@ -79,7 +79,7 @@ func TestGetFromMap_notSimpleMapping(t *testing.T) {
 	}
 }
 
-func TestGetFromInt_simpleMapping(t *testing.T) {
+func TestGetFromInt32_simpleMapping(t *testing.T) {
 	const name = "name"
 	const value = "123"
 	const valueInt = 123
@@ -102,7 +102,7 @@ func TestGetFromInt_simpleMapping(t *testing.T) {
 
 	datamapper := DataMapper{Action: action}
 
-	mapValue, err := datamapper.getFromMapInt(trigger, "name")
+	mapValue, err := datamapper.getFromMapInt32(trigger, "name")
 	dry.TestHandleError(t, err)
 
 	if mapValue != valueInt {
@@ -110,7 +110,7 @@ func TestGetFromInt_simpleMapping(t *testing.T) {
 	}
 }
 
-func TestGetFromMapInt_notSimpleMapping(t *testing.T) {
+func TestGetFromMapInt32_notSimpleMapping(t *testing.T) {
 	const value = "value"
 	const name = "name"
 	const resultValue = "123"
@@ -144,7 +144,80 @@ func TestGetFromMapInt_notSimpleMapping(t *testing.T) {
 
 	datamapper := DataMapper{Action: action}
 
-	mapValue, err := datamapper.getFromMapInt(trigger, name)
+	mapValue, err := datamapper.getFromMapInt32(trigger, name)
+	dry.TestHandleError(t, err)
+
+	if mapValue != resultValueInt {
+		t.Errorf("expected: %d, actual: %d", resultValueInt, mapValue)
+	}
+}
+
+func TestGetFromInt64_simpleMapping(t *testing.T) {
+	const name = "name"
+	const value = "123"
+	const valueInt = 123
+
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mapping := map[string]model.Mapping{
+		name: {
+			Simple: true,
+			Name:   name,
+			Value:  value,
+		},
+	}
+	action := model.Action{
+		Name:    "test",
+		Mapping: mapping,
+	}
+	trigger := core.NewMockTrigger(ctrl)
+
+	datamapper := DataMapper{Action: action}
+
+	mapValue, err := datamapper.getFromMapInt64(trigger, "name")
+	dry.TestHandleError(t, err)
+
+	if mapValue != valueInt {
+		t.Errorf("expected: %d, actual: %d", valueInt, mapValue)
+	}
+}
+
+func TestGetFromMapInt64_notSimpleMapping(t *testing.T) {
+	const value = "value"
+	const name = "name"
+	const resultValue = "123"
+	const resultValueInt = 123
+
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mapping := map[string]model.Mapping{
+		name: {
+			Simple: false,
+			Name:   name,
+			Value:  value,
+		},
+	}
+
+	action := model.Action{
+		Name:    "test",
+		Mapping: mapping,
+	}
+
+	triggerData := map[string]string{
+		"value": resultValue,
+	}
+
+	trigger := core.NewMockTrigger(ctrl)
+	trigger.
+		EXPECT().
+		GetData().
+		Return(triggerData)
+
+	datamapper := DataMapper{Action: action}
+
+	mapValue, err := datamapper.getFromMapInt64(trigger, name)
 	dry.TestHandleError(t, err)
 
 	if mapValue != resultValueInt {

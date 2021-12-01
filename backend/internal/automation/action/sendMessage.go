@@ -22,12 +22,12 @@ func createSendMessageAction(action model.Action) core.Action {
 }
 
 func (a sendMessageAction) Execute(trigger core.Trigger) error {
-	peer, err := a.getFromMapInt(trigger, "peer")
+	peer, err := a.getFromMapInt32(trigger, "peer")
 	if err != nil {
 		return err
 	}
 
-	accessHash, err := a.getFromMapInt(trigger, "accessHash")
+	accessHash, err := a.getFromMapInt64(trigger, "accessHash")
 	if err != nil {
 		return err
 	}
@@ -37,7 +37,7 @@ func (a sendMessageAction) Execute(trigger core.Trigger) error {
 		return err
 	}
 
-	err = a.telegram.SendMessage(message, int32(peer), int64(accessHash))
+	err = a.telegram.SendMessage(message, peer, accessHash)
 	if err != nil {
 		return fmt.Errorf("send message error")
 	}
