@@ -225,7 +225,7 @@ func TestGetFromMapInt64_notSimpleMapping(t *testing.T) {
 	}
 }
 
-func TestGetFromInt64_ValueNotExist(t *testing.T) {
+func TestGetFromInt64_valueNotExist(t *testing.T) {
 	const key = "name"
 
 	ctrl := gomock.NewController(t)
@@ -268,4 +268,58 @@ func TestGetFromInt64_valueIncorrect(t *testing.T) {
 
 	_, err := datamapper.getFromMapInt64(trigger, key)
 	dry.TestCheckEqual(t, err.Error(), "strconv.ParseInt: parsing \""+value+"\": invalid syntax")
+}
+
+func TestGetFromMap_valueNotExist(t *testing.T) {
+	const key = "name"
+
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mapping := map[string]model.Mapping{}
+	action := model.Action{
+		Name:    "test",
+		Mapping: mapping,
+	}
+	trigger := core.NewMockTrigger(ctrl)
+
+	datamapper := DataMapper{Action: action}
+
+	_, err := datamapper.getFromMap(trigger, key)
+
+	dry.TestCheckEqual(t, err.Error(), "key "+key+" not found")
+}
+
+func TestGetFromMap_notSimpleMapping_valueNotExist(t *testing.T) {
+	const key = "name"
+
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mapping := map[string]model.Mapping{
+		key: {
+			Simple: false,
+			Name:   key,
+			Value:  "",
+		},
+	}
+
+	action := model.Action{
+		Name:    "test",
+		Mapping: mapping,
+	}
+
+	triggerData := map[string]string{}
+
+	trigger := core.NewMockTrigger(ctrl)
+	trigger.
+		EXPECT().
+		GetData().
+		Return(triggerData)
+
+	datamapper := DataMapper{Action: action}
+
+	_, err := datamapper.getFromMap(trigger, key)
+
+	dry.TestCheckEqual(t, err.Error(), "key "+key+" not found in trigger data")
 }
