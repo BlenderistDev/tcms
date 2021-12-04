@@ -243,3 +243,29 @@ func TestGetFromInt64_ValueNotExist(t *testing.T) {
 	_, err := datamapper.getFromMapInt64(trigger, key)
 	dry.TestCheckEqual(t, err.Error(), "key "+key+" not found")
 }
+
+func TestGetFromInt64_valueIncorrect(t *testing.T) {
+	const key = "key"
+	const value = "test"
+
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mapping := map[string]model.Mapping{
+		key: {
+			Simple: true,
+			Name:   key,
+			Value:  value,
+		},
+	}
+	action := model.Action{
+		Name:    "test",
+		Mapping: mapping,
+	}
+	trigger := core.NewMockTrigger(ctrl)
+
+	datamapper := DataMapper{Action: action}
+
+	_, err := datamapper.getFromMapInt64(trigger, key)
+	dry.TestCheckEqual(t, err.Error(), "strconv.ParseInt: parsing \""+value+"\": invalid syntax")
+}
