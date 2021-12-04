@@ -224,3 +224,22 @@ func TestGetFromMapInt64_notSimpleMapping(t *testing.T) {
 		t.Errorf("expected: %d, actual: %d", resultValueInt, mapValue)
 	}
 }
+
+func TestGetFromInt64_ValueNotExist(t *testing.T) {
+	const key = "name"
+
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mapping := map[string]model.Mapping{}
+	action := model.Action{
+		Name:    "test",
+		Mapping: mapping,
+	}
+	trigger := core.NewMockTrigger(ctrl)
+
+	datamapper := DataMapper{Action: action}
+
+	_, err := datamapper.getFromMapInt64(trigger, key)
+	dry.TestCheckEqual(t, err.Error(), "key "+key+" not found")
+}
