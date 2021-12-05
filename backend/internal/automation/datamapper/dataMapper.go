@@ -1,4 +1,4 @@
-package action
+package datamapper
 
 import (
 	"fmt"
@@ -11,8 +11,8 @@ type DataMapper struct {
 	Mapping map[string]model.Mapping
 }
 
-func (a DataMapper) getFromMapInt64(trigger core.Trigger, key string) (int64, error) {
-	s, err := a.getFromMap(trigger, key)
+func (a DataMapper) GetFromMapInt64(trigger core.Trigger, key string) (int64, error) {
+	s, err := a.GetFromMap(trigger, key)
 	if err != nil {
 		return 0, err
 	}
@@ -25,12 +25,12 @@ func (a DataMapper) getFromMapInt64(trigger core.Trigger, key string) (int64, er
 	return i, nil
 }
 
-func (a DataMapper) getFromMapInt32(trigger core.Trigger, key string) (int32, error) {
-	i, err := a.getFromMapInt64(trigger, key)
+func (a DataMapper) GetFromMapInt32(trigger core.Trigger, key string) (int32, error) {
+	i, err := a.GetFromMapInt64(trigger, key)
 	return int32(i), err
 }
 
-func (a DataMapper) getFromMap(trigger core.Trigger, key string) (string, error) {
+func (a DataMapper) GetFromMap(trigger core.Trigger, key string) (string, error) {
 	mappingData, ok := a.Mapping[key]
 	if ok {
 		if mappingData.Simple {

@@ -1,4 +1,4 @@
-package action
+package datamapper
 
 import (
 	"github.com/golang/mock/gomock"
@@ -26,7 +26,7 @@ func TestGetFromMap_simpleMapping(t *testing.T) {
 
 	datamapper := DataMapper{Mapping: mapping}
 
-	mapValue, err := datamapper.getFromMap(trigger, "name")
+	mapValue, err := datamapper.GetFromMap(trigger, "name")
 	dry.TestHandleError(t, err)
 
 	if mapValue != value {
@@ -62,7 +62,7 @@ func TestGetFromMap_notSimpleMapping(t *testing.T) {
 
 	datamapper := DataMapper{Mapping: mapping}
 
-	mapValue, err := datamapper.getFromMap(trigger, name)
+	mapValue, err := datamapper.GetFromMap(trigger, name)
 	dry.TestHandleError(t, err)
 
 	if mapValue != resultValue {
@@ -90,7 +90,7 @@ func TestGetFromInt32_simpleMapping(t *testing.T) {
 
 	datamapper := DataMapper{Mapping: mapping}
 
-	mapValue, err := datamapper.getFromMapInt32(trigger, "name")
+	mapValue, err := datamapper.GetFromMapInt32(trigger, "name")
 	dry.TestHandleError(t, err)
 
 	if mapValue != valueInt {
@@ -127,7 +127,7 @@ func TestGetFromMapInt32_notSimpleMapping(t *testing.T) {
 
 	datamapper := DataMapper{Mapping: mapping}
 
-	mapValue, err := datamapper.getFromMapInt32(trigger, name)
+	mapValue, err := datamapper.GetFromMapInt32(trigger, name)
 	dry.TestHandleError(t, err)
 
 	if mapValue != resultValueInt {
@@ -155,7 +155,7 @@ func TestGetFromInt64_simpleMapping(t *testing.T) {
 
 	datamapper := DataMapper{Mapping: mapping}
 
-	mapValue, err := datamapper.getFromMapInt64(trigger, "name")
+	mapValue, err := datamapper.GetFromMapInt64(trigger, "name")
 	dry.TestHandleError(t, err)
 
 	if mapValue != valueInt {
@@ -192,7 +192,7 @@ func TestGetFromMapInt64_notSimpleMapping(t *testing.T) {
 
 	datamapper := DataMapper{Mapping: mapping}
 
-	mapValue, err := datamapper.getFromMapInt64(trigger, name)
+	mapValue, err := datamapper.GetFromMapInt64(trigger, name)
 	dry.TestHandleError(t, err)
 
 	if mapValue != resultValueInt {
@@ -212,7 +212,7 @@ func TestGetFromInt64_valueNotExist(t *testing.T) {
 
 	datamapper := DataMapper{Mapping: mapping}
 
-	_, err := datamapper.getFromMapInt64(trigger, key)
+	_, err := datamapper.GetFromMapInt64(trigger, key)
 	dry.TestCheckEqual(t, err.Error(), "key "+key+" not found")
 }
 
@@ -235,7 +235,7 @@ func TestGetFromInt64_valueIncorrect(t *testing.T) {
 
 	datamapper := DataMapper{Mapping: mapping}
 
-	_, err := datamapper.getFromMapInt64(trigger, key)
+	_, err := datamapper.GetFromMapInt64(trigger, key)
 	dry.TestCheckEqual(t, err.Error(), "strconv.ParseInt: parsing \""+value+"\": invalid syntax")
 }
 
@@ -251,7 +251,7 @@ func TestGetFromMap_valueNotExist(t *testing.T) {
 
 	datamapper := DataMapper{Mapping: mapping}
 
-	_, err := datamapper.getFromMap(trigger, key)
+	_, err := datamapper.GetFromMap(trigger, key)
 
 	dry.TestCheckEqual(t, err.Error(), "key "+key+" not found")
 }
@@ -280,7 +280,7 @@ func TestGetFromMap_notSimpleMapping_valueNotExist(t *testing.T) {
 
 	datamapper := DataMapper{Mapping: mapping}
 
-	_, err := datamapper.getFromMap(trigger, key)
+	_, err := datamapper.GetFromMap(trigger, key)
 
 	dry.TestCheckEqual(t, err.Error(), "key "+key+" not found in trigger data")
 }
