@@ -25,3 +25,7 @@ func TestCreateSendMessageAction(t *testing.T) {
 		t.Errorf("action type is not sendMessageAction")
 	}
 }
+
+func TestSendMessageAction_Execute(t *testing.T) {
+
+}
