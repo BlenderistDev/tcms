@@ -149,3 +149,38 @@ func TestSendMessageAction_Execute_accessHashError(t *testing.T) {
 	err := sendMessageAction.Execute(trigger)
 	dry.TestCheckEqual(t, "key accessHash not found", err.Error())
 }
+
+func TestSendMessageAction_Execute_messageError(t *testing.T) {
+	const (
+		accessHashKey   = "accessHash"
+		accessHashValue = "456456"
+		peerKey         = "peer"
+		peerValue       = "123123"
+	)
+
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	telegramClient := telegramClient2.NewMockTelegramClient(ctrl)
+
+	actionModel := model.Action{
+		Name: "name",
+		Mapping: map[string]model.Mapping{
+			peerKey: {
+				Simple: true,
+				Name:   peerKey,
+				Value:  peerValue,
+			},
+			accessHashKey: {
+				Simple: true,
+				Name:   accessHashKey,
+				Value:  accessHashValue,
+			},
+		},
+	}
+
+	trigger := core.NewMockTrigger(ctrl)
+	sendMessageAction := createSendMessageAction(actionModel, telegramClient)
+	err := sendMessageAction.Execute(trigger)
+	dry.TestCheckEqual(t, "key message not found", err.Error())
+}
