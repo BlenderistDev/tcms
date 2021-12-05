@@ -13,9 +13,9 @@ type sendMessageAction struct {
 	datamapper.DataMapper
 }
 
-func createSendMessageAction(action model.Action) core.Action {
+func createSendMessageAction(action model.Action, client telegramClient.TelegramClient) core.Action {
 	return sendMessageAction{
-		telegram: telegramClient.NewTelegram(),
+		telegram: client,
 		DataMapper: datamapper.DataMapper{
 			Mapping: action.Mapping,
 		},

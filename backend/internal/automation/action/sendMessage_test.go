@@ -1,8 +1,10 @@
 package action
 
 import (
+	"github.com/golang/mock/gomock"
 	"tcms/m/internal/db/model"
 	"tcms/m/internal/dry"
+	telegramClient2 "tcms/m/internal/telegramClient/mock"
 	"testing"
 )
 
@@ -16,7 +18,12 @@ func TestCreateSendMessageAction(t *testing.T) {
 				Value:  "value",
 			}},
 	}
-	createdAction := createSendMessageAction(actionModel)
+
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	telegramClient := telegramClient2.NewMockTelegramClient(ctrl)
+
+	createdAction := createSendMessageAction(actionModel, telegramClient)
 
 	switch action := createdAction.(type) {
 	case sendMessageAction:
