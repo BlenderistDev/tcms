@@ -8,14 +8,19 @@ import (
 
 func TestCreateSendMessageAction(t *testing.T) {
 	conditionModel := &model.Condition{
-		Name:    "name",
-		Mapping: nil,
+		Name: "name",
+		Mapping: map[string]model.Mapping{
+			"test": {
+				Simple: true,
+				Name:   "name",
+				Value:  "value",
+			}},
 	}
 	createdCondition := createEqualCondition(conditionModel)
 
 	switch condition := createdCondition.(type) {
 	case equalCondition:
-		dry.TestCheckEqual(t, conditionModel, condition.DataMapper.Condition)
+		dry.TestCheckEqual(t, conditionModel.Mapping, condition.DataMapper.Mapping)
 	default:
 		t.Errorf("condition type is not sendMessageAction")
 	}
