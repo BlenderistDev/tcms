@@ -79,3 +79,38 @@ func TestSendMessageAction_Execute(t *testing.T) {
 	err := sendMessageAction.Execute(trigger)
 	dry.TestHandleError(t, err)
 }
+
+func TestSendMessageAction_Execute_peerError(t *testing.T) {
+	const (
+		messageKey      = "message"
+		messageValue    = "test message"
+		accessHashKey   = "accessHash"
+		accessHashValue = "456456"
+	)
+
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	telegramClient := telegramClient2.NewMockTelegramClient(ctrl)
+
+	actionModel := model.Action{
+		Name: "name",
+		Mapping: map[string]model.Mapping{
+			accessHashKey: {
+				Simple: true,
+				Name:   accessHashKey,
+				Value:  accessHashValue,
+			},
+			messageKey: {
+				Simple: true,
+				Name:   messageKey,
+				Value:  messageValue,
+			},
+		},
+	}
+
+	trigger := core.NewMockTrigger(ctrl)
+	sendMessageAction := createSendMessageAction(actionModel, telegramClient)
+	err := sendMessageAction.Execute(trigger)
+	dry.TestCheckEqual(t, "key peer not found", err.Error())
+}
