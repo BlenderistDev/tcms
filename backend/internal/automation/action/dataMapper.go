@@ -8,7 +8,7 @@ import (
 )
 
 type DataMapper struct {
-	Action model.Action
+	Mapping map[string]model.Mapping
 }
 
 func (a DataMapper) getFromMapInt64(trigger core.Trigger, key string) (int64, error) {
@@ -31,7 +31,7 @@ func (a DataMapper) getFromMapInt32(trigger core.Trigger, key string) (int32, er
 }
 
 func (a DataMapper) getFromMap(trigger core.Trigger, key string) (string, error) {
-	mappingData, ok := a.Action.Mapping[key]
+	mappingData, ok := a.Mapping[key]
 	if ok {
 		if mappingData.Simple {
 			return mappingData.Value, nil

@@ -16,7 +16,7 @@ func createSendMessageAction(action model.Action) core.Action {
 	return sendMessageAction{
 		telegram: telegramClient.NewTelegram(),
 		DataMapper: DataMapper{
-			Action: action,
+			Mapping: action.Mapping,
 		},
 	}
 }
