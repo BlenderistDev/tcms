@@ -22,13 +22,9 @@ func TestGetFromMap_simpleMapping(t *testing.T) {
 			Value:  value,
 		},
 	}
-	action := model.Action{
-		Name:    "test",
-		Mapping: mapping,
-	}
 	trigger := core.NewMockTrigger(ctrl)
 
-	datamapper := DataMapper{Action: action}
+	datamapper := DataMapper{Mapping: mapping}
 
 	mapValue, err := datamapper.getFromMap(trigger, "name")
 	dry.TestHandleError(t, err)
@@ -54,11 +50,6 @@ func TestGetFromMap_notSimpleMapping(t *testing.T) {
 		},
 	}
 
-	action := model.Action{
-		Name:    "test",
-		Mapping: mapping,
-	}
-
 	triggerData := map[string]string{
 		"value": resultValue,
 	}
@@ -69,7 +60,7 @@ func TestGetFromMap_notSimpleMapping(t *testing.T) {
 		GetData().
 		Return(triggerData)
 
-	datamapper := DataMapper{Action: action}
+	datamapper := DataMapper{Mapping: mapping}
 
 	mapValue, err := datamapper.getFromMap(trigger, name)
 	dry.TestHandleError(t, err)
@@ -94,13 +85,10 @@ func TestGetFromInt32_simpleMapping(t *testing.T) {
 			Value:  value,
 		},
 	}
-	action := model.Action{
-		Name:    "test",
-		Mapping: mapping,
-	}
+
 	trigger := core.NewMockTrigger(ctrl)
 
-	datamapper := DataMapper{Action: action}
+	datamapper := DataMapper{Mapping: mapping}
 
 	mapValue, err := datamapper.getFromMapInt32(trigger, "name")
 	dry.TestHandleError(t, err)
@@ -127,11 +115,6 @@ func TestGetFromMapInt32_notSimpleMapping(t *testing.T) {
 		},
 	}
 
-	action := model.Action{
-		Name:    "test",
-		Mapping: mapping,
-	}
-
 	triggerData := map[string]string{
 		"value": resultValue,
 	}
@@ -142,7 +125,7 @@ func TestGetFromMapInt32_notSimpleMapping(t *testing.T) {
 		GetData().
 		Return(triggerData)
 
-	datamapper := DataMapper{Action: action}
+	datamapper := DataMapper{Mapping: mapping}
 
 	mapValue, err := datamapper.getFromMapInt32(trigger, name)
 	dry.TestHandleError(t, err)
@@ -167,13 +150,10 @@ func TestGetFromInt64_simpleMapping(t *testing.T) {
 			Value:  value,
 		},
 	}
-	action := model.Action{
-		Name:    "test",
-		Mapping: mapping,
-	}
+
 	trigger := core.NewMockTrigger(ctrl)
 
-	datamapper := DataMapper{Action: action}
+	datamapper := DataMapper{Mapping: mapping}
 
 	mapValue, err := datamapper.getFromMapInt64(trigger, "name")
 	dry.TestHandleError(t, err)
@@ -200,11 +180,6 @@ func TestGetFromMapInt64_notSimpleMapping(t *testing.T) {
 		},
 	}
 
-	action := model.Action{
-		Name:    "test",
-		Mapping: mapping,
-	}
-
 	triggerData := map[string]string{
 		"value": resultValue,
 	}
@@ -215,7 +190,7 @@ func TestGetFromMapInt64_notSimpleMapping(t *testing.T) {
 		GetData().
 		Return(triggerData)
 
-	datamapper := DataMapper{Action: action}
+	datamapper := DataMapper{Mapping: mapping}
 
 	mapValue, err := datamapper.getFromMapInt64(trigger, name)
 	dry.TestHandleError(t, err)
@@ -232,13 +207,10 @@ func TestGetFromInt64_valueNotExist(t *testing.T) {
 	defer ctrl.Finish()
 
 	mapping := map[string]model.Mapping{}
-	action := model.Action{
-		Name:    "test",
-		Mapping: mapping,
-	}
+
 	trigger := core.NewMockTrigger(ctrl)
 
-	datamapper := DataMapper{Action: action}
+	datamapper := DataMapper{Mapping: mapping}
 
 	_, err := datamapper.getFromMapInt64(trigger, key)
 	dry.TestCheckEqual(t, err.Error(), "key "+key+" not found")
@@ -258,13 +230,10 @@ func TestGetFromInt64_valueIncorrect(t *testing.T) {
 			Value:  value,
 		},
 	}
-	action := model.Action{
-		Name:    "test",
-		Mapping: mapping,
-	}
+
 	trigger := core.NewMockTrigger(ctrl)
 
-	datamapper := DataMapper{Action: action}
+	datamapper := DataMapper{Mapping: mapping}
 
 	_, err := datamapper.getFromMapInt64(trigger, key)
 	dry.TestCheckEqual(t, err.Error(), "strconv.ParseInt: parsing \""+value+"\": invalid syntax")
@@ -277,13 +246,10 @@ func TestGetFromMap_valueNotExist(t *testing.T) {
 	defer ctrl.Finish()
 
 	mapping := map[string]model.Mapping{}
-	action := model.Action{
-		Name:    "test",
-		Mapping: mapping,
-	}
+
 	trigger := core.NewMockTrigger(ctrl)
 
-	datamapper := DataMapper{Action: action}
+	datamapper := DataMapper{Mapping: mapping}
 
 	_, err := datamapper.getFromMap(trigger, key)
 
@@ -304,11 +270,6 @@ func TestGetFromMap_notSimpleMapping_valueNotExist(t *testing.T) {
 		},
 	}
 
-	action := model.Action{
-		Name:    "test",
-		Mapping: mapping,
-	}
-
 	triggerData := map[string]string{}
 
 	trigger := core.NewMockTrigger(ctrl)
@@ -317,7 +278,7 @@ func TestGetFromMap_notSimpleMapping_valueNotExist(t *testing.T) {
 		GetData().
 		Return(triggerData)
 
-	datamapper := DataMapper{Action: action}
+	datamapper := DataMapper{Mapping: mapping}
 
 	_, err := datamapper.getFromMap(trigger, key)
 

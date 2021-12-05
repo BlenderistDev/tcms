@@ -8,14 +8,19 @@ import (
 
 func TestCreateSendMessageAction(t *testing.T) {
 	actionModel := model.Action{
-		Name:    "name",
-		Mapping: nil,
+		Name: "name",
+		Mapping: map[string]model.Mapping{
+			"test": {
+				Simple: true,
+				Name:   "name",
+				Value:  "value",
+			}},
 	}
 	createdAction := createSendMessageAction(actionModel)
 
 	switch action := createdAction.(type) {
 	case sendMessageAction:
-		dry.TestCheckEqual(t, actionModel, action.DataMapper.Action)
+		dry.TestCheckEqual(t, actionModel.Mapping, action.DataMapper.Mapping)
 	default:
 		t.Errorf("action type is not sendMessageAction")
 	}
