@@ -1,6 +1,7 @@
 package action
 
 import (
+	"fmt"
 	"github.com/golang/mock/gomock"
 	"tcms/m/internal/automation/core"
 	"tcms/m/internal/db/model"
@@ -51,7 +52,9 @@ func TestSendMessageAction_Execute(t *testing.T) {
 	defer ctrl.Finish()
 
 	telegramClient := telegramClient2.NewMockTelegramClient(ctrl)
-	telegramClient.EXPECT().SendMessage(gomock.Eq(messageValue), gomock.Eq(peerValueInt), gomock.Eq(accessHashValueInt))
+	telegramClient.
+		EXPECT().
+		SendMessage(gomock.Eq(messageValue), gomock.Eq(peerValueInt), gomock.Eq(accessHashValueInt))
 
 	actionModel := model.Action{
 		Name: "name",
@@ -183,4 +186,53 @@ func TestSendMessageAction_Execute_messageError(t *testing.T) {
 	sendMessageAction := createSendMessageAction(actionModel, telegramClient)
 	err := sendMessageAction.Execute(trigger)
 	dry.TestCheckEqual(t, "key message not found", err.Error())
+}
+
+func TestSendMessageAction_Execute_telegramError(t *testing.T) {
+	const (
+		messageKey      = "message"
+		messageValue    = "test message"
+		accessHashKey   = "accessHash"
+		accessHashValue = "456456"
+		peerKey         = "peer"
+		peerValue       = "123123"
+	)
+
+	var peerValueInt int32 = 123123
+	var accessHashValueInt int64 = 456456
+
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	telegramClient := telegramClient2.NewMockTelegramClient(ctrl)
+	telegramClient.
+		EXPECT().
+		SendMessage(gomock.Eq(messageValue), gomock.Eq(peerValueInt), gomock.Eq(accessHashValueInt)).
+		Return(fmt.Errorf("some error"))
+
+	actionModel := model.Action{
+		Name: "name",
+		Mapping: map[string]model.Mapping{
+			peerKey: {
+				Simple: true,
+				Name:   peerKey,
+				Value:  peerValue,
+			},
+			accessHashKey: {
+				Simple: true,
+				Name:   accessHashKey,
+				Value:  accessHashValue,
+			},
+			messageKey: {
+				Simple: true,
+				Name:   messageKey,
+				Value:  messageValue,
+			},
+		},
+	}
+
+	trigger := core.NewMockTrigger(ctrl)
+	sendMessageAction := createSendMessageAction(actionModel, telegramClient)
+	err := sendMessageAction.Execute(trigger)
+	dry.TestCheckEqual(t, "send message error", err.Error())
 }
