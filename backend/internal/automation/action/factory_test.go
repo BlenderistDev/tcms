@@ -19,3 +19,13 @@ func TestCreateAction_createSendMessage(t *testing.T) {
 		t.Errorf("action type is not sendMessageAction")
 	}
 }
+
+func TestCreateAction_unknownAction(t *testing.T) {
+	const name = "someAction"
+	actionModel := model.Action{
+		Name:    name,
+		Mapping: nil,
+	}
+	_, err := CreateAction(actionModel)
+	dry.TestCheckEqual(t, err.Error(), "unknown action "+name)
+}
