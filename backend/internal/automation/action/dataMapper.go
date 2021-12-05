@@ -17,7 +17,7 @@ func (a DataMapper) getFromMapInt64(trigger core.Trigger, key string) (int64, er
 		return 0, err
 	}
 
-	i, err := strconv.ParseInt(s, 10, 32)
+	i, err := strconv.ParseInt(s, 10, 64)
 	if err != nil {
 		return 0, err
 	}
