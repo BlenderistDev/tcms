@@ -14,3 +14,6 @@ run:
 build:
 	@mkdir -p ./bin
 	@go build -o bin/tcms ./cmd/tcms
+
+gen-telegramclient-mock:
+	@mockgen -source=internal/telegramClient/telegramClient.go -destination=internal/telegramClient/mock/telegramClient.go
