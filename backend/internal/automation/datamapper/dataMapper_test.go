@@ -2,7 +2,7 @@ package datamapper
 
 import (
 	"github.com/golang/mock/gomock"
-	"tcms/m/internal/automation/core"
+	mock_interfaces "tcms/m/internal/automation/interfaces/mock"
 	"tcms/m/internal/db/model"
 	"tcms/m/internal/dry"
 	"testing"
@@ -22,7 +22,7 @@ func TestGetFromMap_simpleMapping(t *testing.T) {
 			Value:  value,
 		},
 	}
-	trigger := core.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
 
 	datamapper := DataMapper{Mapping: mapping}
 
@@ -54,7 +54,7 @@ func TestGetFromMap_notSimpleMapping(t *testing.T) {
 		"value": resultValue,
 	}
 
-	trigger := core.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
 	trigger.
 		EXPECT().
 		GetData().
@@ -86,7 +86,7 @@ func TestGetFromInt32_simpleMapping(t *testing.T) {
 		},
 	}
 
-	trigger := core.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
 
 	datamapper := DataMapper{Mapping: mapping}
 
@@ -119,7 +119,7 @@ func TestGetFromMapInt32_notSimpleMapping(t *testing.T) {
 		"value": resultValue,
 	}
 
-	trigger := core.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
 	trigger.
 		EXPECT().
 		GetData().
@@ -151,7 +151,7 @@ func TestGetFromInt64_simpleMapping(t *testing.T) {
 		},
 	}
 
-	trigger := core.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
 
 	datamapper := DataMapper{Mapping: mapping}
 
@@ -184,7 +184,7 @@ func TestGetFromMapInt64_notSimpleMapping(t *testing.T) {
 		"value": resultValue,
 	}
 
-	trigger := core.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
 	trigger.
 		EXPECT().
 		GetData().
@@ -208,7 +208,7 @@ func TestGetFromInt64_valueNotExist(t *testing.T) {
 
 	mapping := map[string]model.Mapping{}
 
-	trigger := core.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
 
 	datamapper := DataMapper{Mapping: mapping}
 
@@ -231,7 +231,7 @@ func TestGetFromInt64_valueIncorrect(t *testing.T) {
 		},
 	}
 
-	trigger := core.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
 
 	datamapper := DataMapper{Mapping: mapping}
 
@@ -247,7 +247,7 @@ func TestGetFromMap_valueNotExist(t *testing.T) {
 
 	mapping := map[string]model.Mapping{}
 
-	trigger := core.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
 
 	datamapper := DataMapper{Mapping: mapping}
 
@@ -272,7 +272,7 @@ func TestGetFromMap_notSimpleMapping_valueNotExist(t *testing.T) {
 
 	triggerData := map[string]string{}
 
-	trigger := core.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
 	trigger.
 		EXPECT().
 		GetData().

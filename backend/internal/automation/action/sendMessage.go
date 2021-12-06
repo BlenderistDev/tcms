@@ -2,8 +2,8 @@ package action
 
 import (
 	"fmt"
-	"tcms/m/internal/automation/core"
 	"tcms/m/internal/automation/datamapper"
+	"tcms/m/internal/automation/interfaces"
 	"tcms/m/internal/db/model"
 	"tcms/m/internal/telegramClient"
 )
@@ -13,7 +13,7 @@ type sendMessageAction struct {
 	datamapper.DataMapper
 }
 
-func createSendMessageAction(action model.Action, client telegramClient.TelegramClient) core.Action {
+func createSendMessageAction(action model.Action, client telegramClient.TelegramClient) interfaces.Action {
 	return sendMessageAction{
 		telegram: client,
 		DataMapper: datamapper.DataMapper{
@@ -22,7 +22,7 @@ func createSendMessageAction(action model.Action, client telegramClient.Telegram
 	}
 }
 
-func (a sendMessageAction) Execute(trigger core.Trigger) error {
+func (a sendMessageAction) Execute(trigger interfaces.Trigger) error {
 	peer, err := a.GetFromMapInt32(trigger, "peer")
 	if err != nil {
 		return err

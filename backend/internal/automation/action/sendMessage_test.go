@@ -3,7 +3,7 @@ package action
 import (
 	"fmt"
 	"github.com/golang/mock/gomock"
-	"tcms/m/internal/automation/core"
+	mock_interfaces "tcms/m/internal/automation/interfaces/mock"
 	"tcms/m/internal/db/model"
 	"tcms/m/internal/dry"
 	telegramClient2 "tcms/m/internal/telegramClient/mock"
@@ -77,7 +77,7 @@ func TestSendMessageAction_Execute(t *testing.T) {
 		},
 	}
 
-	trigger := core.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
 	sendMessageAction := createSendMessageAction(actionModel, telegramClient)
 	err := sendMessageAction.Execute(trigger)
 	dry.TestHandleError(t, err)
@@ -112,7 +112,7 @@ func TestSendMessageAction_Execute_peerError(t *testing.T) {
 		},
 	}
 
-	trigger := core.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
 	sendMessageAction := createSendMessageAction(actionModel, telegramClient)
 	err := sendMessageAction.Execute(trigger)
 	dry.TestCheckEqual(t, "key peer not found", err.Error())
@@ -147,7 +147,7 @@ func TestSendMessageAction_Execute_accessHashError(t *testing.T) {
 		},
 	}
 
-	trigger := core.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
 	sendMessageAction := createSendMessageAction(actionModel, telegramClient)
 	err := sendMessageAction.Execute(trigger)
 	dry.TestCheckEqual(t, "key accessHash not found", err.Error())
@@ -182,7 +182,7 @@ func TestSendMessageAction_Execute_messageError(t *testing.T) {
 		},
 	}
 
-	trigger := core.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
 	sendMessageAction := createSendMessageAction(actionModel, telegramClient)
 	err := sendMessageAction.Execute(trigger)
 	dry.TestCheckEqual(t, "key message not found", err.Error())
@@ -231,7 +231,7 @@ func TestSendMessageAction_Execute_telegramError(t *testing.T) {
 		},
 	}
 
-	trigger := core.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
 	sendMessageAction := createSendMessageAction(actionModel, telegramClient)
 	err := sendMessageAction.Execute(trigger)
 	dry.TestCheckEqual(t, "send message error", err.Error())

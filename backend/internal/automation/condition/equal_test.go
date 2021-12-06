@@ -3,7 +3,7 @@ package condition
 import (
 	"fmt"
 	"github.com/golang/mock/gomock"
-	"tcms/m/internal/automation/core"
+	mock_interfaces "tcms/m/internal/automation/interfaces/mock"
 	"tcms/m/internal/db/model"
 	"tcms/m/internal/dry"
 	"testing"
@@ -32,7 +32,7 @@ func TestEqualCondition(t *testing.T) {
 func TestEqualCondition_Check(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	trigger := core.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
 
 	conditionModel := &model.Condition{
 		Name: "name",
@@ -58,7 +58,7 @@ func TestEqualCondition_Check(t *testing.T) {
 func TestEqualCondition_Check_value1NotExist(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	trigger := core.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
 
 	conditionModel := &model.Condition{
 		Name: "name",
@@ -78,7 +78,7 @@ func TestEqualCondition_Check_value1NotExist(t *testing.T) {
 func TestEqualCondition_Check_value2NotExist(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	trigger := core.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
 
 	conditionModel := &model.Condition{
 		Name: "name",

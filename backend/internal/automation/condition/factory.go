@@ -2,12 +2,12 @@ package condition
 
 import (
 	"fmt"
-	"tcms/m/internal/automation/core"
+	"tcms/m/internal/automation/interfaces"
 	"tcms/m/internal/db/model"
 )
 
-func CreateCondition(conditionData *model.Condition) (core.Condition, error) {
-	var condition core.Condition
+func CreateCondition(conditionData *model.Condition) (interfaces.Condition, error) {
+	var condition interfaces.Condition
 	switch conditionData.Name {
 	case "equal":
 		condition = createEqualCondition(conditionData)

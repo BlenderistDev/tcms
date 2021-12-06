@@ -1,5 +1,5 @@
 gen-automation-core-mock:
-	@mockgen -source=internal/automation/core/core.go -destination=internal/automation/core/core_mock.go -package=core
+	@mockgen -source=internal/automation/interfaces/interfaces.go -destination=internal/automation/interfaces/mock/interfaces.go
 
 test:
 	@go test ./... -race -count=1 -cover -coverprofile=coverage.txt && go tool cover -func=coverage.txt | tail -n1 | awk '{print "Total test coverage: " $$3}'
