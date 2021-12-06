@@ -27,5 +27,5 @@ func TestCreateAction_unknownAction(t *testing.T) {
 		Mapping: nil,
 	}
 	_, err := CreateAction(actionModel)
-	dry.TestCheckEqual(t, err.Error(), "unknown action "+name)
+	dry.TestCheckEqual(t, "unknown action "+name, err.Error())
 }

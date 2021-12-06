@@ -213,7 +213,7 @@ func TestGetFromInt64_valueNotExist(t *testing.T) {
 	datamapper := DataMapper{Mapping: mapping}
 
 	_, err := datamapper.GetFromMapInt64(trigger, key)
-	dry.TestCheckEqual(t, err.Error(), "key "+key+" not found")
+	dry.TestCheckEqual(t, "key "+key+" not found", err.Error())
 }
 
 func TestGetFromInt64_valueIncorrect(t *testing.T) {
@@ -236,7 +236,7 @@ func TestGetFromInt64_valueIncorrect(t *testing.T) {
 	datamapper := DataMapper{Mapping: mapping}
 
 	_, err := datamapper.GetFromMapInt64(trigger, key)
-	dry.TestCheckEqual(t, err.Error(), "strconv.ParseInt: parsing \""+value+"\": invalid syntax")
+	dry.TestCheckEqual(t, "strconv.ParseInt: parsing \""+value+"\": invalid syntax", err.Error())
 }
 
 func TestGetFromMap_valueNotExist(t *testing.T) {
@@ -253,7 +253,7 @@ func TestGetFromMap_valueNotExist(t *testing.T) {
 
 	_, err := datamapper.GetFromMap(trigger, key)
 
-	dry.TestCheckEqual(t, err.Error(), "key "+key+" not found")
+	dry.TestCheckEqual(t, "key "+key+" not found", err.Error())
 }
 
 func TestGetFromMap_notSimpleMapping_valueNotExist(t *testing.T) {
@@ -282,5 +282,5 @@ func TestGetFromMap_notSimpleMapping_valueNotExist(t *testing.T) {
 
 	_, err := datamapper.GetFromMap(trigger, key)
 
-	dry.TestCheckEqual(t, err.Error(), "key "+key+" not found in trigger data")
+	dry.TestCheckEqual(t, "key "+key+" not found in trigger data", err.Error())
 }
