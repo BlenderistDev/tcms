@@ -1,6 +1,7 @@
 package condition
 
 import (
+	"fmt"
 	"github.com/golang/mock/gomock"
 	"tcms/m/internal/automation/core"
 	"tcms/m/internal/db/model"
@@ -52,4 +53,44 @@ func TestEqualCondition_Check(t *testing.T) {
 	res, err := createdCondition.Check(trigger)
 	dry.TestHandleError(t, err)
 	dry.TestCheckEqual(t, true, res)
+}
+
+func TestEqualCondition_Check_value1NotExist(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	trigger := core.NewMockTrigger(ctrl)
+
+	conditionModel := &model.Condition{
+		Name: "name",
+		Mapping: map[string]model.Mapping{
+			"value2": {
+				Simple: true,
+				Name:   "value2",
+				Value:  "value",
+			},
+		},
+	}
+	createdCondition := createEqualCondition(conditionModel)
+	_, err := createdCondition.Check(trigger)
+	dry.TestCheckEqual(t, fmt.Sprintf("key %s not found", "value1"), err.Error())
+}
+
+func TestEqualCondition_Check_value2NotExist(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	trigger := core.NewMockTrigger(ctrl)
+
+	conditionModel := &model.Condition{
+		Name: "name",
+		Mapping: map[string]model.Mapping{
+			"value1": {
+				Simple: true,
+				Name:   "value1",
+				Value:  "value",
+			},
+		},
+	}
+	createdCondition := createEqualCondition(conditionModel)
+	_, err := createdCondition.Check(trigger)
+	dry.TestCheckEqual(t, fmt.Sprintf("key %s not found", "value2"), err.Error())
 }
