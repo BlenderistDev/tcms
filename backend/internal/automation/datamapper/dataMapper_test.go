@@ -2,9 +2,9 @@ package datamapper
 
 import (
 	"github.com/golang/mock/gomock"
-	mock_interfaces "tcms/m/internal/automation/interfaces/mock"
 	"tcms/m/internal/db/model"
 	"tcms/m/internal/dry"
+	mock_interfaces "tcms/m/internal/testing/automation/interfaces"
 	"testing"
 )
 

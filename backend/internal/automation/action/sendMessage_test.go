@@ -3,10 +3,10 @@ package action
 import (
 	"fmt"
 	"github.com/golang/mock/gomock"
-	mock_interfaces "tcms/m/internal/automation/interfaces/mock"
 	"tcms/m/internal/db/model"
 	"tcms/m/internal/dry"
-	telegramClient2 "tcms/m/internal/telegramClient/mock"
+	mock_interfaces "tcms/m/internal/testing/automation/interfaces"
+	telegramClient2 "tcms/m/internal/testing/telegramClient"
 	"testing"
 )
 

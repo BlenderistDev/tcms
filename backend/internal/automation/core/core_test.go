@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/golang/mock/gomock"
 	"tcms/m/internal/automation/interfaces"
-	mock_interfaces "tcms/m/internal/automation/interfaces/mock"
+	mock_interfaces "tcms/m/internal/testing/automation/interfaces"
 	"testing"
 )
 

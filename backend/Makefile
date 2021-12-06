@@ -1,5 +1,5 @@
 gen-automation-core-mock:
-	@mockgen -source=internal/automation/interfaces/interfaces.go -destination=internal/automation/interfaces/mock/interfaces.go
+	@mockgen -source=internal/automation/interfaces/interfaces.go -destination=internal/testing/automation/interfaces/interfaces.go
 
 test:
 	@go test ./... -race -count=1 -cover -coverprofile=coverage.txt && go tool cover -func=coverage.txt | tail -n1 | awk '{print "Total test coverage: " $$3}'
@@ -16,4 +16,4 @@ build:
 	@go build -o bin/tcms ./cmd/tcms
 
 gen-telegramclient-mock:
-	@mockgen -source=internal/telegramClient/telegramClient.go -destination=internal/telegramClient/mock/telegramClient.go
+	@mockgen -source=internal/telegramClient/telegramClient.go -destination=internal/testing/telegramClient/telegramClient.go
