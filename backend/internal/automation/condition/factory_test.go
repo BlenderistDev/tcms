@@ -19,3 +19,12 @@ func TestCreateCondition_createEqual(t *testing.T) {
 		t.Errorf("condition type is not equal")
 	}
 }
+
+func TestCreateCondition_NoCondition(t *testing.T) {
+	const name = "notExistConditionName"
+	conditionModel := model.Condition{
+		Name: name,
+	}
+	_, err := CreateCondition(&conditionModel)
+	dry.TestCheckEqual(t, "unknown action "+name, err.Error())
+}
