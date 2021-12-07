@@ -27,7 +27,7 @@ type sendMessageData struct {
 	Message    string `json:"message" binding:"required"`
 }
 
-func StartWebServer(telegramClient telegramClient.TelegramClient) {
+func StartWebServer(telegramClient telegramClient.TelegramClient, redisClient redis.Client) {
 	router := gin.Default()
 
 	router.Use(cors.New(cors.Config{
@@ -93,8 +93,6 @@ func StartWebServer(telegramClient telegramClient.TelegramClient) {
 
 		c.JSON(200, gin.H{"status": "ok"})
 	})
-
-	redisClient := redis.GetClient()
 
 	router.GET("/ws", func(c *gin.Context) {
 		upgrader := websocket.Upgrader{
