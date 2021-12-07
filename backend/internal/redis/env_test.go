@@ -16,6 +16,12 @@ func TestGetRedisHost(t *testing.T) {
 	dry.TestCheckEqual(t, host, result)
 }
 
+func TestGetRedisHost_notExist(t *testing.T) {
+	os.Clearenv()
+	_, err := getRedisHost()
+	dry.TestCheckEqual(t, "no redis host", err.Error())
+}
+
 func TestGetRedisPassword(t *testing.T) {
 	password := "pass"
 	err := os.Setenv("REDIS_PASSWORD", password)
