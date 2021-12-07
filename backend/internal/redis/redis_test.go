@@ -70,3 +70,19 @@ func TestGetClient_noHost(t *testing.T) {
 	os.Clearenv()
 	GetClient()
 }
+
+func TestGetClient_wrongDatabase(t *testing.T) {
+	defer func() {
+		if r := recover(); r == nil {
+			t.Errorf("expect panic")
+		}
+	}()
+
+	os.Clearenv()
+	err := os.Setenv("REDIS_HOST", "test")
+	dry.TestHandleError(t, err)
+	err = os.Setenv("REDIS_DATABASE", "test")
+	dry.TestHandleError(t, err)
+
+	GetClient()
+}
