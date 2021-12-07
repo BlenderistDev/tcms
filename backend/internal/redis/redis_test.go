@@ -37,3 +37,13 @@ func TestClient_Publish_badData(t *testing.T) {
 	_, err := c.Publish(context.Background(), channel, message)
 	dry.TestCheckEqual(t, "json: unsupported type: chan int", err.Error())
 }
+
+func TestClient_Subscribe(t *testing.T) {
+	const channel = "test_channel"
+
+	db, _ := redismock.NewClientMock()
+
+	c := client{client: db}
+
+	c.Subscribe(context.Background(), channel)
+}
