@@ -11,10 +11,14 @@ type Automation struct {
 	Condition interfaces.Condition
 }
 
-func (a Automation) Execute(trigger interfaces.Trigger) {
+func (a Automation) Execute(trigger interfaces.Trigger) error {
 	if a.Condition == nil || a.checkCondition(trigger) {
-		a.executeActions(trigger)
+		err := a.executeActions(trigger)
+		if err != nil {
+			return err
+		}
 	}
+	return nil
 }
 
 func (a Automation) checkCondition(trigger interfaces.Trigger) bool {
@@ -26,12 +30,12 @@ func (a Automation) checkCondition(trigger interfaces.Trigger) bool {
 	return res
 }
 
-func (a Automation) executeActions(trigger interfaces.Trigger) {
+func (a Automation) executeActions(trigger interfaces.Trigger) error {
 	for _, action := range a.Actions {
 		err := action.Execute(trigger)
 		if err != nil {
-			fmt.Println("Error while executing action")
-			fmt.Println(err)
+			return fmt.Errorf("error while executing action: %s", err.Error())
 		}
 	}
+	return nil
 }

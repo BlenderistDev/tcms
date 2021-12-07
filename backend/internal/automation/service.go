@@ -61,6 +61,7 @@ func (s *Service) HandleTrigger(trigger interfaces.Trigger) {
 	}
 	for _, automation := range automationList {
 		fmt.Printf("Trigger with type %s\n", trigger.GetName())
-		automation.Execute(trigger)
+		err := automation.Execute(trigger)
+		dry.HandleError(err)
 	}
 }
