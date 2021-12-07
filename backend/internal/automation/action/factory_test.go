@@ -12,7 +12,7 @@ func TestCreateAction_createSendMessage(t *testing.T) {
 		Mapping: nil,
 	}
 	action, err := CreateAction(actionModel)
-	dry.HandleError(err)
+	dry.TestHandleError(t, err)
 	switch action.(type) {
 	case sendMessageAction:
 	default:
