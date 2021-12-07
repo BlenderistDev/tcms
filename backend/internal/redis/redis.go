@@ -36,7 +36,7 @@ func GetClient() Client {
 	password := getRedisPassword()
 
 	db, err := getRedisDatabase()
-	dry.HandleError(err)
+	dry.HandleErrorPanic(err)
 
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     host,

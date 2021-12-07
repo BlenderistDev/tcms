@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/go-redis/redismock/v8"
+	"os"
 	"tcms/m/internal/dry"
 	"testing"
 )
@@ -46,4 +47,15 @@ func TestClient_Subscribe(t *testing.T) {
 	c := client{client: db}
 
 	c.Subscribe(context.Background(), channel)
+}
+
+func TestGetClient(t *testing.T) {
+	err := os.Setenv("REDIS_HOST", "test")
+	dry.TestHandleError(t, err)
+	err = os.Setenv("REDIS_PASSWORD", "password")
+	dry.TestHandleError(t, err)
+	err = os.Setenv("REDIS_DATABASE", "0")
+	dry.TestHandleError(t, err)
+
+	GetClient()
 }
