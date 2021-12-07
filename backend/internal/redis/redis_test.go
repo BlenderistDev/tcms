@@ -59,3 +59,14 @@ func TestGetClient(t *testing.T) {
 
 	GetClient()
 }
+
+func TestGetClient_noHost(t *testing.T) {
+	defer func() {
+		if r := recover(); r == nil {
+			t.Errorf("expect panic")
+		}
+	}()
+
+	os.Clearenv()
+	GetClient()
+}
