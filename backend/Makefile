@@ -17,3 +17,6 @@ build:
 
 gen-telegramclient-mock:
 	@mockgen -source=internal/telegramClient/telegramClient.go -destination=internal/testing/telegramClient/telegramClient.go
+
+gen-redis-mock:
+	@mockgen -source=internal/redis/redis.go -destination=internal/testing/redis/redis.go
