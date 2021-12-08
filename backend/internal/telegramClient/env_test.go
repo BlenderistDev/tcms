@@ -14,3 +14,9 @@ func TestGetMTProtoHost(t *testing.T) {
 	dry.TestHandleError(t, err)
 	dry.TestCheckEqual(t, host, result)
 }
+
+func TestGetMTProtoHost_notExist(t *testing.T) {
+	os.Clearenv()
+	_, err := getMTProtoHost()
+	dry.TestCheckEqual(t, "no mtproto host", err.Error())
+}
