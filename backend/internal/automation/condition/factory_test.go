@@ -12,7 +12,7 @@ func TestCreateCondition_createEqual(t *testing.T) {
 		Mapping: nil,
 	}
 	condition, err := CreateCondition(&conditionModel)
-	dry.HandleError(err)
+	dry.TestHandleError(t, err)
 	switch condition.(type) {
 	case equalCondition:
 	default:
