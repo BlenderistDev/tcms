@@ -8,18 +8,7 @@ import (
 )
 
 func TestGetRedisHost(t *testing.T) {
-	host := "127.0.0.1:1111"
-	err := os.Setenv("REDIS_HOST", host)
-	dry.TestHandleError(t, err)
-	result, err := getRedisHost()
-	dry.TestHandleError(t, err)
-	dry.TestCheckEqual(t, host, result)
-}
-
-func TestGetRedisHost_notExist(t *testing.T) {
-	os.Clearenv()
-	_, err := getRedisHost()
-	dry.TestCheckEqual(t, "no redis host", err.Error())
+	dry.TestEnvString(t, "REDIS_HOST", "no redis host", getRedisHost)
 }
 
 func TestGetRedisPassword(t *testing.T) {
