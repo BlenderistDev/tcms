@@ -30,3 +30,16 @@ func TestEnvString(t *testing.T, name string, error string, f func() (string, er
 	_, err = f()
 	TestCheckEqual(t, error, err.Error())
 }
+
+func TestEnvStringWithDefault(t *testing.T, name string, def string, f func() string) {
+	value := "testing"
+	err := os.Setenv(name, value)
+	TestHandleError(t, err)
+	result := f()
+	TestHandleError(t, err)
+	TestCheckEqual(t, value, result)
+
+	os.Clearenv()
+	value = f()
+	TestCheckEqual(t, def, value)
+}

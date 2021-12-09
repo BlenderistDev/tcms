@@ -12,18 +12,7 @@ func TestGetRedisHost(t *testing.T) {
 }
 
 func TestGetRedisPassword(t *testing.T) {
-	password := "pass"
-	err := os.Setenv("REDIS_PASSWORD", password)
-	dry.TestHandleError(t, err)
-	result := getRedisPassword()
-	dry.TestHandleError(t, err)
-	dry.TestCheckEqual(t, password, result)
-}
-
-func TestGetRedisPasswordEmpty(t *testing.T) {
-	os.Clearenv()
-	result := getRedisPassword()
-	dry.TestCheckEqual(t, "", result)
+	dry.TestEnvStringWithDefault(t, "REDIS_PASSWORD", "", getRedisPassword)
 }
 
 func TestGetRedisDatabase(t *testing.T) {
