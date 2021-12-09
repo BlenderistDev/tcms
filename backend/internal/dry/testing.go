@@ -43,3 +43,23 @@ func TestEnvStringWithDefault(t *testing.T, name string, def string, f func() st
 	value = f()
 	TestCheckEqual(t, def, value)
 }
+
+func TestEnvIntWithDefault(t *testing.T, name string, def int, f func() (int, error)) {
+	value := 3
+	valueStr := "3"
+	err := os.Setenv(name, valueStr)
+	TestHandleError(t, err)
+	result, err := f()
+	TestHandleError(t, err)
+	TestCheckEqual(t, value, result)
+
+	os.Clearenv()
+	result, err = f()
+	TestHandleError(t, err)
+	TestCheckEqual(t, 0, result)
+
+	os.Clearenv()
+	value, err = f()
+	TestHandleError(t, err)
+	TestCheckEqual(t, def, value)
+}
