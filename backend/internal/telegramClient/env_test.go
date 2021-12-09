@@ -20,3 +20,13 @@ func TestGetMTProtoHost_notExist(t *testing.T) {
 	_, err := getMTProtoHost()
 	dry.TestCheckEqual(t, "no mtproto host", err.Error())
 }
+
+func TestGetAppId(t *testing.T) {
+	appId := "123123"
+	appIdInt := 123123
+	err := os.Setenv("TELEGRAM_APP_ID", appId)
+	dry.TestHandleError(t, err)
+	result, err := getAppId()
+	dry.TestHandleError(t, err)
+	dry.TestCheckEqual(t, appIdInt, result)
+}
