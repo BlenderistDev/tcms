@@ -1,8 +1,6 @@
 package redis
 
 import (
-	"os"
-	"strconv"
 	"tcms/m/internal/dry"
 )
 
@@ -15,13 +13,5 @@ func getRedisPassword() string {
 }
 
 func getRedisDatabase() (int, error) {
-	str, exists := os.LookupEnv("REDIS_DATABASE")
-	var database int
-	var err error
-	if !exists {
-		database = 0
-	} else {
-		database, err = strconv.Atoi(str)
-	}
-	return database, err
+	return dry.GetEnvInt("REDIS_DATABASE")
 }
