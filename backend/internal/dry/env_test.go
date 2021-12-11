@@ -8,3 +8,13 @@ func TestGetEnvStr(t *testing.T) {
 		return GetEnvStr(env)
 	})
 }
+
+func TestGetEnvStrWithDefault(t *testing.T) {
+	const (
+		env = "SOME_ENV"
+		def = "default"
+	)
+	TestEnvStringWithDefault(t, env, def, func() string {
+		return GetEnvStrWithDefault(env, def)
+	})
+}
