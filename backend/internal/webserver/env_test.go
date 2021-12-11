@@ -6,5 +6,5 @@ import (
 )
 
 func TestGetApiHost(t *testing.T) {
-	dry.TestEnvString(t, "API_HOST", "no API_HOST env", getApiHost)
+	dry.TestEnvString(t, "API_HOST", getApiHost)
 }

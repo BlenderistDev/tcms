@@ -1,6 +1,7 @@
 package dry
 
 import (
+	"fmt"
 	"os"
 	"reflect"
 	"testing"
@@ -18,7 +19,7 @@ func TestCheckEqual(t *testing.T, expected, testing interface{}) {
 	}
 }
 
-func TestEnvString(t *testing.T, name string, error string, f func() (string, error)) {
+func TestEnvString(t *testing.T, name string, f func() (string, error)) {
 	value := "testing"
 	err := os.Setenv(name, value)
 	TestHandleError(t, err)
@@ -28,7 +29,7 @@ func TestEnvString(t *testing.T, name string, error string, f func() (string, er
 
 	os.Clearenv()
 	_, err = f()
-	TestCheckEqual(t, error, err.Error())
+	TestCheckEqual(t, fmt.Sprintf("no %s env", name), err.Error())
 }
 
 func TestEnvStringWithDefault(t *testing.T, name string, def string, f func() string) {
@@ -62,18 +63,4 @@ func TestEnvIntWithDefault(t *testing.T, name string, def int, f func() (int, er
 	value, err = f()
 	TestHandleError(t, err)
 	TestCheckEqual(t, def, value)
-}
-
-func TestEnvIntWithError(t *testing.T, name string, errStr string, f func() (int, error)) {
-	value := 3
-	valueStr := "3"
-	err := os.Setenv(name, valueStr)
-	TestHandleError(t, err)
-	result, err := f()
-	TestHandleError(t, err)
-	TestCheckEqual(t, value, result)
-
-	os.Clearenv()
-	_, err = f()
-	TestCheckEqual(t, errStr, err.Error())
 }

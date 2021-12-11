@@ -6,7 +6,7 @@ import (
 )
 
 func TestGetMTProtoHost(t *testing.T) {
-	dry.TestEnvString(t, "MTPROTO_HOST", "no MTPROTO_HOST env", getMTProtoHost)
+	dry.TestEnvString(t, "MTPROTO_HOST", getMTProtoHost)
 }
 
 func TestGetAppId(t *testing.T) {
@@ -14,5 +14,5 @@ func TestGetAppId(t *testing.T) {
 }
 
 func TestGetAppHash(t *testing.T) {
-	dry.TestEnvString(t, "TELEGRAM_APP_HASH", "no TELEGRAM_APP_HASH env", getAppHash)
+	dry.TestEnvString(t, "TELEGRAM_APP_HASH", getAppHash)
 }
