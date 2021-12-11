@@ -6,7 +6,7 @@ import (
 )
 
 func TestGetRedisHost(t *testing.T) {
-	dry.TestEnvString(t, "REDIS_HOST", "no redis host", getRedisHost)
+	dry.TestEnvString(t, "REDIS_HOST", "no REDIS_HOST env", getRedisHost)
 }
 
 func TestGetRedisPassword(t *testing.T) {

@@ -1,17 +1,13 @@
 package redis
 
 import (
-	"fmt"
 	"os"
 	"strconv"
+	"tcms/m/internal/dry"
 )
 
 func getRedisHost() (string, error) {
-	host, exists := os.LookupEnv("REDIS_HOST")
-	if !exists {
-		return "", fmt.Errorf("no redis host")
-	}
-	return host, nil
+	return dry.GetEnvStr("REDIS_HOST")
 }
 
 func getRedisPassword() string {
