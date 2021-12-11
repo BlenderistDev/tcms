@@ -4,14 +4,11 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"tcms/m/internal/dry"
 )
 
 func getMTProtoHost() (string, error) {
-	host, exists := os.LookupEnv("MTPROTO_HOST")
-	if !exists {
-		return "", fmt.Errorf("no mtproto host")
-	}
-	return host, nil
+	return dry.GetEnvStr("MTPROTO_HOST")
 }
 
 func getAppId() (int, error) {
@@ -23,9 +20,5 @@ func getAppId() (int, error) {
 }
 
 func getAppHash() (string, error) {
-	appHash, exists := os.LookupEnv("TELEGRAM_APP_HASH")
-	if !exists {
-		return "", fmt.Errorf("no app hash")
-	}
-	return appHash, nil
+	return dry.GetEnvStr("TELEGRAM_APP_HASH")
 }
