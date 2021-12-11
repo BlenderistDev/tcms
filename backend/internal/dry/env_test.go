@@ -18,3 +18,13 @@ func TestGetEnvStrWithDefault(t *testing.T) {
 		return GetEnvStrWithDefault(env, def)
 	})
 }
+
+func TestGetEnvIntWithDefault(t *testing.T) {
+	const (
+		env = "SOME_ENV"
+		def = 3
+	)
+	TestEnvIntWithDefault(t, env, def, func() (int, error) {
+		return GetEnvIntWithDefault(env, def)
+	})
+}

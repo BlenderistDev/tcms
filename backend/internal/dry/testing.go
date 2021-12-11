@@ -57,7 +57,7 @@ func TestEnvIntWithDefault(t *testing.T, name string, def int, f func() (int, er
 	os.Clearenv()
 	result, err = f()
 	TestHandleError(t, err)
-	TestCheckEqual(t, 0, result)
+	TestCheckEqual(t, def, result)
 
 	os.Clearenv()
 	value, err = f()
