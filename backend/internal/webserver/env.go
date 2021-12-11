@@ -1,14 +1,9 @@
 package webserver
 
 import (
-	"fmt"
-	"os"
+	"tcms/m/internal/dry"
 )
 
 func getApiHost() (string, error) {
-	host, exists := os.LookupEnv("API_HOST")
-	if !exists {
-		return "", fmt.Errorf("no api host provided")
-	}
-	return host, nil
+	return dry.GetEnvStr("API_HOST")
 }
