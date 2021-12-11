@@ -6,5 +6,5 @@ import (
 )
 
 func TestGetMongoHost(t *testing.T) {
-	dry.TestEnvString(t, "MONGO_HOST", "no mongodb host", getMongoHost)
+	dry.TestEnvString(t, "MONGO_HOST", "no MONGO_HOST env", getMongoHost)
 }
