@@ -1,9 +1,6 @@
 package telegramClient
 
 import (
-	"fmt"
-	"os"
-	"strconv"
 	"tcms/m/internal/dry"
 )
 
@@ -12,11 +9,7 @@ func getMTProtoHost() (string, error) {
 }
 
 func getAppId() (int, error) {
-	appId, exists := os.LookupEnv("TELEGRAM_APP_ID")
-	if !exists {
-		return 0, fmt.Errorf("no app key")
-	}
-	return strconv.Atoi(appId)
+	return dry.GetEnvIntWithDefault("TELEGRAM_APP_ID", 0)
 }
 
 func getAppHash() (string, error) {

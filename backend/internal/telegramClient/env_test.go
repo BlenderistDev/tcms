@@ -10,7 +10,7 @@ func TestGetMTProtoHost(t *testing.T) {
 }
 
 func TestGetAppId(t *testing.T) {
-	dry.TestEnvIntWithError(t, "TELEGRAM_APP_ID", "no app key", getAppId)
+	dry.TestEnvIntWithDefault(t, "TELEGRAM_APP_ID", 0, getAppId)
 }
 
 func TestGetAppHash(t *testing.T) {

@@ -13,5 +13,5 @@ func getRedisPassword() string {
 }
 
 func getRedisDatabase() (int, error) {
-	return dry.GetEnvInt("REDIS_DATABASE")
+	return dry.GetEnvIntWithDefault("REDIS_DATABASE", 0)
 }

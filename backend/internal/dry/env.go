@@ -22,12 +22,12 @@ func GetEnvStrWithDefault(key string, def string) string {
 	return value
 }
 
-func GetEnvInt(key string) (int, error) {
+func GetEnvIntWithDefault(key string, def int) (int, error) {
 	str, exists := os.LookupEnv(key)
 	var value int
 	var err error
 	if !exists {
-		value = 0
+		value = def
 	} else {
 		value, err = strconv.Atoi(str)
 	}
