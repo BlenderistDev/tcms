@@ -11,11 +11,7 @@ func getRedisHost() (string, error) {
 }
 
 func getRedisPassword() string {
-	password, exists := os.LookupEnv("REDIS_PASSWORD")
-	if !exists {
-		password = ""
-	}
-	return password
+	return dry.GetEnvStrWithDefault("REDIS_PASSWORD", "")
 }
 
 func getRedisDatabase() (int, error) {
