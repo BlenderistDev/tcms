@@ -74,11 +74,6 @@ func TestEnvIntWithError(t *testing.T, name string, errStr string, f func() (int
 	TestCheckEqual(t, value, result)
 
 	os.Clearenv()
-	result, err = f()
-	TestHandleError(t, err)
-	TestCheckEqual(t, 0, result)
-
-	os.Clearenv()
 	_, err = f()
 	TestCheckEqual(t, errStr, err.Error())
 }
