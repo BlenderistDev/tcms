@@ -8,7 +8,7 @@ import (
 
 // for correct config files loading
 func TestMain(m *testing.M) {
-	err := os.Chdir("../../../")
+	err := os.Chdir("../../")
 	if err != nil {
 		panic(err)
 	}
