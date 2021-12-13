@@ -3,18 +3,15 @@ package action
 import (
 	"github.com/joho/godotenv"
 	"os"
+	"tcms/m/internal/dry"
 	"testing"
 )
 
 // for correct config files loading
 func TestMain(m *testing.M) {
 	err := os.Chdir("../../")
-	if err != nil {
-		panic(err)
-	}
+	dry.HandleErrorPanic(err)
 	err = godotenv.Load()
-	if err != nil {
-		panic(err)
-	}
+	dry.HandleErrorPanic(err)
 	os.Exit(m.Run())
 }
