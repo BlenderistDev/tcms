@@ -1,17 +1,37 @@
 package action
 
 import (
-	"github.com/joho/godotenv"
 	"os"
 	"tcms/m/internal/dry"
 	"testing"
 )
 
-// for correct config files loading
+// TestMain for correct config data loading
 func TestMain(m *testing.M) {
-	err := os.Chdir("../../")
+	err := os.Setenv("TELEGRAM_APP_HASH", "test")
 	dry.HandleErrorPanic(err)
-	err = godotenv.Load()
+
+	err = os.Setenv("MTPROTO_HOST", "test")
 	dry.HandleErrorPanic(err)
-	os.Exit(m.Run())
+
+	f, err := os.Create("tg_public_keys.pem")
+	defer func(f *os.File) {
+		err := f.Close()
+		if err != nil {
+			dry.HandleErrorPanic(err)
+		}
+	}(f)
+	dry.HandleErrorPanic(err)
+
+	_, err = f.WriteString("-----BEGIN RSA PUBLIC KEY-----\n")
+	dry.HandleErrorPanic(err)
+	_, err = f.WriteString("test\n")
+	dry.HandleErrorPanic(err)
+	_, err = f.WriteString("-----END RSA PUBLIC KEY-----\n")
+	dry.HandleErrorPanic(err)
+
+	m.Run()
+
+	err = os.Remove("tg_public_keys.pem")
+	dry.HandleErrorPanic(err)
 }
