@@ -1,13 +1,9 @@
 package webserver
 
 import (
-	"context"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	redis2 "github.com/go-redis/redis/v8"
-	"github.com/gorilla/websocket"
 	"github.com/xelaj/mtproto/telegram"
-	"net/http"
 	"tcms/m/internal/dry"
 	"tcms/m/internal/redis"
 	"tcms/m/internal/telegramClient"
@@ -66,36 +62,7 @@ func StartWebServer(telegramClient telegramClient.TelegramClient, redisClient re
 
 	router.POST("/message", sendMessage(telegramClient))
 
-	router.GET("/ws", func(c *gin.Context) {
-		upgrader := websocket.Upgrader{
-			CheckOrigin: func(r *http.Request) bool {
-				return true
-			},
-		}
-
-		ws, err := upgrader.Upgrade(c.Writer, c.Request, nil)
-		dry.HandleError(err)
-
-		defer func(ws *websocket.Conn) {
-			err := ws.Close()
-			dry.HandleError(err)
-		}(ws)
-
-		var ctx = context.Background()
-
-		pubsub := redisClient.Subscribe(ctx, "update")
-		defer func(pubsub *redis2.PubSub) {
-			err := pubsub.Close()
-			dry.HandleError(err)
-		}(pubsub)
-
-		for {
-			msg, err := pubsub.ReceiveMessage(ctx)
-			dry.HandleError(err)
-			err = ws.WriteJSON(msg.Payload)
-			dry.HandleError(err)
-		}
-	})
+	router.GET("/ws", getWcHandler(redisClient))
 
 	host, err := getApiHost()
 	dry.HandleErrorPanic(err)
