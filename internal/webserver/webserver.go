@@ -17,12 +17,6 @@ type signData struct {
 	Code string `json:"code" binding:"required"`
 }
 
-type sendMessageData struct {
-	AccessHash int64  `json:"accessHash" binding:"required"`
-	Id         int32  `json:"id" binding:"required"`
-	Message    string `json:"message" binding:"required"`
-}
-
 func StartWebServer(telegramClient telegramClient.TelegramClient, redisClient redis.Client) {
 	router := gin.Default()
 
@@ -55,62 +49,19 @@ func StartWebServer(telegramClient telegramClient.TelegramClient, redisClient re
 		c.JSON(200, gin.H{"status": "ok"})
 	})
 
+	// GET
 	router.GET("/me", getCurrentUser(telegramClient))
 	router.GET("/contacts", getContacts(telegramClient))
 	router.GET("/chats", getChats(telegramClient))
 	router.GET("/dialogs", getDialogs(telegramClient))
 
+	// POST
 	router.POST("/message", sendMessage(telegramClient))
 
+	// websockets
 	router.GET("/ws", getWcHandler(redisClient))
 
 	host, err := getApiHost()
 	dry.HandleErrorPanic(err)
-
 	dry.HandleErrorPanic(router.Run(host))
-}
-
-func getContacts(telegramClient telegramClient.TelegramClient) func(c *gin.Context) {
-	return func(c *gin.Context) {
-		contacts, err := telegramClient.Contacts()
-		dry.HandleError(err)
-		c.JSON(200, contacts)
-	}
-}
-
-func getCurrentUser(telegramClient telegramClient.TelegramClient) func(c *gin.Context) {
-	return func(c *gin.Context) {
-		user, err := telegramClient.GetCurrentUser()
-		dry.HandleError(err)
-		c.JSON(200, user)
-	}
-}
-
-func sendMessage(telegramClient telegramClient.TelegramClient) func(c *gin.Context) {
-	return func(c *gin.Context) {
-		var messageData sendMessageData
-		err := c.BindJSON(&messageData)
-		dry.HandleError(err)
-
-		err = telegramClient.SendMessage(messageData.Message, messageData.Id, messageData.AccessHash)
-		dry.HandleError(err)
-
-		c.JSON(200, gin.H{"status": "ok"})
-	}
-}
-
-func getDialogs(telegramClient telegramClient.TelegramClient) func(c *gin.Context) {
-	return func(c *gin.Context) {
-		dialogs, err := telegramClient.Dialogs()
-		dry.HandleError(err)
-		c.JSON(200, dialogs)
-	}
-}
-
-func getChats(telegramClient telegramClient.TelegramClient) func(c *gin.Context) {
-	return func(c *gin.Context) {
-		chats, err := telegramClient.Chats()
-		dry.HandleError(err)
-		c.JSON(200, chats)
-	}
 }
