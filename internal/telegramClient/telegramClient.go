@@ -58,7 +58,7 @@ func NewTelegram() TelegramClient {
 	sessionFile := wd + "/session.json"
 	publicKeys := wd + "/tg_public_keys.pem"
 
-	c, _ := telegram.NewClient(telegram.ClientConfig{
+	c, err := telegram.NewClient(telegram.ClientConfig{
 		// where to store session configuration. must be set
 		SessionFile: sessionFile,
 		// host address of mtproto server. Actually, it can be any mtproxy, not only official
@@ -69,6 +69,8 @@ func NewTelegram() TelegramClient {
 		AppHash:         appHash, // app hash, could be find at https://my.telegram.org
 		InitWarnChannel: true,    // if we want to get errors, otherwise, client.Warnings will be set nil
 	})
+
+	dry.HandleErrorPanic(err)
 
 	t := new(telegramClient)
 	t.client = c
