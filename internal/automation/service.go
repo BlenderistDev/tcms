@@ -19,7 +19,8 @@ type Service struct {
 // Start launch automation service
 func (s *Service) Start() {
 	ctx := context.Background()
-	connection := db.GetConnection(ctx)
+	connection, err := db.GetConnection(ctx)
+	dry.HandleErrorPanic(err)
 
 	automationRepo := repository.CreateAutomationRepository(connection)
 	automations, err := automationRepo.GetAll(ctx)
