@@ -15,7 +15,6 @@ func main() {
 	dry.HandleErrorPanic(err)
 
 	telegram := telegramClient.NewTelegram()
-	go telegram.HandleUpdates()
 	go automation.UpdateTriggerFactory()
 	webserver.StartWebServer(telegram, redis.GetClient())
 }

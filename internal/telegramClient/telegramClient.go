@@ -1,7 +1,6 @@
 package telegramClient
 
 import (
-	"context"
 	"fmt"
 	"github.com/xelaj/mtproto/telegram"
 	"google.golang.org/grpc"
@@ -9,7 +8,6 @@ import (
 	"os"
 	"sync"
 	"tcms/m/internal/dry"
-	"tcms/m/internal/redis"
 	telegram2 "tcms/m/pkg/telegram"
 )
 
@@ -22,7 +20,6 @@ type TelegramClient interface {
 	Chats() ([]telegram.Chat, error)
 	Dialogs() ([]telegram.Dialog, error)
 	SendMessage(message string, userId int32, accessHash int64) error
-	HandleUpdates()
 }
 
 type telegramClient struct {
@@ -233,23 +230,4 @@ func (telegramClient *telegramClient) SendMessage(message string, userId int32, 
 	_, err := telegramClient.client.MessagesSendMessage(messageParams)
 
 	return err
-}
-
-func (telegramClient *telegramClient) HandleUpdates() {
-	var ctx = context.Background()
-	redisClient := redis.GetClient()
-	telegramClient.client.AddCustomServerRequestHandler(func(i interface{}) bool {
-		triggers := recognizeTrigger(i)
-
-		for _, trigger := range triggers {
-			_, err := redisClient.Publish(ctx, "update", trigger)
-			dry.HandleError(err)
-		}
-
-		return false
-	})
-
-	// we need to call updates.getState, after that telegram server will send you updates
-	_, err := telegramClient.client.UpdatesGetState()
-	dry.HandleError(err)
 }
