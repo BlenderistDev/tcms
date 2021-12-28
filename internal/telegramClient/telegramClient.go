@@ -4,11 +4,13 @@ import (
 	"context"
 	"fmt"
 	"github.com/xelaj/mtproto/telegram"
+	"google.golang.org/grpc"
 	"math/rand"
 	"os"
 	"sync"
 	"tcms/m/internal/dry"
 	"tcms/m/internal/redis"
+	telegram2 "tcms/m/pkg/telegram"
 )
 
 type TelegramClient interface {
@@ -24,10 +26,11 @@ type TelegramClient interface {
 }
 
 type telegramClient struct {
-	client  *telegram.Client
-	phone   string
-	appId   int
-	appHash string
+	client   *telegram.Client
+	phone    string
+	appId    int
+	appHash  string
+	telegram telegram2.TelegramClient
 }
 
 var client TelegramClient = nil
@@ -72,10 +75,22 @@ func NewTelegram() TelegramClient {
 
 	dry.HandleErrorPanic(err)
 
+	host, err := getTelegramBridgeHost()
+	conn, err := grpc.Dial(host, grpc.WithInsecure())
+	defer func(conn *grpc.ClientConn) {
+		err := conn.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(conn)
+
+	tg := telegram2.NewTelegramClient(conn)
+
 	t := new(telegramClient)
 	t.client = c
 	t.appId = appId
 	t.appHash = appHash
+	t.telegram = tg
 
 	client = t
 
