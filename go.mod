@@ -13,6 +13,8 @@ require (
 	github.com/segmentio/kafka-go v0.4.25
 	github.com/xelaj/mtproto v1.0.0
 	go.mongodb.org/mongo-driver v1.7.4
+	google.golang.org/grpc v1.43.0
+	google.golang.org/protobuf v1.26.0
 )
 
 require (
@@ -44,9 +46,10 @@ require (
 	github.com/xelaj/go-dry v0.0.0-20201104165138-61a25872c05a // indirect
 	github.com/youmark/pkcs8 v0.0.0-20181117223130-1be2e3e5546d // indirect
 	golang.org/x/crypto v0.0.0-20201016220609-9e8e0b390897 // indirect
+	golang.org/x/net v0.0.0-20210428140749-89ef3d95e781 // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
 	golang.org/x/sys v0.0.0-20210510120138-977fb7262007 // indirect
 	golang.org/x/text v0.3.6 // indirect
-	google.golang.org/protobuf v1.26.0 // indirect
+	google.golang.org/genproto v0.0.0-20200526211855-cb27e3aa2013 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
