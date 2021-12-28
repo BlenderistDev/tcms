@@ -14,7 +14,6 @@ import (
 type TelegramClient interface {
 	Authorization(phone string) (*telegram.AuthSentCode, error)
 	AuthSignIn(code string, sentCode *telegram.AuthSentCode) error
-	GetUser(username string) (**telegram.ContactsResolvedPeer, error)
 	GetCurrentUser() (telegram.User, error)
 	Contacts() ([]telegram.User, error)
 	Chats() ([]telegram.Chat, error)
@@ -121,11 +120,6 @@ func (telegramClient *telegramClient) AuthSignIn(code string, sentCode *telegram
 	}
 
 	return err
-}
-
-func (telegramClient *telegramClient) GetUser(username string) (**telegram.ContactsResolvedPeer, error) {
-	userData, err := telegramClient.client.ContactsResolveUsername(username)
-	return &userData, err
 }
 
 func (telegramClient *telegramClient) GetCurrentUser() (telegram.User, error) {
