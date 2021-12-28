@@ -10,6 +10,7 @@ service Telegram {
   rpc Login(LoginMessage) returns (Result) {};
   rpc Sign(SignMessage) returns (Result) {};
   rpc Me(google.protobuf.Empty) returns (MeResponse) {};
+  rpc Send(SendMessageRequest) returns (Result) {};
 }
 
 message LoginMessage {
@@ -49,4 +50,9 @@ message User {
 
 message MeResponse {
   User user = 1;
+}
+
+message SendMessageRequest {
+  string peer = 1;
+  string message = 2;
 }

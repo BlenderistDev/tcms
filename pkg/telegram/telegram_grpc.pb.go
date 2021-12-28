@@ -22,6 +22,7 @@ type TelegramClient interface {
 	Login(ctx context.Context, in *LoginMessage, opts ...grpc.CallOption) (*Result, error)
 	Sign(ctx context.Context, in *SignMessage, opts ...grpc.CallOption) (*Result, error)
 	Me(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*MeResponse, error)
+	Send(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*Result, error)
 }
 
 type telegramClient struct {
@@ -59,6 +60,15 @@ func (c *telegramClient) Me(ctx context.Context, in *emptypb.Empty, opts ...grpc
 	return out, nil
 }
 
+func (c *telegramClient) Send(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*Result, error) {
+	out := new(Result)
+	err := c.cc.Invoke(ctx, "/telegram.Telegram/Send", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TelegramServer is the server API for Telegram service.
 // All implementations must embed UnimplementedTelegramServer
 // for forward compatibility
@@ -66,6 +76,7 @@ type TelegramServer interface {
 	Login(context.Context, *LoginMessage) (*Result, error)
 	Sign(context.Context, *SignMessage) (*Result, error)
 	Me(context.Context, *emptypb.Empty) (*MeResponse, error)
+	Send(context.Context, *SendMessageRequest) (*Result, error)
 	mustEmbedUnimplementedTelegramServer()
 }
 
@@ -81,6 +92,9 @@ func (UnimplementedTelegramServer) Sign(context.Context, *SignMessage) (*Result,
 }
 func (UnimplementedTelegramServer) Me(context.Context, *emptypb.Empty) (*MeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Me not implemented")
+}
+func (UnimplementedTelegramServer) Send(context.Context, *SendMessageRequest) (*Result, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Send not implemented")
 }
 func (UnimplementedTelegramServer) mustEmbedUnimplementedTelegramServer() {}
 
@@ -149,6 +163,24 @@ func _Telegram_Me_Handler(srv interface{}, ctx context.Context, dec func(interfa
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Telegram_Send_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendMessageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TelegramServer).Send(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/telegram.Telegram/Send",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TelegramServer).Send(ctx, req.(*SendMessageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Telegram_ServiceDesc is the grpc.ServiceDesc for Telegram service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -167,6 +199,10 @@ var Telegram_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Me",
 			Handler:    _Telegram_Me_Handler,
+		},
+		{
+			MethodName: "Send",
+			Handler:    _Telegram_Send_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
