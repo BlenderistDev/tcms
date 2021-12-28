@@ -15,3 +15,7 @@ func getAppId() (int, error) {
 func getAppHash() (string, error) {
 	return dry.GetEnvStr("TELEGRAM_APP_HASH")
 }
+
+func getTelegramBridgeHost() (string, error) {
+	return dry.GetEnvStr("TELEGRAM_BRIDGE_HOST")
+}

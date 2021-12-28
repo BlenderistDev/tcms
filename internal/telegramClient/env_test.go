@@ -16,3 +16,7 @@ func TestGetAppId(t *testing.T) {
 func TestGetAppHash(t *testing.T) {
 	dry.TestEnvString(t, "TELEGRAM_APP_HASH", getAppHash)
 }
+
+func TestGetTelegramBridgeHost(t *testing.T) {
+	dry.TestEnvString(t, "TELEGRAM_BRIDGE_HOST", getTelegramBridgeHost)
+}
