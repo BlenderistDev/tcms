@@ -37,7 +37,7 @@ func sendMessage(telegramClient telegramClient.TelegramClient) func(c *gin.Conte
 		err := c.BindJSON(&messageData)
 		dry.HandleError(err)
 
-		err = telegramClient.SendMessage(messageData.Message, messageData.Id, messageData.AccessHash)
+		err = telegramClient.SendMessage(string(messageData.Id), messageData.Message)
 		dry.HandleError(err)
 
 		c.JSON(200, gin.H{"status": "ok"})

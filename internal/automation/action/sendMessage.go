@@ -1,7 +1,6 @@
 package action
 
 import (
-	"fmt"
 	"tcms/m/internal/automation/datamapper"
 	"tcms/m/internal/automation/interfaces"
 	"tcms/m/internal/db/model"
@@ -23,12 +22,7 @@ func createSendMessageAction(action model.Action, client telegramClient.Telegram
 }
 
 func (a sendMessageAction) Execute(trigger interfaces.Trigger) error {
-	peer, err := a.GetFromMapInt32(trigger, "peer")
-	if err != nil {
-		return err
-	}
-
-	accessHash, err := a.GetFromMapInt64(trigger, "accessHash")
+	peer, err := a.GetFromMap(trigger, "peer")
 	if err != nil {
 		return err
 	}
@@ -38,9 +32,9 @@ func (a sendMessageAction) Execute(trigger interfaces.Trigger) error {
 		return err
 	}
 
-	err = a.telegram.SendMessage(message, peer, accessHash)
+	err = a.telegram.SendMessage(peer, message)
 	if err != nil {
-		return fmt.Errorf("send message error")
+		return err
 	}
 
 	return nil

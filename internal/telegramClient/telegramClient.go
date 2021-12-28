@@ -1,10 +1,10 @@
 package telegramClient
 
 import (
+	"context"
 	"fmt"
 	"github.com/xelaj/mtproto/telegram"
 	"google.golang.org/grpc"
-	"math/rand"
 	"os"
 	"sync"
 	"tcms/m/internal/dry"
@@ -19,7 +19,7 @@ type TelegramClient interface {
 	Contacts() ([]telegram.User, error)
 	Chats() ([]telegram.Chat, error)
 	Dialogs() ([]telegram.Dialog, error)
-	SendMessage(message string, userId int32, accessHash int64) error
+	SendMessage(peer, message string) error
 }
 
 type telegramClient struct {
@@ -74,12 +74,6 @@ func NewTelegram() TelegramClient {
 
 	host, err := getTelegramBridgeHost()
 	conn, err := grpc.Dial(host, grpc.WithInsecure())
-	defer func(conn *grpc.ClientConn) {
-		err := conn.Close()
-		if err != nil {
-			fmt.Println(err)
-		}
-	}(conn)
 
 	tg := telegram2.NewTelegramClient(conn)
 
@@ -215,19 +209,13 @@ func (telegramClient *telegramClient) Dialogs() ([]telegram.Dialog, error) {
 	return c.Dialogs, nil
 }
 
-func (telegramClient *telegramClient) SendMessage(message string, userId int32, accessHash int64) error {
-
-	inputPeerUser := &telegram.InputPeerUser{
-		UserID:     userId,
-		AccessHash: accessHash,
-	}
-	messageParams := &telegram.MessagesSendMessageParams{
-		Peer:     inputPeerUser,
-		Message:  message,
-		RandomID: rand.Int63(),
+func (telegramClient *telegramClient) SendMessage(peer, message string) error {
+	request := telegram2.SendMessageRequest{
+		Peer:    peer,
+		Message: message,
 	}
 
-	_, err := telegramClient.client.MessagesSendMessage(messageParams)
+	_, err := telegramClient.telegram.Send(context.Background(), &request)
 
 	return err
 }
