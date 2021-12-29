@@ -3,7 +3,6 @@ package webserver
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/xelaj/mtproto/telegram"
 	"tcms/m/internal/dry"
 	"tcms/m/internal/redis"
 	"tcms/m/internal/telegramClient"
@@ -27,13 +26,12 @@ func StartWebServer(telegramClient telegramClient.TelegramClient, redisClient re
 		ExposeHeaders: []string{"Content-Length"},
 	}))
 
-	var sentCode *telegram.AuthSentCode
 	router.POST("/login", func(c *gin.Context) {
 		var loginData loginData
 		err := c.BindJSON(&loginData)
 		dry.HandleError(err)
 
-		sentCode, err = telegramClient.Authorization(loginData.Phone)
+		err = telegramClient.Authorization(loginData.Phone)
 		dry.HandleError(err)
 		c.JSON(200, gin.H{"status": "ok"})
 	})
@@ -43,7 +41,7 @@ func StartWebServer(telegramClient telegramClient.TelegramClient, redisClient re
 		err := c.BindJSON(&signData)
 		dry.HandleError(err)
 
-		err = telegramClient.AuthSignIn(signData.Code, sentCode)
+		err = telegramClient.AuthSignIn(signData.Code)
 		dry.HandleError(err)
 
 		c.JSON(200, gin.H{"status": "ok"})

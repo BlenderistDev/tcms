@@ -12,8 +12,8 @@ import (
 )
 
 type TelegramClient interface {
-	Authorization(phone string) (*telegram.AuthSentCode, error)
-	AuthSignIn(code string, sentCode *telegram.AuthSentCode) error
+	Authorization(phone string) error
+	AuthSignIn(code string) error
 	GetCurrentUser() (telegram.User, error)
 	Contacts() ([]telegram.User, error)
 	Chats() ([]telegram.Chat, error)
@@ -99,21 +99,13 @@ func prepareStorage() {
 	}
 }
 
-func (telegramClient *telegramClient) Authorization(phone string) (*telegram.AuthSentCode, error) {
-	setCode, err := telegramClient.client.AuthSendCode(
-		phone, int32(telegramClient.appId), telegramClient.appHash, &telegram.CodeSettings{},
-	)
-	telegramClient.phone = phone
-	return setCode, err
+func (telegramClient *telegramClient) Authorization(phone string) error {
+	_, err := telegramClient.telegram.Login(context.Background(), &telegram2.LoginMessage{Phone: phone})
+	return err
 }
 
-func (telegramClient *telegramClient) AuthSignIn(code string, sentCode *telegram.AuthSentCode) error {
-
-	_, err := telegramClient.client.AuthSignIn(
-		telegramClient.phone,
-		sentCode.PhoneCodeHash,
-		code,
-	)
+func (telegramClient *telegramClient) AuthSignIn(code string) error {
+	_, err := telegramClient.telegram.Sign(context.Background(), &telegram2.SignMessage{Code: code})
 
 	if err == nil {
 		fmt.Println("Success! You've signed in!")
