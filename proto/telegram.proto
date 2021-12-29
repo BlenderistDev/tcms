@@ -4,12 +4,10 @@ option go_package = "tcms/pkg/telegram";
 
 package telegram;
 
-import "google/protobuf/empty.proto";
-
 service Telegram {
   rpc Login(LoginMessage) returns (Result) {};
   rpc Sign(SignMessage) returns (Result) {};
-  rpc Me(google.protobuf.Empty) returns (MeResponse) {};
+  rpc GetUser(GetUserRequest) returns (UserResponse) {};
   rpc Send(SendMessageRequest) returns (Result) {};
 }
 
@@ -23,6 +21,10 @@ message SignMessage {
 
 message Result {
   bool success = 1;
+}
+
+message GetUserRequest {
+  string peer = 1;
 }
 
 message User {
@@ -48,7 +50,7 @@ message User {
   string phone = 20;
 }
 
-message MeResponse {
+message UserResponse {
   User user = 1;
 }
 

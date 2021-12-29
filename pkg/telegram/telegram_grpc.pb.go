@@ -7,7 +7,6 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -21,7 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 type TelegramClient interface {
 	Login(ctx context.Context, in *LoginMessage, opts ...grpc.CallOption) (*Result, error)
 	Sign(ctx context.Context, in *SignMessage, opts ...grpc.CallOption) (*Result, error)
-	Me(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*MeResponse, error)
+	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*UserResponse, error)
 	Send(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*Result, error)
 }
 
@@ -51,9 +50,9 @@ func (c *telegramClient) Sign(ctx context.Context, in *SignMessage, opts ...grpc
 	return out, nil
 }
 
-func (c *telegramClient) Me(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*MeResponse, error) {
-	out := new(MeResponse)
-	err := c.cc.Invoke(ctx, "/telegram.Telegram/Me", in, out, opts...)
+func (c *telegramClient) GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*UserResponse, error) {
+	out := new(UserResponse)
+	err := c.cc.Invoke(ctx, "/telegram.Telegram/GetUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -75,7 +74,7 @@ func (c *telegramClient) Send(ctx context.Context, in *SendMessageRequest, opts 
 type TelegramServer interface {
 	Login(context.Context, *LoginMessage) (*Result, error)
 	Sign(context.Context, *SignMessage) (*Result, error)
-	Me(context.Context, *emptypb.Empty) (*MeResponse, error)
+	GetUser(context.Context, *GetUserRequest) (*UserResponse, error)
 	Send(context.Context, *SendMessageRequest) (*Result, error)
 	mustEmbedUnimplementedTelegramServer()
 }
@@ -90,8 +89,8 @@ func (UnimplementedTelegramServer) Login(context.Context, *LoginMessage) (*Resul
 func (UnimplementedTelegramServer) Sign(context.Context, *SignMessage) (*Result, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Sign not implemented")
 }
-func (UnimplementedTelegramServer) Me(context.Context, *emptypb.Empty) (*MeResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Me not implemented")
+func (UnimplementedTelegramServer) GetUser(context.Context, *GetUserRequest) (*UserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
 }
 func (UnimplementedTelegramServer) Send(context.Context, *SendMessageRequest) (*Result, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Send not implemented")
@@ -145,20 +144,20 @@ func _Telegram_Sign_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Telegram_Me_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
+func _Telegram_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TelegramServer).Me(ctx, in)
+		return srv.(TelegramServer).GetUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/telegram.Telegram/Me",
+		FullMethod: "/telegram.Telegram/GetUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TelegramServer).Me(ctx, req.(*emptypb.Empty))
+		return srv.(TelegramServer).GetUser(ctx, req.(*GetUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -197,8 +196,8 @@ var Telegram_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Telegram_Sign_Handler,
 		},
 		{
-			MethodName: "Me",
-			Handler:    _Telegram_Me_Handler,
+			MethodName: "GetUser",
+			Handler:    _Telegram_GetUser_Handler,
 		},
 		{
 			MethodName: "Send",
