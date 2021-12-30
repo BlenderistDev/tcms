@@ -2,6 +2,7 @@ package webserver
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/golang/protobuf/jsonpb"
 	"tcms/m/internal/dry"
 	"tcms/m/internal/telegramClient"
 )
@@ -26,7 +27,12 @@ func getCurrentUser(telegramClient telegramClient.TelegramClient) func(c *gin.Co
 	return func(c *gin.Context) {
 		user, err := telegramClient.GetCurrentUser()
 		dry.HandleError(err)
-		c.JSON(200, user)
+		m := jsonpb.Marshaler{
+			EmitDefaults: true,
+		}
+		s, err := m.MarshalToString(user)
+		dry.HandleError(err)
+		c.JSON(200, s)
 	}
 }
 
