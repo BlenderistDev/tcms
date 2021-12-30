@@ -16,8 +16,6 @@ type TelegramClient interface {
 	Authorization(phone string) error
 	AuthSignIn(code string) error
 	GetCurrentUser() (*telegram2.User, error)
-	Contacts() ([]telegram.User, error)
-	Chats() ([]telegram.Chat, error)
 	Dialogs() (*telegram2.DialogsResponse, error)
 	SendMessage(peer, message string) error
 }
@@ -119,59 +117,6 @@ func (telegramClient *telegramClient) GetCurrentUser() (*telegram2.User, error) 
 	request := telegram2.GetUserRequest{Peer: "me"}
 	user, err := telegramClient.telegram.GetUser(context.Background(), &request)
 	return user.GetUser(), err
-}
-
-func (telegramClient *telegramClient) Contacts() ([]telegram.User, error) {
-	resp, err := telegramClient.client.AccountInitTakeoutSession(&telegram.AccountInitTakeoutSessionParams{
-		Contacts: true,
-	})
-
-	if err != nil {
-		return nil, err
-	}
-
-	_, err = telegramClient.client.MakeRequest(
-		&telegram.InvokeWithTakeoutParams{
-			TakeoutID: resp.ID,
-			Query:     &telegram.ContactsGetSavedParams{},
-		},
-	)
-
-	if err != nil {
-		return nil, err
-	}
-
-	contacts, err := telegramClient.client.ContactsGetContacts(0)
-
-	if err != nil {
-		return nil, err
-	}
-
-	c := contacts.(*telegram.ContactsContactsObj)
-
-	return c.Users, err
-}
-
-func (telegramClient *telegramClient) Chats() ([]telegram.Chat, error) {
-
-	_, err := telegramClient.client.AccountInitTakeoutSession(&telegram.AccountInitTakeoutSessionParams{
-		MessageChats: true,
-	})
-
-	if err != nil {
-		return make([]telegram.Chat, 0), err
-	}
-
-	var exceptedIds []int32
-	chats, err := telegramClient.client.MessagesGetAllChats(exceptedIds)
-
-	if err != nil {
-		return make([]telegram.Chat, 0), err
-	}
-
-	c := chats.(*telegram.MessagesChatsObj)
-
-	return c.Chats, nil
 }
 
 func (telegramClient *telegramClient) Dialogs() (*telegram2.DialogsResponse, error) {

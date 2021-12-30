@@ -49,8 +49,6 @@ func StartWebServer(telegramClient telegramClient.TelegramClient, redisClient re
 
 	// GET
 	router.GET("/me", getCurrentUser(telegramClient))
-	router.GET("/contacts", getContacts(telegramClient))
-	router.GET("/chats", getChats(telegramClient))
 	router.GET("/dialogs", getDialogs(telegramClient))
 
 	// POST

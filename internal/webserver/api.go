@@ -13,15 +13,6 @@ type sendMessageData struct {
 	Message    string `json:"message" binding:"required"`
 }
 
-// getContacts GET /contacts
-func getContacts(telegramClient telegramClient.TelegramClient) func(c *gin.Context) {
-	return func(c *gin.Context) {
-		contacts, err := telegramClient.Contacts()
-		dry.HandleError(err)
-		c.JSON(200, contacts)
-	}
-}
-
 // getCurrentUser GET /me
 func getCurrentUser(telegramClient telegramClient.TelegramClient) func(c *gin.Context) {
 	return func(c *gin.Context) {
@@ -61,14 +52,5 @@ func getDialogs(telegramClient telegramClient.TelegramClient) func(c *gin.Contex
 		s, err := m.MarshalToString(dialogs)
 		dry.HandleError(err)
 		c.JSON(200, s)
-	}
-}
-
-// getChats GET /chats
-func getChats(telegramClient telegramClient.TelegramClient) func(c *gin.Context) {
-	return func(c *gin.Context) {
-		chats, err := telegramClient.Chats()
-		dry.HandleError(err)
-		c.JSON(200, chats)
 	}
 }
