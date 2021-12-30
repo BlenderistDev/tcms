@@ -7,6 +7,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -22,6 +23,7 @@ type TelegramClient interface {
 	Sign(ctx context.Context, in *SignMessage, opts ...grpc.CallOption) (*Result, error)
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*UserResponse, error)
 	Send(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*Result, error)
+	GetDialogs(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*DialogsResponse, error)
 }
 
 type telegramClient struct {
@@ -68,6 +70,15 @@ func (c *telegramClient) Send(ctx context.Context, in *SendMessageRequest, opts 
 	return out, nil
 }
 
+func (c *telegramClient) GetDialogs(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*DialogsResponse, error) {
+	out := new(DialogsResponse)
+	err := c.cc.Invoke(ctx, "/telegram.Telegram/getDialogs", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TelegramServer is the server API for Telegram service.
 // All implementations must embed UnimplementedTelegramServer
 // for forward compatibility
@@ -76,6 +87,7 @@ type TelegramServer interface {
 	Sign(context.Context, *SignMessage) (*Result, error)
 	GetUser(context.Context, *GetUserRequest) (*UserResponse, error)
 	Send(context.Context, *SendMessageRequest) (*Result, error)
+	GetDialogs(context.Context, *emptypb.Empty) (*DialogsResponse, error)
 	mustEmbedUnimplementedTelegramServer()
 }
 
@@ -94,6 +106,9 @@ func (UnimplementedTelegramServer) GetUser(context.Context, *GetUserRequest) (*U
 }
 func (UnimplementedTelegramServer) Send(context.Context, *SendMessageRequest) (*Result, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Send not implemented")
+}
+func (UnimplementedTelegramServer) GetDialogs(context.Context, *emptypb.Empty) (*DialogsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetDialogs not implemented")
 }
 func (UnimplementedTelegramServer) mustEmbedUnimplementedTelegramServer() {}
 
@@ -180,6 +195,24 @@ func _Telegram_Send_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Telegram_GetDialogs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TelegramServer).GetDialogs(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/telegram.Telegram/getDialogs",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TelegramServer).GetDialogs(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Telegram_ServiceDesc is the grpc.ServiceDesc for Telegram service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -202,6 +235,10 @@ var Telegram_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Send",
 			Handler:    _Telegram_Send_Handler,
+		},
+		{
+			MethodName: "getDialogs",
+			Handler:    _Telegram_GetDialogs_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

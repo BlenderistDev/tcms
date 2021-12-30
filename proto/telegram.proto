@@ -4,11 +4,14 @@ option go_package = "tcms/pkg/telegram";
 
 package telegram;
 
+import "google/protobuf/empty.proto";
+
 service Telegram {
   rpc Login(LoginMessage) returns (Result) {};
   rpc Sign(SignMessage) returns (Result) {};
   rpc GetUser(GetUserRequest) returns (UserResponse) {};
   rpc Send(SendMessageRequest) returns (Result) {};
+  rpc getDialogs(google.protobuf.Empty) returns (DialogsResponse) {};
 }
 
 message LoginMessage {
@@ -57,4 +60,73 @@ message UserResponse {
 message SendMessageRequest {
   string peer = 1;
   string message = 2;
+}
+
+message DialogsResponse {
+  repeated DialogResponse dialogs = 1;
+}
+
+message DialogResponse {
+  Dialog dialog = 1;
+  bool pinned = 2;
+  int32 folderId = 3;
+  bool archived = 4;
+  Message message = 5;
+  int32 date = 6;
+  int64 id = 7;
+  string name = 8;
+  string title = 9;
+  int32 unreadCount = 10;
+  int32 unreadMentionsCount = 11;
+  bool isUser = 12;
+  bool isGroup = 13;
+  bool isChannel = 14;
+}
+
+message Dialog {
+  bool pinned = 1;
+  bool unreadMark = 2;
+  int32 topMessage = 3;
+  int32 readInboxMaxId = 4;
+  int32 readOutboxMaxId = 5;
+  int32 unreadCount = 6;
+  int32 unreadMentionsCount = 7;
+  NotifySettings notifySettings = 8;
+  int32 pts = 9;
+  int32 folderId = 10;
+}
+
+message NotifySettings {
+  bool showPreviews = 1;
+  bool silent = 2;
+  int32 muteUntil = 3;
+  string sound = 4;
+}
+
+message Message {
+  bool out = 1;
+  bool mentioned = 2;
+  bool mediaUnread = 3;
+  bool silent = 4;
+  bool fromScheduled = 5;
+  bool legacy = 6;
+  bool editHide = 7;
+  bool pinned = 8;
+  // @todo fwdFrom
+  bool viaBotId = 10;
+  // @todo replyTo
+  int32 date = 12;
+  string message = 13;
+  // @todo media
+  // @todo replyMarkup
+  // @todo entities
+  int32 views = 16;
+  int32 forwards = 17;
+  // @todo replies
+  int32 editDate = 19;
+  string postAuthor = 20;
+  int64 groupedId = 21;
+  // @todo restrictionReason
+  // @todo action
+  int32 ttlPeriod = 24;
 }
