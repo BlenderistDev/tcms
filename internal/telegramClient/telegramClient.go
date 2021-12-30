@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/xelaj/mtproto/telegram"
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"os"
 	"sync"
 	"tcms/m/internal/dry"
@@ -17,7 +18,7 @@ type TelegramClient interface {
 	GetCurrentUser() (*telegram2.User, error)
 	Contacts() ([]telegram.User, error)
 	Chats() ([]telegram.Chat, error)
-	Dialogs() ([]telegram.Dialog, error)
+	Dialogs() (*telegram2.DialogsResponse, error)
 	SendMessage(peer, message string) error
 }
 
@@ -173,27 +174,12 @@ func (telegramClient *telegramClient) Chats() ([]telegram.Chat, error) {
 	return c.Chats, nil
 }
 
-func (telegramClient *telegramClient) Dialogs() ([]telegram.Dialog, error) {
-
-	_, err := telegramClient.client.AccountInitTakeoutSession(&telegram.AccountInitTakeoutSessionParams{
-		MessageChats: true,
-	})
-
+func (telegramClient *telegramClient) Dialogs() (*telegram2.DialogsResponse, error) {
+	dialogs, err := telegramClient.telegram.GetDialogs(context.Background(), &emptypb.Empty{})
 	if err != nil {
-		return make([]telegram.Dialog, 0), err
+		return nil, err
 	}
-
-	dialogs, err := telegramClient.client.MessagesGetDialogs(&telegram.MessagesGetDialogsParams{
-		OffsetPeer: &telegram.InputPeerUser{UserID: 133773580, AccessHash: -315366407886026984},
-	})
-
-	if err != nil {
-		return make([]telegram.Dialog, 0), err
-	}
-
-	c := dialogs.(*telegram.MessagesDialogsSlice)
-
-	return c.Dialogs, nil
+	return dialogs, nil
 }
 
 func (telegramClient *telegramClient) SendMessage(peer, message string) error {

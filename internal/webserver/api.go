@@ -55,7 +55,12 @@ func getDialogs(telegramClient telegramClient.TelegramClient) func(c *gin.Contex
 	return func(c *gin.Context) {
 		dialogs, err := telegramClient.Dialogs()
 		dry.HandleError(err)
-		c.JSON(200, dialogs)
+		m := jsonpb.Marshaler{
+			EmitDefaults: true,
+		}
+		s, err := m.MarshalToString(dialogs)
+		dry.HandleError(err)
+		c.JSON(200, s)
 	}
 }
 
