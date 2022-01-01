@@ -41,6 +41,7 @@ func CreateKafkaSubscription(addConsumer chan chan []uint8, errChan chan error, 
 		ReadBackoffMax:    time.Millisecond * 100,
 	})
 
+	ctx := context.Background()
 	for {
 		select {
 		case <-quit:
@@ -48,7 +49,7 @@ func CreateKafkaSubscription(addConsumer chan chan []uint8, errChan chan error, 
 		case newConsumer := <-addConsumer:
 			consumers = append(consumers, newConsumer)
 		default:
-			m, err := reader.ReadMessage(context.Background())
+			m, err := reader.ReadMessage(ctx)
 			if err != nil {
 				errChan <- err
 			}
