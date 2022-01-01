@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/emptypb"
-	"sync"
 	telegram2 "tcms/m/pkg/telegram"
 )
 
@@ -21,17 +20,7 @@ type telegramClient struct {
 	telegram telegram2.TelegramClient
 }
 
-var client TelegramClient = nil
-
-var lock = &sync.Mutex{}
-
 func NewTelegram() (TelegramClient, error) {
-	if client != nil {
-		return client, nil
-	}
-	lock.Lock()
-	defer lock.Unlock()
-
 	host, err := getTelegramBridgeHost()
 	if err != nil {
 		return nil, err
