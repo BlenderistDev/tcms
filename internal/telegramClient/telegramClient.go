@@ -36,13 +36,13 @@ func NewTelegram() (TelegramClient, error) {
 	return &telegramClient{telegram: tg}, nil
 }
 
-func (telegramClient *telegramClient) Authorization(phone string) error {
-	_, err := telegramClient.telegram.Login(context.Background(), &telegram.LoginMessage{Phone: phone})
+func (t *telegramClient) Authorization(phone string) error {
+	_, err := t.telegram.Login(context.Background(), &telegram.LoginMessage{Phone: phone})
 	return err
 }
 
-func (telegramClient *telegramClient) AuthSignIn(code string) error {
-	_, err := telegramClient.telegram.Sign(context.Background(), &telegram.SignMessage{Code: code})
+func (t *telegramClient) AuthSignIn(code string) error {
+	_, err := t.telegram.Sign(context.Background(), &telegram.SignMessage{Code: code})
 
 	if err == nil {
 		fmt.Println("Success! You've signed in!")
@@ -51,27 +51,27 @@ func (telegramClient *telegramClient) AuthSignIn(code string) error {
 	return err
 }
 
-func (telegramClient *telegramClient) GetCurrentUser() (*telegram.User, error) {
+func (t *telegramClient) GetCurrentUser() (*telegram.User, error) {
 	request := telegram.GetUserRequest{Peer: "me"}
-	user, err := telegramClient.telegram.GetUser(context.Background(), &request)
+	user, err := t.telegram.GetUser(context.Background(), &request)
 	return user.GetUser(), err
 }
 
-func (telegramClient *telegramClient) Dialogs() (*telegram.DialogsResponse, error) {
-	dialogs, err := telegramClient.telegram.GetDialogs(context.Background(), &emptypb.Empty{})
+func (t *telegramClient) Dialogs() (*telegram.DialogsResponse, error) {
+	dialogs, err := t.telegram.GetDialogs(context.Background(), &emptypb.Empty{})
 	if err != nil {
 		return nil, err
 	}
 	return dialogs, nil
 }
 
-func (telegramClient *telegramClient) SendMessage(peer, message string) error {
+func (t *telegramClient) SendMessage(peer, message string) error {
 	request := telegram.SendMessageRequest{
 		Peer:    peer,
 		Message: message,
 	}
 
-	_, err := telegramClient.telegram.Send(context.Background(), &request)
+	_, err := t.telegram.Send(context.Background(), &request)
 
 	return err
 }
