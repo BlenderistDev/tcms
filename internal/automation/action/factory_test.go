@@ -1,8 +1,10 @@
 package action
 
 import (
+	"github.com/golang/mock/gomock"
 	"tcms/m/internal/db/model"
 	"tcms/m/internal/dry"
+	telegramClient2 "tcms/m/internal/testing/telegramClient"
 	"testing"
 )
 
@@ -11,7 +13,13 @@ func TestCreateAction_createSendMessage(t *testing.T) {
 		Name:    "sendMessage",
 		Mapping: nil,
 	}
-	action, err := CreateAction(actionModel)
+
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	telegramClient := telegramClient2.NewMockTelegramClient(ctrl)
+
+	action, err := CreateAction(actionModel, telegramClient)
 	dry.TestHandleError(t, err)
 	switch action.(type) {
 	case sendMessageAction:
@@ -26,6 +34,12 @@ func TestCreateAction_unknownAction(t *testing.T) {
 		Name:    name,
 		Mapping: nil,
 	}
-	_, err := CreateAction(actionModel)
+
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	telegramClient := telegramClient2.NewMockTelegramClient(ctrl)
+
+	_, err := CreateAction(actionModel, telegramClient)
 	dry.TestCheckEqual(t, "unknown action "+name, err.Error())
 }

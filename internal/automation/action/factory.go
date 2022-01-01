@@ -7,11 +7,7 @@ import (
 	"tcms/m/internal/telegramClient"
 )
 
-func CreateAction(actionData model.Action) (interfaces.Action, error) {
-	telegram, err := telegramClient.NewTelegram()
-	if err != nil {
-		return nil, err
-	}
+func CreateAction(actionData model.Action, telegram telegramClient.TelegramClient) (interfaces.Action, error) {
 	var action interfaces.Action
 	switch actionData.Name {
 	case "sendMessage":

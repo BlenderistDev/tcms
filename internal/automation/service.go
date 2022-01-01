@@ -10,6 +10,7 @@ import (
 	"tcms/m/internal/db"
 	"tcms/m/internal/db/repository"
 	"tcms/m/internal/dry"
+	"tcms/m/internal/telegramClient"
 )
 
 type Service struct {
@@ -30,10 +31,15 @@ func (s *Service) Start() {
 
 	s.list = make(map[string][]core.Automation, len(automations))
 
+	telegram, err := telegramClient.NewTelegram()
+	if err != nil {
+		dry.HandleErrorPanic(err)
+	}
+
 	for _, automation := range automations {
 		actions := make([]interfaces.Action, len(automation.Actions))
 		for i, action := range automation.Actions {
-			action, err := action2.CreateAction(action)
+			action, err := action2.CreateAction(action, telegram)
 			if err == nil {
 				actions[i] = action
 			} else {

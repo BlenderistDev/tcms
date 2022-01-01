@@ -45,16 +45,13 @@ func TestSendMessageAction_Execute(t *testing.T) {
 		peerValue       = "123123"
 	)
 
-	var peerValueInt int32 = 123123
-	var accessHashValueInt int64 = 456456
-
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
 	telegramClient := telegramClient2.NewMockTelegramClient(ctrl)
 	telegramClient.
 		EXPECT().
-		SendMessage(gomock.Eq(messageValue), gomock.Eq(peerValueInt), gomock.Eq(accessHashValueInt))
+		SendMessage(gomock.Eq(peerValue), gomock.Eq(messageValue))
 
 	actionModel := model.Action{
 		Name: "name",
@@ -118,41 +115,6 @@ func TestSendMessageAction_Execute_peerError(t *testing.T) {
 	dry.TestCheckEqual(t, "key peer not found", err.Error())
 }
 
-func TestSendMessageAction_Execute_accessHashError(t *testing.T) {
-	const (
-		messageKey   = "message"
-		messageValue = "test message"
-		peerKey      = "peer"
-		peerValue    = "123123"
-	)
-
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-
-	telegramClient := telegramClient2.NewMockTelegramClient(ctrl)
-
-	actionModel := model.Action{
-		Name: "name",
-		Mapping: map[string]model.Mapping{
-			peerKey: {
-				Simple: true,
-				Name:   peerKey,
-				Value:  peerValue,
-			},
-			messageKey: {
-				Simple: true,
-				Name:   messageKey,
-				Value:  messageValue,
-			},
-		},
-	}
-
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	sendMessageAction := createSendMessageAction(actionModel, telegramClient)
-	err := sendMessageAction.Execute(trigger)
-	dry.TestCheckEqual(t, "key accessHash not found", err.Error())
-}
-
 func TestSendMessageAction_Execute_messageError(t *testing.T) {
 	const (
 		accessHashKey   = "accessHash"
@@ -196,10 +158,8 @@ func TestSendMessageAction_Execute_telegramError(t *testing.T) {
 		accessHashValue = "456456"
 		peerKey         = "peer"
 		peerValue       = "123123"
+		errorTexxt      = "some error"
 	)
-
-	var peerValueInt int32 = 123123
-	var accessHashValueInt int64 = 456456
 
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
@@ -207,8 +167,8 @@ func TestSendMessageAction_Execute_telegramError(t *testing.T) {
 	telegramClient := telegramClient2.NewMockTelegramClient(ctrl)
 	telegramClient.
 		EXPECT().
-		SendMessage(gomock.Eq(messageValue), gomock.Eq(peerValueInt), gomock.Eq(accessHashValueInt)).
-		Return(fmt.Errorf("some error"))
+		SendMessage(gomock.Eq(peerValue), gomock.Eq(messageValue)).
+		Return(fmt.Errorf(errorTexxt))
 
 	actionModel := model.Action{
 		Name: "name",
@@ -234,5 +194,5 @@ func TestSendMessageAction_Execute_telegramError(t *testing.T) {
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
 	sendMessageAction := createSendMessageAction(actionModel, telegramClient)
 	err := sendMessageAction.Execute(trigger)
-	dry.TestCheckEqual(t, "send message error", err.Error())
+	dry.TestCheckEqual(t, errorTexxt, err.Error())
 }
