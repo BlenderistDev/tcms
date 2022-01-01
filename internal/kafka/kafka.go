@@ -16,13 +16,21 @@ func CreateKafkaSubscription(addConsumer chan chan []uint8, errChan chan error, 
 		errChan <- err
 	}
 
-	topic := "telegram-event"
-	groupID := "tcms"
+	topic, err := getKafkaTopic()
+	if err != nil {
+		errChan <- err
+	}
+
+	groupId, err := getKafkaGroupId()
+
+	if err != nil {
+		errChan <- err
+	}
 
 	brokers := strings.Split(kafkaURL, ",")
 	reader := kafka2.NewReader(kafka2.ReaderConfig{
 		Brokers:           brokers,
-		GroupID:           groupID,
+		GroupID:           groupId,
 		Topic:             topic,
 		MaxBytes:          10e6, // 10MB
 		MaxWait:           time.Millisecond * 10,
