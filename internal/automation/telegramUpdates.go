@@ -19,12 +19,11 @@ func (t TelegramUpdateTrigger) GetData() map[string]string {
 }
 
 func UpdateTriggerFactory(addConsumer chan chan []uint8) {
-	ch := make(chan []uint8)
-	addConsumer <- ch
-
 	automationService := Service{}
 	automationService.Start()
 
+	ch := make(chan []uint8)
+	addConsumer <- ch
 	for {
 		data := <-ch
 		var trigger TelegramUpdateTrigger
