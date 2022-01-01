@@ -16,5 +16,5 @@ func main() {
 
 	telegram := telegramClient.NewTelegram()
 	go automation.UpdateTriggerFactory()
-	webserver.StartWebServer(telegram, redis.GetClient())
+	webserver.StartWebServer(telegram)
 }

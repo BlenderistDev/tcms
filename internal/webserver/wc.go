@@ -1,17 +1,15 @@
 package webserver
 
 import (
-	"context"
 	"github.com/gin-gonic/gin"
-	redis2 "github.com/go-redis/redis/v8"
 	"github.com/gorilla/websocket"
 	"net/http"
 	"tcms/m/internal/dry"
-	"tcms/m/internal/redis"
+	"tcms/m/internal/kafka"
 )
 
 // getWcHandler handler for websockets
-func getWcHandler(redisClient redis.Client) func(c *gin.Context) {
+func getWcHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		upgrader := websocket.Upgrader{
 			CheckOrigin: func(r *http.Request) bool {
@@ -27,18 +25,14 @@ func getWcHandler(redisClient redis.Client) func(c *gin.Context) {
 			dry.HandleError(err)
 		}(ws)
 
-		var ctx = context.Background()
+		client, err := kafka.NewKafkaClient()
+		dry.HandleError(err)
 
-		pubsub := redisClient.Subscribe(ctx, "update")
-		defer func(pubsub *redis2.PubSub) {
-			err := pubsub.Close()
-			dry.HandleError(err)
-		}(pubsub)
-
+		ch := make(chan []uint8)
+		go client.Subscribe(ch)
 		for {
-			msg, err := pubsub.ReceiveMessage(ctx)
-			dry.HandleError(err)
-			err = ws.WriteJSON(msg.Payload)
+			data := <-ch
+			err = ws.WriteMessage(websocket.TextMessage, data)
 			dry.HandleError(err)
 		}
 	}

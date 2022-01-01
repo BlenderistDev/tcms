@@ -4,7 +4,6 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"tcms/m/internal/dry"
-	"tcms/m/internal/redis"
 	"tcms/m/internal/telegramClient"
 )
 
@@ -16,7 +15,7 @@ type signData struct {
 	Code string `json:"code" binding:"required"`
 }
 
-func StartWebServer(telegramClient telegramClient.TelegramClient, redisClient redis.Client) {
+func StartWebServer(telegramClient telegramClient.TelegramClient) {
 	router := gin.Default()
 
 	router.Use(cors.New(cors.Config{
@@ -55,7 +54,7 @@ func StartWebServer(telegramClient telegramClient.TelegramClient, redisClient re
 	router.POST("/message", sendMessage(telegramClient))
 
 	// websockets
-	router.GET("/ws", getWcHandler(redisClient))
+	router.GET("/ws", getWcHandler())
 
 	host, err := getApiHost()
 	dry.HandleErrorPanic(err)
