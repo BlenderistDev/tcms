@@ -28,7 +28,7 @@ func (a DataMapper) GetFromMapInt64(trigger interfaces.Trigger, key string) (int
 
 func (a DataMapper) GetFromMapInt32(trigger interfaces.Trigger, key string) (int32, error) {
 	i, err := a.GetFromMapInt64(trigger, key)
-	if i >= math.MaxInt32 {
+	if i > math.MaxInt32 {
 		return 0, fmt.Errorf("number %d is greater, than MaxInt32", i)
 	}
 	return int32(i), err

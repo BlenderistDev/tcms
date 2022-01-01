@@ -2,6 +2,8 @@ package datamapper
 
 import (
 	"github.com/golang/mock/gomock"
+	"math"
+	"strconv"
 	"tcms/m/internal/db/model"
 	"tcms/m/internal/dry"
 	mock_interfaces "tcms/m/internal/testing/automation/interfaces"
@@ -96,6 +98,29 @@ func TestGetFromInt32_simpleMapping(t *testing.T) {
 	if mapValue != valueInt {
 		t.Errorf("expected: %d, actual: %d", valueInt, mapValue)
 	}
+}
+
+func TestGetFromInt32_bigValue(t *testing.T) {
+	const name = "name"
+	const valueInt = math.MaxInt32 + 1
+
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mapping := map[string]model.Mapping{
+		name: {
+			Simple: true,
+			Name:   name,
+			Value:  strconv.Itoa(valueInt),
+		},
+	}
+
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
+
+	datamapper := DataMapper{Mapping: mapping}
+
+	_, err := datamapper.GetFromMapInt32(trigger, "name")
+	dry.TestCheckEqual(t, "number 2147483648 is greater, than MaxInt32", err.Error())
 }
 
 func TestGetFromMapInt32_notSimpleMapping(t *testing.T) {
