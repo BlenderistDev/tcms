@@ -3,7 +3,6 @@ package automation
 import (
 	"encoding/json"
 	"tcms/m/internal/dry"
-	"tcms/m/internal/kafka"
 )
 
 type TelegramUpdateTrigger struct {
@@ -19,12 +18,9 @@ func (t TelegramUpdateTrigger) GetData() map[string]string {
 	return t.Data
 }
 
-func UpdateTriggerFactory() {
-	client, err := kafka.NewKafkaClient()
-	dry.HandleError(err)
-
+func UpdateTriggerFactory(addConsumer chan chan []uint8) {
 	ch := make(chan []uint8)
-	go client.Subscribe(ch)
+	addConsumer <- ch
 
 	automationService := Service{}
 	automationService.Start()
@@ -32,7 +28,7 @@ func UpdateTriggerFactory() {
 	for {
 		data := <-ch
 		var trigger TelegramUpdateTrigger
-		err = json.Unmarshal(data, &trigger)
+		err := json.Unmarshal(data, &trigger)
 		dry.HandleError(err)
 		automationService.HandleTrigger(trigger)
 	}

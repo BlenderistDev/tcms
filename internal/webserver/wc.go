@@ -5,11 +5,10 @@ import (
 	"github.com/gorilla/websocket"
 	"net/http"
 	"tcms/m/internal/dry"
-	"tcms/m/internal/kafka"
 )
 
 // getWcHandler handler for websockets
-func getWcHandler() func(c *gin.Context) {
+func getWcHandler(addConsumer chan chan []uint8) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		upgrader := websocket.Upgrader{
 			CheckOrigin: func(r *http.Request) bool {
@@ -25,11 +24,9 @@ func getWcHandler() func(c *gin.Context) {
 			dry.HandleError(err)
 		}(ws)
 
-		client, err := kafka.NewKafkaClient()
-		dry.HandleError(err)
-
 		ch := make(chan []uint8)
-		go client.Subscribe(ch)
+		addConsumer <- ch
+
 		for {
 			data := <-ch
 			err = ws.WriteMessage(websocket.TextMessage, data)

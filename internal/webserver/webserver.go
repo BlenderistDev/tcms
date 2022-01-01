@@ -15,7 +15,7 @@ type signData struct {
 	Code string `json:"code" binding:"required"`
 }
 
-func StartWebServer(telegramClient telegramClient.TelegramClient) {
+func StartWebServer(telegramClient telegramClient.TelegramClient, addConsumer chan chan []uint8) {
 	router := gin.Default()
 
 	router.Use(cors.New(cors.Config{
@@ -54,7 +54,7 @@ func StartWebServer(telegramClient telegramClient.TelegramClient) {
 	router.POST("/message", sendMessage(telegramClient))
 
 	// websockets
-	router.GET("/ws", getWcHandler())
+	router.GET("/ws", getWcHandler(addConsumer))
 
 	host, err := getApiHost()
 	dry.HandleErrorPanic(err)

@@ -2,26 +2,18 @@ package kafka
 
 import (
 	"context"
-	"fmt"
 	"strings"
-	"tcms/m/internal/dry"
 	"time"
 
 	kafka2 "github.com/segmentio/kafka-go"
 )
 
-type Client interface {
-	Subscribe(ch chan []uint8)
-}
+func CreateKafkaSubscription(addConsumer chan chan []uint8, errChan chan error, quit chan bool) {
+	var consumers []chan []uint8
 
-type client struct {
-	reader *kafka2.Reader
-}
-
-func NewKafkaClient() (Client, error) {
 	kafkaURL, err := getKafkaHost()
 	if err != nil {
-		return nil, err
+		errChan <- err
 	}
 
 	topic := "telegram-event"
@@ -38,18 +30,20 @@ func NewKafkaClient() (Client, error) {
 		ReadBackoffMax:    time.Millisecond * 100,
 	})
 
-	client := client{reader: reader}
-
-	return client, nil
-}
-
-func (c client) Subscribe(ch chan []uint8) {
-	fmt.Println("start consuming ... !!")
 	for {
-		m, err := c.reader.ReadMessage(context.Background())
-		if err != nil {
-			dry.HandleError(err)
+		select {
+		case <-quit:
+			return
+		case newConsumer := <-addConsumer:
+			consumers = append(consumers, newConsumer)
+		default:
+			m, err := reader.ReadMessage(context.Background())
+			if err != nil {
+				errChan <- err
+			}
+			for _, ch := range consumers {
+				ch <- m.Value
+			}
 		}
-		ch <- m.Value
 	}
 }

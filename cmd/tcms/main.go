@@ -4,6 +4,7 @@ import (
 	"github.com/joho/godotenv"
 	"tcms/m/internal/automation"
 	"tcms/m/internal/dry"
+	"tcms/m/internal/kafka"
 	"tcms/m/internal/telegramClient"
 	"tcms/m/internal/webserver"
 )
@@ -15,6 +16,14 @@ func main() {
 
 	telegram, err := telegramClient.NewTelegram()
 	dry.HandleError(err)
-	go automation.UpdateTriggerFactory()
-	webserver.StartWebServer(telegram)
+
+	addConsumer := make(chan chan []uint8)
+	quitKafka := make(chan bool)
+	kafkaError := make(chan error)
+
+	go kafka.CreateKafkaSubscription(addConsumer, kafkaError, quitKafka)
+	go automation.UpdateTriggerFactory(addConsumer)
+	go webserver.StartWebServer(telegram, addConsumer)
+
+	select {}
 }
