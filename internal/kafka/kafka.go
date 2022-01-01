@@ -14,17 +14,20 @@ func CreateKafkaSubscription(addConsumer chan chan []uint8, errChan chan error, 
 	kafkaURL, err := getKafkaHost()
 	if err != nil {
 		errChan <- err
+		return
 	}
 
 	topic, err := getKafkaTopic()
 	if err != nil {
 		errChan <- err
+		return
 	}
 
 	groupId, err := getKafkaGroupId()
 
 	if err != nil {
 		errChan <- err
+		return
 	}
 
 	brokers := strings.Split(kafkaURL, ",")
