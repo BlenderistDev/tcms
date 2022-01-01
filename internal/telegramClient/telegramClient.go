@@ -3,12 +3,9 @@ package telegramClient
 import (
 	"context"
 	"fmt"
-	"github.com/xelaj/mtproto/telegram"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/emptypb"
-	"os"
 	"sync"
-	"tcms/m/internal/dry"
 	telegram2 "tcms/m/pkg/telegram"
 )
 
@@ -21,10 +18,6 @@ type TelegramClient interface {
 }
 
 type telegramClient struct {
-	client   *telegram.Client
-	phone    string
-	appId    int
-	appHash  string
 	telegram telegram2.TelegramClient
 }
 
@@ -32,70 +25,25 @@ var client TelegramClient = nil
 
 var lock = &sync.Mutex{}
 
-func NewTelegram() TelegramClient {
+func NewTelegram() (TelegramClient, error) {
 	if client != nil {
-		return client
+		return client, nil
 	}
 	lock.Lock()
 	defer lock.Unlock()
 
-	wd, err := os.Getwd()
-	dry.HandleErrorPanic(err)
-
-	appId, err := getAppId()
-	dry.HandleErrorPanic(err)
-
-	appHash, err := getAppHash()
-	dry.HandleErrorPanic(err)
-
-	mtprotoHost, err := getMTProtoHost()
-	dry.HandleErrorPanic(err)
-
-	prepareStorage()
-
-	sessionFile := wd + "/session.json"
-	publicKeys := wd + "/tg_public_keys.pem"
-
-	c, err := telegram.NewClient(telegram.ClientConfig{
-		// where to store session configuration. must be set
-		SessionFile: sessionFile,
-		// host address of mtproto server. Actually, it can be any mtproxy, not only official
-		ServerHost: mtprotoHost,
-		// public keys file is path to file with public keys, which you must get from https://my.telegram.org
-		PublicKeysFile:  publicKeys,
-		AppID:           appId,   // app id, could be find at https://my.telegram.org
-		AppHash:         appHash, // app hash, could be find at https://my.telegram.org
-		InitWarnChannel: true,    // if we want to get errors, otherwise, client.Warnings will be set nil
-	})
-
-	dry.HandleErrorPanic(err)
-
 	host, err := getTelegramBridgeHost()
+	if err != nil {
+		return nil, err
+	}
 	conn, err := grpc.Dial(host, grpc.WithInsecure())
+	if err != nil {
+		return nil, err
+	}
 
 	tg := telegram2.NewTelegramClient(conn)
 
-	t := new(telegramClient)
-	t.client = c
-	t.appId = appId
-	t.appHash = appHash
-	t.telegram = tg
-
-	client = t
-
-	return client
-}
-
-func prepareStorage() {
-	dir, err := os.Getwd()
-	dry.HandleError(err)
-
-	publicKeys := dir + "/tg_public_keys.pem"
-
-	_, err = os.Stat(publicKeys)
-	if err != nil {
-		panic("no public key")
-	}
+	return &telegramClient{telegram: tg}, nil
 }
 
 func (telegramClient *telegramClient) Authorization(phone string) error {

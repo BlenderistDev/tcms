@@ -4,7 +4,6 @@ import (
 	"github.com/joho/godotenv"
 	"tcms/m/internal/automation"
 	"tcms/m/internal/dry"
-	"tcms/m/internal/redis"
 	"tcms/m/internal/telegramClient"
 	"tcms/m/internal/webserver"
 )
@@ -14,7 +13,8 @@ func main() {
 	err := godotenv.Load()
 	dry.HandleErrorPanic(err)
 
-	telegram := telegramClient.NewTelegram()
+	telegram, err := telegramClient.NewTelegram()
+	dry.HandleError(err)
 	go automation.UpdateTriggerFactory()
 	webserver.StartWebServer(telegram)
 }
