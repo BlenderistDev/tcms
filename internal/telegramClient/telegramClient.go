@@ -2,7 +2,6 @@ package telegramClient
 
 import (
 	"context"
-	"fmt"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -43,10 +42,6 @@ func (t *telegramClient) Authorization(phone string) error {
 
 func (t *telegramClient) AuthSignIn(code string) error {
 	_, err := t.telegram.Sign(context.Background(), &telegram.SignMessage{Code: code})
-
-	if err == nil {
-		fmt.Println("Success! You've signed in!")
-	}
 
 	return err
 }
