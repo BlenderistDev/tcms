@@ -1,7 +1,10 @@
 package automation
 
 import (
+	"context"
 	"encoding/json"
+	"tcms/m/internal/db"
+	"tcms/m/internal/db/repository"
 	"tcms/m/internal/dry"
 )
 
@@ -19,8 +22,14 @@ func (t TelegramUpdateTrigger) GetData() map[string]string {
 }
 
 func UpdateTriggerFactory(addConsumer chan chan []uint8) {
+	ctx := context.Background()
+	connection, err := db.GetConnection(ctx)
+	dry.HandleErrorPanic(err)
+
+	automationRepo := repository.CreateAutomationRepository(connection)
+
 	automationService := Service{}
-	automationService.Start()
+	automationService.Start(automationRepo)
 
 	ch := make(chan []uint8)
 	addConsumer <- ch

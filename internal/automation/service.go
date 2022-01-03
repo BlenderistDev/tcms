@@ -7,7 +7,6 @@ import (
 	condition2 "tcms/m/internal/automation/condition"
 	"tcms/m/internal/automation/core"
 	"tcms/m/internal/automation/interfaces"
-	"tcms/m/internal/db"
 	"tcms/m/internal/db/repository"
 	"tcms/m/internal/dry"
 	"tcms/m/internal/telegramClient"
@@ -18,13 +17,8 @@ type Service struct {
 }
 
 // Start launch automation service
-func (s *Service) Start() {
-	ctx := context.Background()
-	connection, err := db.GetConnection(ctx)
-	dry.HandleErrorPanic(err)
-
-	automationRepo := repository.CreateAutomationRepository(connection)
-	automations, err := automationRepo.GetAll(ctx)
+func (s *Service) Start(automationRepo repository.AutomationRepository) {
+	automations, err := automationRepo.GetAll(context.Background())
 	if err != nil {
 		dry.HandleErrorPanic(err)
 	}
