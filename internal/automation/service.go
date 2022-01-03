@@ -19,9 +19,7 @@ type Service struct {
 // Start launch automation service
 func (s *Service) Start(automationRepo repository.AutomationRepository) {
 	automations, err := automationRepo.GetAll(context.Background())
-	if err != nil {
-		dry.HandleErrorPanic(err)
-	}
+	dry.HandleErrorPanic(err)
 
 	s.list = make(map[string][]core.Automation, len(automations))
 
