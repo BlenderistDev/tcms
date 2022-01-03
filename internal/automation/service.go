@@ -17,16 +17,11 @@ type Service struct {
 }
 
 // Start launch automation service
-func (s *Service) Start(automationRepo repository.AutomationRepository) {
+func (s *Service) Start(automationRepo repository.AutomationRepository, telegram telegramClient.TelegramClient) {
 	automations, err := automationRepo.GetAll(context.Background())
 	dry.HandleErrorPanic(err)
 
 	s.list = make(map[string][]core.Automation, len(automations))
-
-	telegram, err := telegramClient.NewTelegram()
-	if err != nil {
-		dry.HandleErrorPanic(err)
-	}
 
 	for _, automation := range automations {
 		actions := make([]interfaces.Action, len(automation.Actions))
