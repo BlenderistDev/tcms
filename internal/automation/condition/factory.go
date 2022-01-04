@@ -31,6 +31,11 @@ func CreateCondition(conditionData *model.Condition) (interfaces.Condition, erro
 		if err != nil {
 			return nil, err
 		}
+	case "or":
+		condition, err = createOrCondition(dm, subConditions)
+		if err != nil {
+			return nil, err
+		}
 	default:
 		return nil, fmt.Errorf("unknown action %s", conditionData.Name)
 	}
