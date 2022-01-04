@@ -46,7 +46,15 @@ func TestNotCondition_createNotCondition_withMoreConditions(t *testing.T) {
 	dry.TestCheckEqual(t, "not condition can have only one subcondition", err.Error())
 }
 
-func TestNotCondition_CheckWithTrueSubcondition(t *testing.T) {
+func TestNotCondition_CheckWithTrueSubCondition(t *testing.T) {
+	testnotconditionCheckWithSubCondition(t, true)
+}
+
+func TestNotCondition_CheckWithFalseSubCondition(t *testing.T) {
+	testnotconditionCheckWithSubCondition(t, false)
+}
+
+func testnotconditionCheckWithSubCondition(t *testing.T, subConditionRes bool) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
@@ -55,7 +63,7 @@ func TestNotCondition_CheckWithTrueSubcondition(t *testing.T) {
 	subCondition.
 		EXPECT().
 		Check(gomock.Eq(trigger)).
-		Return(true, nil)
+		Return(subConditionRes, nil)
 
 	subConditions := []interfaces.Condition{subCondition}
 	createdCondition, err := createNotCondition(datamapper.DataMapper{}, subConditions)
@@ -63,5 +71,5 @@ func TestNotCondition_CheckWithTrueSubcondition(t *testing.T) {
 
 	res, err := createdCondition.Check(trigger)
 	dry.TestHandleError(t, err)
-	dry.TestCheckEqual(t, false, res)
+	dry.TestCheckEqual(t, !subConditionRes, res)
 }
