@@ -1,6 +1,7 @@
 package condition
 
 import (
+	"fmt"
 	"github.com/golang/mock/gomock"
 	"tcms/m/internal/automation/datamapper"
 	"tcms/m/internal/automation/interfaces"
@@ -67,4 +68,32 @@ func testOrConditionCheckWithSubCondition(t *testing.T, res1, res2 bool) {
 	res, err := createdCondition.Check(trigger)
 	dry.TestHandleError(t, err)
 	dry.TestCheckEqual(t, res1 || res2, res)
+}
+
+func TestOrCondition_SubConditionError(t *testing.T) {
+	const errText = "some error"
+
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	subCondition1 := mock_interfaces.NewMockCondition(ctrl)
+	subCondition2 := mock_interfaces.NewMockCondition(ctrl)
+
+	subCondition1.
+		EXPECT().
+		Check(gomock.Eq(trigger)).
+		Return(true, nil)
+
+	subCondition2.
+		EXPECT().
+		Check(gomock.Eq(trigger)).
+		Return(true, fmt.Errorf(errText))
+
+	subConditions := []interfaces.Condition{subCondition1, subCondition2}
+	createdCondition, err := createOrCondition(datamapper.DataMapper{}, subConditions)
+	dry.TestHandleError(t, err)
+
+	res, err := createdCondition.Check(trigger)
+	dry.TestCheckEqual(t, false, res)
+	dry.TestCheckEqual(t, errText, err.Error())
 }
