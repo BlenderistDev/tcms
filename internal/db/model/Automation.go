@@ -12,8 +12,9 @@ type Action struct {
 }
 
 type Condition struct {
-	Name    string             `bson:"name"`
-	Mapping map[string]Mapping `bson:"mapping"`
+	Name          string             `bson:"name"`
+	Mapping       map[string]Mapping `bson:"mapping"`
+	SubConditions []Condition        `bson:"sub_conditions"`
 }
 
 type Automation struct {
