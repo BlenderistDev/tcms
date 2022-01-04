@@ -28,9 +28,6 @@ func TestNotCondition_createNotCondition(t *testing.T) {
 }
 
 func TestNotCondition_createNotCondition_withLessConditions(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-
 	var subConditions []interfaces.Condition
 	_, err := createNotCondition(datamapper.DataMapper{}, subConditions)
 	dry.TestCheckEqual(t, "not condition can have only one subcondition", err.Error())
