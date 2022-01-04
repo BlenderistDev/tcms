@@ -1,6 +1,7 @@
 package condition
 
 import (
+	"fmt"
 	"github.com/golang/mock/gomock"
 	"tcms/m/internal/automation/datamapper"
 	"tcms/m/internal/automation/interfaces"
@@ -34,6 +35,34 @@ func TestAndCondition_createAndCondition_withLessConditions(t *testing.T) {
 	subConditions := []interfaces.Condition{subCondition}
 	_, err := createAndCondition(datamapper.DataMapper{}, subConditions)
 	dry.TestCheckEqual(t, "and condition should have at least two subconditions", err.Error())
+}
+
+func TestAndCondition_SubConditionError(t *testing.T) {
+	const errText = "some error"
+
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	subCondition1 := mock_interfaces.NewMockCondition(ctrl)
+	subCondition2 := mock_interfaces.NewMockCondition(ctrl)
+
+	subCondition1.
+		EXPECT().
+		Check(gomock.Eq(trigger)).
+		Return(true, nil)
+
+	subCondition2.
+		EXPECT().
+		Check(gomock.Eq(trigger)).
+		Return(true, fmt.Errorf(errText))
+
+	subConditions := []interfaces.Condition{subCondition1, subCondition2}
+	createdCondition, err := createAndCondition(datamapper.DataMapper{}, subConditions)
+	dry.TestHandleError(t, err)
+
+	res, err := createdCondition.Check(trigger)
+	dry.TestCheckEqual(t, false, res)
+	dry.TestCheckEqual(t, errText, err.Error())
 }
 
 func TestAndCondition_SetConditions_checkResult(t *testing.T) {
