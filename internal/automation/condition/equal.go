@@ -3,16 +3,15 @@ package condition
 import (
 	"tcms/m/internal/automation/datamapper"
 	"tcms/m/internal/automation/interfaces"
-	"tcms/m/internal/db/model"
 )
 
 type equalCondition struct {
 	datamapper.DataMapper
 }
 
-func createEqualCondition(condition *model.Condition) interfaces.Condition {
+func createEqualCondition(dataMapper datamapper.DataMapper, _ []interfaces.Condition) interfaces.Condition {
 	return equalCondition{
-		DataMapper: datamapper.DataMapper{Mapping: condition.Mapping},
+		DataMapper: dataMapper,
 	}
 }
 
