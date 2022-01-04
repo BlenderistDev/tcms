@@ -35,3 +35,36 @@ func TestAndCondition_createAndCondition_withLessConditions(t *testing.T) {
 	_, err := createAndCondition(datamapper.DataMapper{}, subConditions)
 	dry.TestCheckEqual(t, "and condition should have at least two subconditions", err.Error())
 }
+
+func TestAndCondition_SetConditions_checkResult(t *testing.T) {
+	testAndConditionCheckWithSubCondition(t, false, false)
+	testAndConditionCheckWithSubCondition(t, false, true)
+	testAndConditionCheckWithSubCondition(t, true, false)
+	testAndConditionCheckWithSubCondition(t, true, true)
+}
+
+func testAndConditionCheckWithSubCondition(t *testing.T, res1, res2 bool) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	subCondition1 := mock_interfaces.NewMockCondition(ctrl)
+	subCondition2 := mock_interfaces.NewMockCondition(ctrl)
+
+	subCondition1.
+		EXPECT().
+		Check(gomock.Eq(trigger)).
+		Return(res1, nil)
+
+	subCondition2.
+		EXPECT().
+		Check(gomock.Eq(trigger)).
+		Return(res2, nil)
+
+	subConditions := []interfaces.Condition{subCondition1, subCondition2}
+	createdCondition, err := createAndCondition(datamapper.DataMapper{}, subConditions)
+	dry.TestHandleError(t, err)
+
+	res, err := createdCondition.Check(trigger)
+	dry.TestHandleError(t, err)
+	dry.TestCheckEqual(t, res1 && res2, res)
+}
