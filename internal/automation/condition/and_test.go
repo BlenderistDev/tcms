@@ -26,3 +26,12 @@ func TestAndCondition_createAndCondition(t *testing.T) {
 		t.Errorf("condition type is not andCondition")
 	}
 }
+
+func TestAndCondition_createAndCondition_withLessConditions(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	subCondition := mock_interfaces.NewMockCondition(ctrl)
+	subConditions := []interfaces.Condition{subCondition}
+	_, err := createAndCondition(datamapper.DataMapper{}, subConditions)
+	dry.TestCheckEqual(t, "and condition should have at least two subconditions", err.Error())
+}
