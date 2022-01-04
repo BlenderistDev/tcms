@@ -1,6 +1,7 @@
 package condition
 
 import (
+	"fmt"
 	"github.com/golang/mock/gomock"
 	"tcms/m/internal/automation/datamapper"
 	"tcms/m/internal/automation/interfaces"
@@ -46,15 +47,36 @@ func TestNotCondition_createNotCondition_withMoreConditions(t *testing.T) {
 	dry.TestCheckEqual(t, "not condition can have only one subcondition", err.Error())
 }
 
+func TestNotCondition_SubConditionError(t *testing.T) {
+	const errText = "some error"
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	subCondition := mock_interfaces.NewMockCondition(ctrl)
+
+	subCondition.
+		EXPECT().
+		Check(gomock.Eq(trigger)).
+		Return(false, fmt.Errorf(errText))
+
+	subConditions := []interfaces.Condition{subCondition}
+	createdCondition, err := createNotCondition(datamapper.DataMapper{}, subConditions)
+	dry.TestHandleError(t, err)
+
+	res, err := createdCondition.Check(trigger)
+	dry.TestCheckEqual(t, false, res)
+	dry.TestCheckEqual(t, errText, err.Error())
+}
+
 func TestNotCondition_CheckWithTrueSubCondition(t *testing.T) {
-	testnotconditionCheckWithSubCondition(t, true)
+	testNotConditionCheckWithSubCondition(t, true)
 }
 
 func TestNotCondition_CheckWithFalseSubCondition(t *testing.T) {
-	testnotconditionCheckWithSubCondition(t, false)
+	testNotConditionCheckWithSubCondition(t, false)
 }
 
-func testnotconditionCheckWithSubCondition(t *testing.T, subConditionRes bool) {
+func testNotConditionCheckWithSubCondition(t *testing.T, subConditionRes bool) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
