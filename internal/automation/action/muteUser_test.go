@@ -4,6 +4,7 @@ import (
 	"github.com/golang/mock/gomock"
 	"tcms/m/internal/db/model"
 	"tcms/m/internal/dry"
+	mock_interfaces "tcms/m/internal/testing/automation/interfaces"
 	telegramClient2 "tcms/m/internal/testing/telegramClient"
 	"testing"
 )
@@ -31,4 +32,32 @@ func TestCreateMuteUserAction(t *testing.T) {
 	default:
 		t.Errorf("action type is not muteUserAction")
 	}
+}
+
+func TestMuteUserAction_Execute_peerError(t *testing.T) {
+	const (
+		accessHashKey   = "accessHash"
+		accessHashValue = "456456"
+	)
+
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	telegramClient := telegramClient2.NewMockTelegramClient(ctrl)
+
+	actionModel := model.Action{
+		Name: "name",
+		Mapping: map[string]model.Mapping{
+			accessHashKey: {
+				Simple: true,
+				Name:   accessHashKey,
+				Value:  accessHashValue,
+			},
+		},
+	}
+
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	muteUserAction := createMuteUserAction(actionModel, telegramClient)
+	err := muteUserAction.Execute(trigger)
+	dry.TestCheckEqual(t, "key peer not found", err.Error())
 }
