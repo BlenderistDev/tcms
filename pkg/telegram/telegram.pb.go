@@ -1081,17 +1081,18 @@ func (x *Message) GetTtlPeriod() int32 {
 	return 0
 }
 
-type Peer struct {
+type MuteUserRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
 	Id         string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	AccessHash string `protobuf:"bytes,2,opt,name=accessHash,proto3" json:"accessHash,omitempty"`
+	Unmute     bool   `protobuf:"varint,3,opt,name=unmute,proto3" json:"unmute,omitempty"`
 }
 
-func (x *Peer) Reset() {
-	*x = Peer{}
+func (x *MuteUserRequest) Reset() {
+	*x = MuteUserRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_proto_telegram_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1099,13 +1100,13 @@ func (x *Peer) Reset() {
 	}
 }
 
-func (x *Peer) String() string {
+func (x *MuteUserRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Peer) ProtoMessage() {}
+func (*MuteUserRequest) ProtoMessage() {}
 
-func (x *Peer) ProtoReflect() protoreflect.Message {
+func (x *MuteUserRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_telegram_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1117,78 +1118,30 @@ func (x *Peer) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Peer.ProtoReflect.Descriptor instead.
-func (*Peer) Descriptor() ([]byte, []int) {
+// Deprecated: Use MuteUserRequest.ProtoReflect.Descriptor instead.
+func (*MuteUserRequest) Descriptor() ([]byte, []int) {
 	return file_proto_telegram_proto_rawDescGZIP(), []int{12}
 }
 
-func (x *Peer) GetId() string {
+func (x *MuteUserRequest) GetId() string {
 	if x != nil {
 		return x.Id
 	}
 	return ""
 }
 
-func (x *Peer) GetAccessHash() string {
+func (x *MuteUserRequest) GetAccessHash() string {
 	if x != nil {
 		return x.AccessHash
 	}
 	return ""
 }
 
-type SetNotifySettingsRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Peer           *Peer           `protobuf:"bytes,1,opt,name=peer,proto3" json:"peer,omitempty"`
-	NotifySettings *NotifySettings `protobuf:"bytes,2,opt,name=notifySettings,proto3" json:"notifySettings,omitempty"`
-}
-
-func (x *SetNotifySettingsRequest) Reset() {
-	*x = SetNotifySettingsRequest{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_telegram_proto_msgTypes[13]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *SetNotifySettingsRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SetNotifySettingsRequest) ProtoMessage() {}
-
-func (x *SetNotifySettingsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_telegram_proto_msgTypes[13]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SetNotifySettingsRequest.ProtoReflect.Descriptor instead.
-func (*SetNotifySettingsRequest) Descriptor() ([]byte, []int) {
-	return file_proto_telegram_proto_rawDescGZIP(), []int{13}
-}
-
-func (x *SetNotifySettingsRequest) GetPeer() *Peer {
+func (x *MuteUserRequest) GetUnmute() bool {
 	if x != nil {
-		return x.Peer
+		return x.Unmute
 	}
-	return nil
-}
-
-func (x *SetNotifySettingsRequest) GetNotifySettings() *NotifySettings {
-	if x != nil {
-		return x.NotifySettings
-	}
-	return nil
+	return false
 }
 
 var File_proto_telegram_proto protoreflect.FileDescriptor
@@ -1341,19 +1294,13 @@ var file_proto_telegram_proto_rawDesc = []byte{
 	0x6f, 0x72, 0x12, 0x1c, 0x0a, 0x09, 0x67, 0x72, 0x6f, 0x75, 0x70, 0x65, 0x64, 0x49, 0x64, 0x18,
 	0x15, 0x20, 0x01, 0x28, 0x03, 0x52, 0x09, 0x67, 0x72, 0x6f, 0x75, 0x70, 0x65, 0x64, 0x49, 0x64,
 	0x12, 0x1c, 0x0a, 0x09, 0x74, 0x74, 0x6c, 0x50, 0x65, 0x72, 0x69, 0x6f, 0x64, 0x18, 0x18, 0x20,
-	0x01, 0x28, 0x05, 0x52, 0x09, 0x74, 0x74, 0x6c, 0x50, 0x65, 0x72, 0x69, 0x6f, 0x64, 0x22, 0x36,
-	0x0a, 0x04, 0x50, 0x65, 0x65, 0x72, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x1e, 0x0a, 0x0a, 0x61, 0x63, 0x63, 0x65, 0x73, 0x73,
-	0x48, 0x61, 0x73, 0x68, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x61, 0x63, 0x63, 0x65,
-	0x73, 0x73, 0x48, 0x61, 0x73, 0x68, 0x22, 0x80, 0x01, 0x0a, 0x18, 0x53, 0x65, 0x74, 0x4e, 0x6f,
-	0x74, 0x69, 0x66, 0x79, 0x53, 0x65, 0x74, 0x74, 0x69, 0x6e, 0x67, 0x73, 0x52, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x12, 0x22, 0x0a, 0x04, 0x70, 0x65, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x0b, 0x32, 0x0e, 0x2e, 0x74, 0x65, 0x6c, 0x65, 0x67, 0x72, 0x61, 0x6d, 0x2e, 0x50, 0x65, 0x65,
-	0x72, 0x52, 0x04, 0x70, 0x65, 0x65, 0x72, 0x12, 0x40, 0x0a, 0x0e, 0x6e, 0x6f, 0x74, 0x69, 0x66,
-	0x79, 0x53, 0x65, 0x74, 0x74, 0x69, 0x6e, 0x67, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32,
-	0x18, 0x2e, 0x74, 0x65, 0x6c, 0x65, 0x67, 0x72, 0x61, 0x6d, 0x2e, 0x4e, 0x6f, 0x74, 0x69, 0x66,
-	0x79, 0x53, 0x65, 0x74, 0x74, 0x69, 0x6e, 0x67, 0x73, 0x52, 0x0e, 0x6e, 0x6f, 0x74, 0x69, 0x66,
-	0x79, 0x53, 0x65, 0x74, 0x74, 0x69, 0x6e, 0x67, 0x73, 0x32, 0xff, 0x02, 0x0a, 0x08, 0x54, 0x65,
+	0x01, 0x28, 0x05, 0x52, 0x09, 0x74, 0x74, 0x6c, 0x50, 0x65, 0x72, 0x69, 0x6f, 0x64, 0x22, 0x59,
+	0x0a, 0x0f, 0x4d, 0x75, 0x74, 0x65, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69,
+	0x64, 0x12, 0x1e, 0x0a, 0x0a, 0x61, 0x63, 0x63, 0x65, 0x73, 0x73, 0x48, 0x61, 0x73, 0x68, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x61, 0x63, 0x63, 0x65, 0x73, 0x73, 0x48, 0x61, 0x73,
+	0x68, 0x12, 0x16, 0x0a, 0x06, 0x75, 0x6e, 0x6d, 0x75, 0x74, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28,
+	0x08, 0x52, 0x06, 0x75, 0x6e, 0x6d, 0x75, 0x74, 0x65, 0x32, 0xe9, 0x02, 0x0a, 0x08, 0x54, 0x65,
 	0x6c, 0x65, 0x67, 0x72, 0x61, 0x6d, 0x12, 0x33, 0x0a, 0x05, 0x4c, 0x6f, 0x67, 0x69, 0x6e, 0x12,
 	0x16, 0x2e, 0x74, 0x65, 0x6c, 0x65, 0x67, 0x72, 0x61, 0x6d, 0x2e, 0x4c, 0x6f, 0x67, 0x69, 0x6e,
 	0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x1a, 0x10, 0x2e, 0x74, 0x65, 0x6c, 0x65, 0x67, 0x72,
@@ -1372,14 +1319,13 @@ var file_proto_telegram_proto_rawDesc = []byte{
 	0x61, 0x6c, 0x6f, 0x67, 0x73, 0x12, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70,
 	0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x1a, 0x19, 0x2e,
 	0x74, 0x65, 0x6c, 0x65, 0x67, 0x72, 0x61, 0x6d, 0x2e, 0x44, 0x69, 0x61, 0x6c, 0x6f, 0x67, 0x73,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x4f, 0x0a, 0x15, 0x73, 0x65,
-	0x74, 0x55, 0x73, 0x65, 0x72, 0x4e, 0x6f, 0x74, 0x69, 0x66, 0x79, 0x53, 0x65, 0x74, 0x74, 0x69,
-	0x6e, 0x67, 0x73, 0x12, 0x22, 0x2e, 0x74, 0x65, 0x6c, 0x65, 0x67, 0x72, 0x61, 0x6d, 0x2e, 0x53,
-	0x65, 0x74, 0x4e, 0x6f, 0x74, 0x69, 0x66, 0x79, 0x53, 0x65, 0x74, 0x74, 0x69, 0x6e, 0x67, 0x73,
-	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x10, 0x2e, 0x74, 0x65, 0x6c, 0x65, 0x67, 0x72,
-	0x61, 0x6d, 0x2e, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x22, 0x00, 0x42, 0x13, 0x5a, 0x11, 0x74,
-	0x63, 0x6d, 0x73, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x74, 0x65, 0x6c, 0x65, 0x67, 0x72, 0x61, 0x6d,
-	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x39, 0x0a, 0x08, 0x4d, 0x75,
+	0x74, 0x65, 0x55, 0x73, 0x65, 0x72, 0x12, 0x19, 0x2e, 0x74, 0x65, 0x6c, 0x65, 0x67, 0x72, 0x61,
+	0x6d, 0x2e, 0x4d, 0x75, 0x74, 0x65, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x1a, 0x10, 0x2e, 0x74, 0x65, 0x6c, 0x65, 0x67, 0x72, 0x61, 0x6d, 0x2e, 0x52, 0x65, 0x73,
+	0x75, 0x6c, 0x74, 0x22, 0x00, 0x42, 0x13, 0x5a, 0x11, 0x74, 0x63, 0x6d, 0x73, 0x2f, 0x70, 0x6b,
+	0x67, 0x2f, 0x74, 0x65, 0x6c, 0x65, 0x67, 0x72, 0x61, 0x6d, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x33,
 }
 
 var (
@@ -1394,23 +1340,22 @@ func file_proto_telegram_proto_rawDescGZIP() []byte {
 	return file_proto_telegram_proto_rawDescData
 }
 
-var file_proto_telegram_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
+var file_proto_telegram_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_proto_telegram_proto_goTypes = []interface{}{
-	(*LoginMessage)(nil),             // 0: telegram.LoginMessage
-	(*SignMessage)(nil),              // 1: telegram.SignMessage
-	(*Result)(nil),                   // 2: telegram.Result
-	(*GetUserRequest)(nil),           // 3: telegram.GetUserRequest
-	(*User)(nil),                     // 4: telegram.User
-	(*UserResponse)(nil),             // 5: telegram.UserResponse
-	(*SendMessageRequest)(nil),       // 6: telegram.SendMessageRequest
-	(*DialogsResponse)(nil),          // 7: telegram.DialogsResponse
-	(*DialogResponse)(nil),           // 8: telegram.DialogResponse
-	(*Dialog)(nil),                   // 9: telegram.Dialog
-	(*NotifySettings)(nil),           // 10: telegram.NotifySettings
-	(*Message)(nil),                  // 11: telegram.Message
-	(*Peer)(nil),                     // 12: telegram.Peer
-	(*SetNotifySettingsRequest)(nil), // 13: telegram.SetNotifySettingsRequest
-	(*emptypb.Empty)(nil),            // 14: google.protobuf.Empty
+	(*LoginMessage)(nil),       // 0: telegram.LoginMessage
+	(*SignMessage)(nil),        // 1: telegram.SignMessage
+	(*Result)(nil),             // 2: telegram.Result
+	(*GetUserRequest)(nil),     // 3: telegram.GetUserRequest
+	(*User)(nil),               // 4: telegram.User
+	(*UserResponse)(nil),       // 5: telegram.UserResponse
+	(*SendMessageRequest)(nil), // 6: telegram.SendMessageRequest
+	(*DialogsResponse)(nil),    // 7: telegram.DialogsResponse
+	(*DialogResponse)(nil),     // 8: telegram.DialogResponse
+	(*Dialog)(nil),             // 9: telegram.Dialog
+	(*NotifySettings)(nil),     // 10: telegram.NotifySettings
+	(*Message)(nil),            // 11: telegram.Message
+	(*MuteUserRequest)(nil),    // 12: telegram.MuteUserRequest
+	(*emptypb.Empty)(nil),      // 13: google.protobuf.Empty
 }
 var file_proto_telegram_proto_depIdxs = []int32{
 	4,  // 0: telegram.UserResponse.user:type_name -> telegram.User
@@ -1418,25 +1363,23 @@ var file_proto_telegram_proto_depIdxs = []int32{
 	9,  // 2: telegram.DialogResponse.dialog:type_name -> telegram.Dialog
 	11, // 3: telegram.DialogResponse.message:type_name -> telegram.Message
 	10, // 4: telegram.Dialog.notifySettings:type_name -> telegram.NotifySettings
-	12, // 5: telegram.SetNotifySettingsRequest.peer:type_name -> telegram.Peer
-	10, // 6: telegram.SetNotifySettingsRequest.notifySettings:type_name -> telegram.NotifySettings
-	0,  // 7: telegram.Telegram.Login:input_type -> telegram.LoginMessage
-	1,  // 8: telegram.Telegram.Sign:input_type -> telegram.SignMessage
-	3,  // 9: telegram.Telegram.GetUser:input_type -> telegram.GetUserRequest
-	6,  // 10: telegram.Telegram.Send:input_type -> telegram.SendMessageRequest
-	14, // 11: telegram.Telegram.getDialogs:input_type -> google.protobuf.Empty
-	13, // 12: telegram.Telegram.setUserNotifySettings:input_type -> telegram.SetNotifySettingsRequest
-	2,  // 13: telegram.Telegram.Login:output_type -> telegram.Result
-	2,  // 14: telegram.Telegram.Sign:output_type -> telegram.Result
-	5,  // 15: telegram.Telegram.GetUser:output_type -> telegram.UserResponse
-	2,  // 16: telegram.Telegram.Send:output_type -> telegram.Result
-	7,  // 17: telegram.Telegram.getDialogs:output_type -> telegram.DialogsResponse
-	2,  // 18: telegram.Telegram.setUserNotifySettings:output_type -> telegram.Result
-	13, // [13:19] is the sub-list for method output_type
-	7,  // [7:13] is the sub-list for method input_type
-	7,  // [7:7] is the sub-list for extension type_name
-	7,  // [7:7] is the sub-list for extension extendee
-	0,  // [0:7] is the sub-list for field type_name
+	0,  // 5: telegram.Telegram.Login:input_type -> telegram.LoginMessage
+	1,  // 6: telegram.Telegram.Sign:input_type -> telegram.SignMessage
+	3,  // 7: telegram.Telegram.GetUser:input_type -> telegram.GetUserRequest
+	6,  // 8: telegram.Telegram.Send:input_type -> telegram.SendMessageRequest
+	13, // 9: telegram.Telegram.getDialogs:input_type -> google.protobuf.Empty
+	12, // 10: telegram.Telegram.MuteUser:input_type -> telegram.MuteUserRequest
+	2,  // 11: telegram.Telegram.Login:output_type -> telegram.Result
+	2,  // 12: telegram.Telegram.Sign:output_type -> telegram.Result
+	5,  // 13: telegram.Telegram.GetUser:output_type -> telegram.UserResponse
+	2,  // 14: telegram.Telegram.Send:output_type -> telegram.Result
+	7,  // 15: telegram.Telegram.getDialogs:output_type -> telegram.DialogsResponse
+	2,  // 16: telegram.Telegram.MuteUser:output_type -> telegram.Result
+	11, // [11:17] is the sub-list for method output_type
+	5,  // [5:11] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_proto_telegram_proto_init() }
@@ -1590,19 +1533,7 @@ func file_proto_telegram_proto_init() {
 			}
 		}
 		file_proto_telegram_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Peer); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_proto_telegram_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SetNotifySettingsRequest); i {
+			switch v := v.(*MuteUserRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1620,7 +1551,7 @@ func file_proto_telegram_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_proto_telegram_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   14,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

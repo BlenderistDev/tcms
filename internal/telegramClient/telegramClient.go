@@ -74,18 +74,12 @@ func (t *telegramClient) SendMessage(peer, message string) error {
 }
 
 func (t telegramClient) MuteUser(id, accessHash string) error {
-	peer := telegram.Peer{
+	request := telegram.MuteUserRequest{
 		Id:         id,
 		AccessHash: accessHash,
+		Unmute:     false,
 	}
-	settings := telegram.NotifySettings{
-		Silent: true,
-	}
-	request := telegram.SetNotifySettingsRequest{
-		Peer:           &peer,
-		NotifySettings: &settings,
-	}
-	notifySettings, err := t.telegram.SetUserNotifySettings(context.Background(), &request)
+	notifySettings, err := t.telegram.MuteUser(context.Background(), &request)
 
 	if err != nil {
 		return err

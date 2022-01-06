@@ -12,7 +12,7 @@ service Telegram {
   rpc GetUser(GetUserRequest) returns (UserResponse) {};
   rpc Send(SendMessageRequest) returns (Result) {};
   rpc getDialogs(google.protobuf.Empty) returns (DialogsResponse) {};
-  rpc setUserNotifySettings(SetNotifySettingsRequest) returns (Result) {};
+  rpc MuteUser(MuteUserRequest) returns (Result) {};
 }
 
 message LoginMessage {
@@ -132,12 +132,8 @@ message Message {
   int32 ttlPeriod = 24;
 }
 
-message Peer {
+message MuteUserRequest {
   string id = 1;
   string accessHash = 2;
-}
-
-message SetNotifySettingsRequest {
-  Peer peer = 1;
-  NotifySettings notifySettings = 2;
+  bool unmute = 3;
 }
