@@ -2,6 +2,7 @@ package telegramClient
 
 import (
 	"context"
+	"fmt"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -14,6 +15,7 @@ type TelegramClient interface {
 	GetCurrentUser() (*telegram.User, error)
 	Dialogs() (*telegram.DialogsResponse, error)
 	SendMessage(peer, message string) error
+	MuteUser(id, accessHash string) error
 }
 
 type telegramClient struct {
@@ -69,4 +71,29 @@ func (t *telegramClient) SendMessage(peer, message string) error {
 	_, err := t.telegram.Send(context.Background(), &request)
 
 	return err
+}
+
+func (t telegramClient) MuteUser(id, accessHash string) error {
+	peer := telegram.Peer{
+		Id:         id,
+		AccessHash: accessHash,
+	}
+	settings := telegram.NotifySettings{
+		Silent: true,
+	}
+	request := telegram.SetNotifySettingsRequest{
+		Peer:           &peer,
+		NotifySettings: &settings,
+	}
+	notifySettings, err := t.telegram.SetUserNotifySettings(context.Background(), &request)
+
+	if err != nil {
+		return err
+	}
+
+	if !notifySettings.GetSuccess() {
+		return fmt.Errorf("error while setting user notify settings")
+	}
+
+	return nil
 }
