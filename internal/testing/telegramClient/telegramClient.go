@@ -92,6 +92,20 @@ func (mr *MockTelegramClientMockRecorder) GetCurrentUser() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCurrentUser", reflect.TypeOf((*MockTelegramClient)(nil).GetCurrentUser))
 }
 
+// MuteUser mocks base method.
+func (m *MockTelegramClient) MuteUser(id, accessHash string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "MuteUser", id, accessHash)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// MuteUser indicates an expected call of MuteUser.
+func (mr *MockTelegramClientMockRecorder) MuteUser(id, accessHash interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MuteUser", reflect.TypeOf((*MockTelegramClient)(nil).MuteUser), id, accessHash)
+}
+
 // SendMessage mocks base method.
 func (m *MockTelegramClient) SendMessage(peer, message string) error {
 	m.ctrl.T.Helper()
