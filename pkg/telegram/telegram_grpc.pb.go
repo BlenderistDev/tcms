@@ -24,6 +24,7 @@ type TelegramClient interface {
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*UserResponse, error)
 	Send(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*Result, error)
 	GetDialogs(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*DialogsResponse, error)
+	SetUserNotifySettings(ctx context.Context, in *SetNotifySettingsRequest, opts ...grpc.CallOption) (*Result, error)
 }
 
 type telegramClient struct {
@@ -79,6 +80,15 @@ func (c *telegramClient) GetDialogs(ctx context.Context, in *emptypb.Empty, opts
 	return out, nil
 }
 
+func (c *telegramClient) SetUserNotifySettings(ctx context.Context, in *SetNotifySettingsRequest, opts ...grpc.CallOption) (*Result, error) {
+	out := new(Result)
+	err := c.cc.Invoke(ctx, "/telegram.Telegram/setUserNotifySettings", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TelegramServer is the server API for Telegram service.
 // All implementations must embed UnimplementedTelegramServer
 // for forward compatibility
@@ -88,6 +98,7 @@ type TelegramServer interface {
 	GetUser(context.Context, *GetUserRequest) (*UserResponse, error)
 	Send(context.Context, *SendMessageRequest) (*Result, error)
 	GetDialogs(context.Context, *emptypb.Empty) (*DialogsResponse, error)
+	SetUserNotifySettings(context.Context, *SetNotifySettingsRequest) (*Result, error)
 	mustEmbedUnimplementedTelegramServer()
 }
 
@@ -109,6 +120,9 @@ func (UnimplementedTelegramServer) Send(context.Context, *SendMessageRequest) (*
 }
 func (UnimplementedTelegramServer) GetDialogs(context.Context, *emptypb.Empty) (*DialogsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetDialogs not implemented")
+}
+func (UnimplementedTelegramServer) SetUserNotifySettings(context.Context, *SetNotifySettingsRequest) (*Result, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetUserNotifySettings not implemented")
 }
 func (UnimplementedTelegramServer) mustEmbedUnimplementedTelegramServer() {}
 
@@ -213,6 +227,24 @@ func _Telegram_GetDialogs_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Telegram_SetUserNotifySettings_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetNotifySettingsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TelegramServer).SetUserNotifySettings(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/telegram.Telegram/setUserNotifySettings",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TelegramServer).SetUserNotifySettings(ctx, req.(*SetNotifySettingsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Telegram_ServiceDesc is the grpc.ServiceDesc for Telegram service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -239,6 +271,10 @@ var Telegram_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "getDialogs",
 			Handler:    _Telegram_GetDialogs_Handler,
+		},
+		{
+			MethodName: "setUserNotifySettings",
+			Handler:    _Telegram_SetUserNotifySettings_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
