@@ -19,5 +19,5 @@ gen-telegramclient-mock:
 	@mockgen -source=internal/telegramClient/telegramClient.go -destination=internal/testing/telegramClient/telegramClient.go
 
 gen-telegram:
-	protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative proto/telegram.proto
-	mv proto/telegram*.go pkg/telegram/
+	@protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative proto/telegram.proto
+	@mv proto/telegram*.go pkg/telegram/
