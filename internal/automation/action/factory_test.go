@@ -28,6 +28,26 @@ func TestCreateAction_createSendMessage(t *testing.T) {
 	}
 }
 
+func TestCreateAction_createMuteUser(t *testing.T) {
+	actionModel := model.Action{
+		Name:    "muteUser",
+		Mapping: nil,
+	}
+
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	telegramClient := telegramClient2.NewMockTelegramClient(ctrl)
+
+	action, err := CreateAction(actionModel, telegramClient)
+	dry.TestHandleError(t, err)
+	switch action.(type) {
+	case muteUserAction:
+	default:
+		t.Errorf("action type is not muteUserAction")
+	}
+}
+
 func TestCreateAction_unknownAction(t *testing.T) {
 	const name = "someAction"
 	actionModel := model.Action{
