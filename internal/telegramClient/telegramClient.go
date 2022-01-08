@@ -16,6 +16,7 @@ type TelegramClient interface {
 	Dialogs() (*telegram.DialogsResponse, error)
 	SendMessage(peer, message string) error
 	MuteUser(id, accessHash string) error
+	MuteChat(id string) error
 }
 
 type telegramClient struct {
@@ -87,6 +88,24 @@ func (t telegramClient) MuteUser(id, accessHash string) error {
 
 	if !notifySettings.GetSuccess() {
 		return fmt.Errorf("error while setting user notify settings")
+	}
+
+	return nil
+}
+
+func (t telegramClient) MuteChat(id string) error {
+	request := telegram.MuteChatRequest{
+		Id:     id,
+		Unmute: false,
+	}
+	notifySettings, err := t.telegram.MuteChat(context.Background(), &request)
+
+	if err != nil {
+		return err
+	}
+
+	if !notifySettings.GetSuccess() {
+		return fmt.Errorf("error while setting chat notify settings")
 	}
 
 	return nil
