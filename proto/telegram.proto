@@ -13,6 +13,7 @@ service Telegram {
   rpc Send(SendMessageRequest) returns (Result) {};
   rpc getDialogs(google.protobuf.Empty) returns (DialogsResponse) {};
   rpc MuteUser(MuteUserRequest) returns (Result) {};
+  rpc MuteChat(MuteChatRequest) returns (Result) {};
 }
 
 message LoginMessage {
@@ -135,5 +136,10 @@ message Message {
 message MuteUserRequest {
   string id = 1;
   string accessHash = 2;
+  bool unmute = 3;
+}
+
+message MuteChatRequest {
+  string id = 1;
   bool unmute = 3;
 }

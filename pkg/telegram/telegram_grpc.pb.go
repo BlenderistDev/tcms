@@ -25,6 +25,7 @@ type TelegramClient interface {
 	Send(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*Result, error)
 	GetDialogs(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*DialogsResponse, error)
 	MuteUser(ctx context.Context, in *MuteUserRequest, opts ...grpc.CallOption) (*Result, error)
+	MuteChat(ctx context.Context, in *MuteChatRequest, opts ...grpc.CallOption) (*Result, error)
 }
 
 type telegramClient struct {
@@ -89,6 +90,15 @@ func (c *telegramClient) MuteUser(ctx context.Context, in *MuteUserRequest, opts
 	return out, nil
 }
 
+func (c *telegramClient) MuteChat(ctx context.Context, in *MuteChatRequest, opts ...grpc.CallOption) (*Result, error) {
+	out := new(Result)
+	err := c.cc.Invoke(ctx, "/telegram.Telegram/MuteChat", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TelegramServer is the server API for Telegram service.
 // All implementations must embed UnimplementedTelegramServer
 // for forward compatibility
@@ -99,6 +109,7 @@ type TelegramServer interface {
 	Send(context.Context, *SendMessageRequest) (*Result, error)
 	GetDialogs(context.Context, *emptypb.Empty) (*DialogsResponse, error)
 	MuteUser(context.Context, *MuteUserRequest) (*Result, error)
+	MuteChat(context.Context, *MuteChatRequest) (*Result, error)
 	mustEmbedUnimplementedTelegramServer()
 }
 
@@ -123,6 +134,9 @@ func (UnimplementedTelegramServer) GetDialogs(context.Context, *emptypb.Empty) (
 }
 func (UnimplementedTelegramServer) MuteUser(context.Context, *MuteUserRequest) (*Result, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MuteUser not implemented")
+}
+func (UnimplementedTelegramServer) MuteChat(context.Context, *MuteChatRequest) (*Result, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MuteChat not implemented")
 }
 func (UnimplementedTelegramServer) mustEmbedUnimplementedTelegramServer() {}
 
@@ -245,6 +259,24 @@ func _Telegram_MuteUser_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Telegram_MuteChat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MuteChatRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TelegramServer).MuteChat(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/telegram.Telegram/MuteChat",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TelegramServer).MuteChat(ctx, req.(*MuteChatRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Telegram_ServiceDesc is the grpc.ServiceDesc for Telegram service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -275,6 +307,10 @@ var Telegram_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "MuteUser",
 			Handler:    _Telegram_MuteUser_Handler,
+		},
+		{
+			MethodName: "MuteChat",
+			Handler:    _Telegram_MuteChat_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
