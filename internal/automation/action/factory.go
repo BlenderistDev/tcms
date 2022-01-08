@@ -14,6 +14,8 @@ func CreateAction(actionData model.Action, telegram telegramClient.TelegramClien
 		action = createSendMessageAction(actionData, telegram)
 	case "muteUser":
 		action = createMuteUserAction(actionData, telegram)
+	case "muteChat":
+		action = createMuteChatAction(actionData, telegram)
 	default:
 		return nil, fmt.Errorf("unknown action %s", actionData.Name)
 	}
