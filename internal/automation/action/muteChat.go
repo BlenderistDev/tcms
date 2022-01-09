@@ -27,7 +27,7 @@ func (a muteChatAction) Execute(trigger interfaces.Trigger) error {
 		return err
 	}
 
-	err = a.telegram.MuteChat(id)
+	err = a.telegram.MuteChat(id, true)
 	if err != nil {
 		return err
 	}

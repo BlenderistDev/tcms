@@ -15,8 +15,8 @@ type TelegramClient interface {
 	GetCurrentUser() (*telegram.User, error)
 	Dialogs() (*telegram.DialogsResponse, error)
 	SendMessage(peer, message string) error
-	MuteUser(id, accessHash string) error
-	MuteChat(id string) error
+	MuteUser(id, accessHash string, unMute bool) error
+	MuteChat(id string, unMute bool) error
 }
 
 type telegramClient struct {
@@ -74,11 +74,11 @@ func (t *telegramClient) SendMessage(peer, message string) error {
 	return err
 }
 
-func (t telegramClient) MuteUser(id, accessHash string) error {
+func (t telegramClient) MuteUser(id, accessHash string, unMute bool) error {
 	request := telegram.MuteUserRequest{
 		Id:         id,
 		AccessHash: accessHash,
-		Unmute:     false,
+		Unmute:     unMute,
 	}
 	notifySettings, err := t.telegram.MuteUser(context.Background(), &request)
 
@@ -93,10 +93,10 @@ func (t telegramClient) MuteUser(id, accessHash string) error {
 	return nil
 }
 
-func (t telegramClient) MuteChat(id string) error {
+func (t telegramClient) MuteChat(id string, unMute bool) error {
 	request := telegram.MuteChatRequest{
 		Id:     id,
-		Unmute: false,
+		Unmute: unMute,
 	}
 	notifySettings, err := t.telegram.MuteChat(context.Background(), &request)
 

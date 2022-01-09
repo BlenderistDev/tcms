@@ -32,7 +32,7 @@ func (a muteUserAction) Execute(trigger interfaces.Trigger) error {
 		return err
 	}
 
-	err = a.telegram.MuteUser(peer, accessHash)
+	err = a.telegram.MuteUser(peer, accessHash, true)
 	if err != nil {
 		return err
 	}
