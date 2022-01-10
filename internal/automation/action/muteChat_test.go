@@ -34,7 +34,7 @@ func TestCreateMuteChatAction(t *testing.T) {
 	}
 }
 
-func TestMuteUserAction_Execute_idError(t *testing.T) {
+func TestMuteChatAction_Execute_idError(t *testing.T) {
 	const (
 		unMuteKey   = "unMute"
 		unMuteValue = ""
@@ -60,4 +60,32 @@ func TestMuteUserAction_Execute_idError(t *testing.T) {
 	muteUserAction := createMuteChatAction(actionModel, telegramClient)
 	err := muteUserAction.Execute(trigger)
 	dry.TestCheckEqual(t, "key id not found", err.Error())
+}
+
+func TestMuteChatAction_Execute_unMuteError(t *testing.T) {
+	const (
+		idKey   = "id"
+		idValue = "456456"
+	)
+
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	telegramClient := telegramClient2.NewMockTelegramClient(ctrl)
+
+	actionModel := model.Action{
+		Name: "name",
+		Mapping: map[string]model.Mapping{
+			idKey: {
+				Simple: true,
+				Name:   idKey,
+				Value:  idValue,
+			},
+		},
+	}
+
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	muteUserAction := createMuteChatAction(actionModel, telegramClient)
+	err := muteUserAction.Execute(trigger)
+	dry.TestCheckEqual(t, "key unMute not found", err.Error())
 }
