@@ -52,3 +52,11 @@ func (a DataMapper) GetFromMap(trigger interfaces.Trigger, key string) (string, 
 	}
 	return "", fmt.Errorf("key %s not found", key)
 }
+
+func (a DataMapper) GetFromMapBool(trigger interfaces.Trigger, key string) (bool, error) {
+	s, err := a.GetFromMap(trigger, key)
+	if err != nil {
+		return false, err
+	}
+	return s != "", nil
+}
