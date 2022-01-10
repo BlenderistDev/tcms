@@ -30,10 +30,7 @@ func TestGetFromMap_simpleMapping(t *testing.T) {
 
 	mapValue, err := datamapper.GetFromMap(trigger, "name")
 	dry.TestHandleError(t, err)
-
-	if mapValue != value {
-		t.Errorf("expected: %s, actual: %s", value, mapValue)
-	}
+	dry.TestCheckEqual(t, value, mapValue)
 }
 
 func TestGetFromMap_notSimpleMapping(t *testing.T) {
@@ -66,16 +63,13 @@ func TestGetFromMap_notSimpleMapping(t *testing.T) {
 
 	mapValue, err := datamapper.GetFromMap(trigger, name)
 	dry.TestHandleError(t, err)
-
-	if mapValue != resultValue {
-		t.Errorf("expected: %s, actual: %s", resultValue, mapValue)
-	}
+	dry.TestCheckEqual(t, resultValue, mapValue)
 }
 
 func TestGetFromInt32_simpleMapping(t *testing.T) {
 	const name = "name"
 	const value = "123"
-	const valueInt = 123
+	var valueInt int32 = 123
 
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
@@ -94,10 +88,7 @@ func TestGetFromInt32_simpleMapping(t *testing.T) {
 
 	mapValue, err := datamapper.GetFromMapInt32(trigger, "name")
 	dry.TestHandleError(t, err)
-
-	if mapValue != valueInt {
-		t.Errorf("expected: %d, actual: %d", valueInt, mapValue)
-	}
+	dry.TestCheckEqual(t, valueInt, mapValue)
 }
 
 func TestGetFromInt32_bigValue(t *testing.T) {
@@ -127,7 +118,7 @@ func TestGetFromMapInt32_notSimpleMapping(t *testing.T) {
 	const value = "value"
 	const name = "name"
 	const resultValue = "123"
-	const resultValueInt = 123
+	var resultValueInt int32 = 123
 
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
@@ -154,16 +145,13 @@ func TestGetFromMapInt32_notSimpleMapping(t *testing.T) {
 
 	mapValue, err := datamapper.GetFromMapInt32(trigger, name)
 	dry.TestHandleError(t, err)
-
-	if mapValue != resultValueInt {
-		t.Errorf("expected: %d, actual: %d", resultValueInt, mapValue)
-	}
+	dry.TestCheckEqual(t, resultValueInt, mapValue)
 }
 
 func TestGetFromInt64_simpleMapping(t *testing.T) {
 	const name = "name"
 	const value = "123"
-	const valueInt = 123
+	var valueInt int64 = 123
 
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
@@ -182,10 +170,7 @@ func TestGetFromInt64_simpleMapping(t *testing.T) {
 
 	mapValue, err := datamapper.GetFromMapInt64(trigger, "name")
 	dry.TestHandleError(t, err)
-
-	if mapValue != valueInt {
-		t.Errorf("expected: %d, actual: %d", valueInt, mapValue)
-	}
+	dry.TestCheckEqual(t, valueInt, mapValue)
 }
 
 func TestGetFromMapInt64_notSimpleMapping(t *testing.T) {
