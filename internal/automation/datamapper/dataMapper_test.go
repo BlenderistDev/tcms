@@ -309,3 +309,33 @@ func TestGetFromMap_notSimpleMapping_valueNotExist(t *testing.T) {
 
 	dry.TestCheckEqual(t, "key "+key+" not found in trigger data", err.Error())
 }
+
+func TestGetFromBool_simpleMapping_trueValue(t *testing.T) {
+	testGetFromBool_simpleMapping(t, "123", true)
+}
+
+func TestGetFromBool_simpleMapping_falseValue(t *testing.T) {
+	testGetFromBool_simpleMapping(t, "", false)
+}
+
+func testGetFromBool_simpleMapping(t *testing.T, value string, res bool) {
+	const name = "name"
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mapping := map[string]model.Mapping{
+		name: {
+			Simple: true,
+			Name:   name,
+			Value:  value,
+		},
+	}
+
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
+
+	datamapper := DataMapper{Mapping: mapping}
+
+	mapValue, err := datamapper.GetFromMapBool(trigger, name)
+	dry.TestHandleError(t, err)
+	dry.TestCheckEqual(t, res, mapValue)
+}
