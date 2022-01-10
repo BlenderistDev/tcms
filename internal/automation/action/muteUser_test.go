@@ -91,6 +91,41 @@ func TestMuteUserAction_Execute_accessHashError(t *testing.T) {
 	dry.TestCheckEqual(t, "key accessHash not found", err.Error())
 }
 
+func TestMuteUserAction_Execute_unMuteError(t *testing.T) {
+	const (
+		accessHashKey   = "accessHash"
+		accessHashValue = "456456"
+		peerKey         = "peer"
+		peerValue       = "456456"
+	)
+
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	telegramClient := telegramClient2.NewMockTelegramClient(ctrl)
+
+	actionModel := model.Action{
+		Name: "name",
+		Mapping: map[string]model.Mapping{
+			peerKey: {
+				Simple: true,
+				Name:   peerKey,
+				Value:  peerValue,
+			},
+			accessHashKey: {
+				Simple: true,
+				Name:   accessHashKey,
+				Value:  accessHashValue,
+			},
+		},
+	}
+
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	muteUserAction := createMuteUserAction(actionModel, telegramClient)
+	err := muteUserAction.Execute(trigger)
+	dry.TestCheckEqual(t, "key unMute not found", err.Error())
+}
+
 func TestMuteUserAction_Execute(t *testing.T) {
 	const (
 		accessHashKey   = "accessHash"
