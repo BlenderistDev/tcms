@@ -97,6 +97,8 @@ func TestMuteUserAction_Execute(t *testing.T) {
 		accessHashValue = "456456"
 		peerKey         = "peer"
 		peerValue       = "456456"
+		unMuteKey       = "unMute"
+		unMuteValue     = ""
 	)
 
 	ctrl := gomock.NewController(t)
@@ -105,7 +107,7 @@ func TestMuteUserAction_Execute(t *testing.T) {
 	telegramClient := telegramClient2.NewMockTelegramClient(ctrl)
 	telegramClient.
 		EXPECT().
-		MuteUser(gomock.Eq(peerValue), gomock.Eq(accessHashValue), gomock.Eq(true))
+		MuteUser(gomock.Eq(peerValue), gomock.Eq(accessHashValue), gomock.Eq(false))
 
 	actionModel := model.Action{
 		Name: "name",
@@ -119,6 +121,11 @@ func TestMuteUserAction_Execute(t *testing.T) {
 				Simple: true,
 				Name:   accessHashKey,
 				Value:  accessHashValue,
+			},
+			unMuteKey: {
+				Simple: true,
+				Name:   unMuteKey,
+				Value:  unMuteValue,
 			},
 		},
 	}
@@ -136,6 +143,8 @@ func TestMuteUserAction_Execute_telegramError(t *testing.T) {
 		peerKey         = "peer"
 		peerValue       = "456456"
 		errorText       = "some error"
+		unMuteKey       = "unMute"
+		unMuteValue     = ""
 	)
 
 	ctrl := gomock.NewController(t)
@@ -144,7 +153,7 @@ func TestMuteUserAction_Execute_telegramError(t *testing.T) {
 	telegramClient := telegramClient2.NewMockTelegramClient(ctrl)
 	telegramClient.
 		EXPECT().
-		MuteUser(gomock.Eq(peerValue), gomock.Eq(accessHashValue), gomock.Eq(true)).
+		MuteUser(gomock.Eq(peerValue), gomock.Eq(accessHashValue), gomock.Eq(false)).
 		Return(fmt.Errorf(errorText))
 
 	actionModel := model.Action{
@@ -159,6 +168,11 @@ func TestMuteUserAction_Execute_telegramError(t *testing.T) {
 				Simple: true,
 				Name:   accessHashKey,
 				Value:  accessHashValue,
+			},
+			unMuteKey: {
+				Simple: true,
+				Name:   unMuteKey,
+				Value:  unMuteValue,
 			},
 		},
 	}

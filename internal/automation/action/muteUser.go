@@ -32,7 +32,12 @@ func (a muteUserAction) Execute(trigger interfaces.Trigger) error {
 		return err
 	}
 
-	err = a.telegram.MuteUser(peer, accessHash, true)
+	unMute, err := a.GetFromMapBool(trigger, "unMute")
+	if err != nil {
+		return err
+	}
+
+	err = a.telegram.MuteUser(peer, accessHash, unMute)
 	if err != nil {
 		return err
 	}
