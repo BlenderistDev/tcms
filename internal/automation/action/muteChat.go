@@ -27,7 +27,12 @@ func (a muteChatAction) Execute(trigger interfaces.Trigger) error {
 		return err
 	}
 
-	err = a.telegram.MuteChat(id, true)
+	unMute, err := a.GetFromMapBool(trigger, "unMute")
+	if err != nil {
+		return err
+	}
+
+	err = a.telegram.MuteChat(id, unMute)
 	if err != nil {
 		return err
 	}
