@@ -80,13 +80,13 @@ func (t telegramClient) MuteUser(id, accessHash string, unMute bool) error {
 		AccessHash: accessHash,
 		Unmute:     unMute,
 	}
-	notifySettings, err := t.telegram.MuteUser(context.Background(), &request)
+	res, err := t.telegram.MuteUser(context.Background(), &request)
 
 	if err != nil {
 		return err
 	}
 
-	if !notifySettings.GetSuccess() {
+	if !res.GetSuccess() {
 		return fmt.Errorf("error while setting user notify settings")
 	}
 
@@ -98,13 +98,13 @@ func (t telegramClient) MuteChat(id string, unMute bool) error {
 		Id:     id,
 		Unmute: unMute,
 	}
-	notifySettings, err := t.telegram.MuteChat(context.Background(), &request)
+	res, err := t.telegram.MuteChat(context.Background(), &request)
 
 	if err != nil {
 		return err
 	}
 
-	if !notifySettings.GetSuccess() {
+	if !res.GetSuccess() {
 		return fmt.Errorf("error while setting chat notify settings")
 	}
 
