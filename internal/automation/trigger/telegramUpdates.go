@@ -1,4 +1,4 @@
-package automation
+package trigger
 
 import (
 	"encoding/json"

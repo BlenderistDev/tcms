@@ -5,6 +5,7 @@ import (
 	"github.com/joho/godotenv"
 	"tcms/m/internal/automation"
 	"tcms/m/internal/automation/interfaces"
+	"tcms/m/internal/automation/trigger"
 	"tcms/m/internal/db"
 	"tcms/m/internal/db/repository"
 	"tcms/m/internal/dry"
@@ -37,7 +38,7 @@ func main() {
 	automationService := automation.Service{}
 
 	go automationService.Start(automationRepo, telegram, triggerChan)
-	go automation.UpdateTriggerFactory(addConsumer, triggerChan)
+	go trigger.UpdateTriggerFactory(addConsumer, triggerChan)
 	go webserver.StartWebServer(telegram, addConsumer)
 
 	select {}
