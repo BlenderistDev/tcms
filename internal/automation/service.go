@@ -17,7 +17,7 @@ type Service struct {
 }
 
 // Start launch automation service
-func (s *Service) Start(automationRepo repository.AutomationRepository, telegram telegramClient.TelegramClient) {
+func (s *Service) Start(automationRepo repository.AutomationRepository, telegram telegramClient.TelegramClient, triggerChan chan interfaces.Trigger) {
 	automations, err := automationRepo.GetAll(context.Background())
 	dry.HandleErrorPanic(err)
 
@@ -44,6 +44,11 @@ func (s *Service) Start(automationRepo repository.AutomationRepository, telegram
 		for _, trigger := range automation.Triggers {
 			s.list[trigger] = append(s.list[trigger], coreAutomation)
 		}
+	}
+
+	for {
+		trigger := <-triggerChan
+		s.HandleTrigger(trigger)
 	}
 }
 

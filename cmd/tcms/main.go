@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/joho/godotenv"
 	"tcms/m/internal/automation"
+	"tcms/m/internal/automation/interfaces"
 	"tcms/m/internal/db"
 	"tcms/m/internal/db/repository"
 	"tcms/m/internal/dry"
@@ -31,7 +32,12 @@ func main() {
 	kafkaError := make(chan error)
 
 	go kafka.CreateKafkaSubscription(addConsumer, kafkaError, quitKafka)
-	go automation.UpdateTriggerFactory(addConsumer, telegram, automationRepo)
+
+	triggerChan := make(chan interfaces.Trigger)
+	automationService := automation.Service{}
+
+	go automationService.Start(automationRepo, telegram, triggerChan)
+	go automation.UpdateTriggerFactory(addConsumer, triggerChan)
 	go webserver.StartWebServer(telegram, addConsumer)
 
 	select {}

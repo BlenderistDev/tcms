@@ -2,9 +2,8 @@ package automation
 
 import (
 	"encoding/json"
-	"tcms/m/internal/db/repository"
+	"tcms/m/internal/automation/interfaces"
 	"tcms/m/internal/dry"
-	"tcms/m/internal/telegramClient"
 )
 
 type TelegramUpdateTrigger struct {
@@ -20,10 +19,7 @@ func (t TelegramUpdateTrigger) GetData() map[string]string {
 	return t.Data
 }
 
-func UpdateTriggerFactory(addConsumer chan chan []uint8, telegram telegramClient.TelegramClient, automationRepo repository.AutomationRepository) {
-	automationService := Service{}
-	automationService.Start(automationRepo, telegram)
-
+func UpdateTriggerFactory(addConsumer chan chan []uint8, triggerChan chan interfaces.Trigger) {
 	ch := make(chan []uint8)
 	addConsumer <- ch
 	for {
@@ -31,6 +27,6 @@ func UpdateTriggerFactory(addConsumer chan chan []uint8, telegram telegramClient
 		var trigger TelegramUpdateTrigger
 		err := json.Unmarshal(data, &trigger)
 		dry.HandleError(err)
-		automationService.HandleTrigger(trigger)
+		triggerChan <- trigger
 	}
 }
