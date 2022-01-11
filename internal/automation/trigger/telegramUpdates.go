@@ -19,7 +19,7 @@ func (t TelegramUpdateTrigger) GetData() map[string]string {
 	return t.Data
 }
 
-func UpdateTriggerFactory(addConsumer chan chan []uint8, triggerChan chan interfaces.Trigger) {
+func StartTelegramTrigger(addConsumer chan chan []uint8, triggerChan chan interfaces.Trigger) {
 	ch := make(chan []uint8)
 	addConsumer <- ch
 	for {

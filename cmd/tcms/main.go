@@ -38,7 +38,7 @@ func main() {
 	automationService := automation.Service{}
 
 	go automationService.Start(automationRepo, telegram, triggerChan)
-	go trigger.UpdateTriggerFactory(addConsumer, triggerChan)
+	go trigger.StartTelegramTrigger(addConsumer, triggerChan)
 	go webserver.StartWebServer(telegram, addConsumer)
 
 	select {}
