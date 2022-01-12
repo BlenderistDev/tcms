@@ -6,8 +6,8 @@ import (
 )
 
 type TimeTrigger struct {
-	Name string            `json:"name"`
-	Data map[string]string `json:"data"`
+	Name string
+	Data map[string]string
 }
 
 func (t TimeTrigger) GetName() string {
