@@ -55,7 +55,7 @@ func (s *Service) Start(automationRepo repository.AutomationRepository, telegram
 func (s *Service) HandleTrigger(trigger interfaces.Trigger) {
 	automationList := s.list[trigger.GetName()]
 	if automationList == nil {
-		fmt.Println("no automation")
+		fmt.Printf("no automation for trigger %s", trigger.GetName())
 		return
 	}
 	for _, automation := range automationList {
