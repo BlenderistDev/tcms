@@ -11,20 +11,20 @@ type Action interface {
 	Execute(action model.Action, trigger interfaces.Trigger) error
 }
 
-type ActionWithModel struct {
-	Action interfaces.Action
-	Model  model.Action
+type actionWithModel struct {
+	action interfaces.Action
+	model  model.Action
 }
 
 func GetActionWithModel(action interfaces.Action, model model.Action) interfaces.ActionWithModel {
-	return &ActionWithModel{
-		Action: action,
-		Model:  model,
+	return &actionWithModel{
+		action: action,
+		model:  model,
 	}
 }
 
-func (m *ActionWithModel) Execute(trigger interfaces.Trigger) error {
-	return m.Action.Execute(m.Model, trigger)
+func (m *actionWithModel) Execute(trigger interfaces.Trigger) error {
+	return m.action.Execute(m.model, trigger)
 }
 
 type Automation struct {

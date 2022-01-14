@@ -63,7 +63,7 @@ func (mr *MockTriggerMockRecorder) GetName() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetName", reflect.TypeOf((*MockTrigger)(nil).GetName))
 }
 
-// MockAction is a mock of Action interface.
+// MockAction is a mock of action interface.
 type MockAction struct {
 	ctrl     *gomock.Controller
 	recorder *MockActionMockRecorder
