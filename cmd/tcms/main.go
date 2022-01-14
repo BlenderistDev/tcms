@@ -22,8 +22,7 @@ func main() {
 	telegram, err := telegramClient.NewTelegram()
 	dry.HandleError(err)
 
-	ctx := context.Background()
-	connection, err := db.GetConnection(ctx)
+	connection, err := db.GetConnection(context.Background())
 	dry.HandleErrorPanic(err)
 
 	automationRepo := repository.CreateAutomationRepository(connection)
