@@ -25,7 +25,7 @@ func TestCreateSendMessageAction(t *testing.T) {
 	defer ctrl.Finish()
 	telegramClient := telegramClient2.NewMockTelegramClient(ctrl)
 
-	createdAction := createSendMessageAction(actionModel, telegramClient)
+	createdAction := CreateSendMessageAction(actionModel, telegramClient)
 
 	switch action := createdAction.(type) {
 	case sendMessageAction:
@@ -75,7 +75,7 @@ func TestSendMessageAction_Execute(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	sendMessageAction := createSendMessageAction(actionModel, telegramClient)
+	sendMessageAction := CreateSendMessageAction(actionModel, telegramClient)
 	err := sendMessageAction.Execute(trigger)
 	dry.TestHandleError(t, err)
 }
@@ -110,7 +110,7 @@ func TestSendMessageAction_Execute_peerError(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	sendMessageAction := createSendMessageAction(actionModel, telegramClient)
+	sendMessageAction := CreateSendMessageAction(actionModel, telegramClient)
 	err := sendMessageAction.Execute(trigger)
 	dry.TestCheckEqual(t, "key peer not found", err.Error())
 }
@@ -145,7 +145,7 @@ func TestSendMessageAction_Execute_messageError(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	sendMessageAction := createSendMessageAction(actionModel, telegramClient)
+	sendMessageAction := CreateSendMessageAction(actionModel, telegramClient)
 	err := sendMessageAction.Execute(trigger)
 	dry.TestCheckEqual(t, "key message not found", err.Error())
 }
@@ -192,7 +192,7 @@ func TestSendMessageAction_Execute_telegramError(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	sendMessageAction := createSendMessageAction(actionModel, telegramClient)
+	sendMessageAction := CreateSendMessageAction(actionModel, telegramClient)
 	err := sendMessageAction.Execute(trigger)
 	dry.TestCheckEqual(t, errorTexxt, err.Error())
 }

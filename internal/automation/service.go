@@ -3,7 +3,6 @@ package automation
 import (
 	"context"
 	"fmt"
-	action2 "tcms/m/internal/automation/action"
 	condition2 "tcms/m/internal/automation/condition"
 	"tcms/m/internal/automation/core"
 	"tcms/m/internal/automation/interfaces"
@@ -13,7 +12,8 @@ import (
 )
 
 type Service struct {
-	list map[string][]core.Automation
+	actionMap map[string]interfaces.Action
+	list      map[string][]core.Automation
 }
 
 // Start launch automation service
@@ -24,11 +24,13 @@ func (s *Service) Start(automationRepo repository.AutomationRepository, telegram
 	s.list = make(map[string][]core.Automation, len(automations))
 
 	for _, automation := range automations {
-		actions := make([]interfaces.Action, len(automation.Actions))
+		actions := make([]core.ActionWithModel, len(automation.Actions))
 		for i, action := range automation.Actions {
-			action, err := action2.CreateAction(action, telegram)
 			if err == nil {
-				actions[i] = action
+				actions[i] = core.ActionWithModel{
+					Action: s.getAction(action.Name),
+					Model:  action,
+				}
 			} else {
 				fmt.Println(err)
 			}
@@ -50,6 +52,17 @@ func (s *Service) Start(automationRepo repository.AutomationRepository, telegram
 		trigger := <-triggerChan
 		s.HandleTrigger(trigger)
 	}
+}
+
+func (s *Service) AddAction(name string, action interfaces.Action) {
+	if s.actionMap == nil {
+		s.actionMap = map[string]interfaces.Action{}
+	}
+	s.actionMap[name] = action
+}
+
+func (s *Service) getAction(name string) interfaces.Action {
+	return s.actionMap[name]
 }
 
 func (s *Service) HandleTrigger(trigger interfaces.Trigger) {

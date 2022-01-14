@@ -3,11 +3,25 @@ package core
 import (
 	"fmt"
 	"tcms/m/internal/automation/interfaces"
+	"tcms/m/internal/db/model"
 	"tcms/m/internal/dry"
 )
 
+type Action interface {
+	Execute(action model.Action, trigger interfaces.Trigger) error
+}
+
+type ActionWithModel struct {
+	Action interfaces.Action
+	Model  model.Action
+}
+
+func (m ActionWithModel) Execute(trigger interfaces.Trigger) error {
+	return m.Action.Execute(m.Model, trigger)
+}
+
 type Automation struct {
-	Actions   []interfaces.Action
+	Actions   []ActionWithModel
 	Condition interfaces.Condition
 }
 

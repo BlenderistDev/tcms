@@ -25,7 +25,7 @@ func TestCreateMuteUserAction(t *testing.T) {
 	defer ctrl.Finish()
 	telegramClient := telegramClient2.NewMockTelegramClient(ctrl)
 
-	createdAction := createMuteUserAction(actionModel, telegramClient)
+	createdAction := CreateMuteUserAction(actionModel, telegramClient)
 
 	switch action := createdAction.(type) {
 	case muteUserAction:
@@ -58,7 +58,7 @@ func TestMuteUserAction_Execute_peerError(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	muteUserAction := createMuteUserAction(actionModel, telegramClient)
+	muteUserAction := CreateMuteUserAction(actionModel, telegramClient)
 	err := muteUserAction.Execute(trigger)
 	dry.TestCheckEqual(t, "key peer not found", err.Error())
 }
@@ -86,7 +86,7 @@ func TestMuteUserAction_Execute_accessHashError(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	muteUserAction := createMuteUserAction(actionModel, telegramClient)
+	muteUserAction := CreateMuteUserAction(actionModel, telegramClient)
 	err := muteUserAction.Execute(trigger)
 	dry.TestCheckEqual(t, "key accessHash not found", err.Error())
 }
@@ -121,7 +121,7 @@ func TestMuteUserAction_Execute_unMuteError(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	muteUserAction := createMuteUserAction(actionModel, telegramClient)
+	muteUserAction := CreateMuteUserAction(actionModel, telegramClient)
 	err := muteUserAction.Execute(trigger)
 	dry.TestCheckEqual(t, "key unMute not found", err.Error())
 }
@@ -166,7 +166,7 @@ func TestMuteUserAction_Execute(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	muteUserAction := createMuteUserAction(actionModel, telegramClient)
+	muteUserAction := CreateMuteUserAction(actionModel, telegramClient)
 	err := muteUserAction.Execute(trigger)
 	dry.TestHandleError(t, err)
 }
@@ -213,7 +213,7 @@ func TestMuteUserAction_Execute_telegramError(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	muteUserAction := createMuteUserAction(actionModel, telegramClient)
+	muteUserAction := CreateMuteUserAction(actionModel, telegramClient)
 	err := muteUserAction.Execute(trigger)
 	dry.TestCheckEqual(t, errorText, err.Error())
 }

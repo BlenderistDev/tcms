@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/joho/godotenv"
 	"tcms/m/internal/automation"
+	"tcms/m/internal/automation/action"
 	"tcms/m/internal/automation/interfaces"
 	"tcms/m/internal/automation/trigger"
 	"tcms/m/internal/db"
@@ -34,9 +35,15 @@ func main() {
 	go kafka.CreateKafkaSubscription(addConsumer, kafkaError, quitKafka)
 
 	triggerChan := make(chan interfaces.Trigger)
-	automationService := automation.Service{}
 
-	go automationService.Start(automationRepo, telegram, triggerChan)
+	go func() {
+		automationService := automation.Service{}
+		automationService.AddAction("sendMessage", action.CreateSendMessageAction(telegram))
+		automationService.AddAction("muteUser", action.CreateMuteUserAction(telegram))
+		automationService.AddAction("muteChat", action.CreateMuteChatAction(telegram))
+		automationService.Start(automationRepo, telegram, triggerChan)
+	}()
+
 	go trigger.StartTelegramTrigger(addConsumer, triggerChan)
 	go trigger.StartTimeTrigger(triggerChan)
 	go webserver.StartWebServer(telegram, addConsumer)

@@ -25,7 +25,7 @@ func TestCreateMuteChatAction(t *testing.T) {
 	defer ctrl.Finish()
 	telegramClient := telegramClient2.NewMockTelegramClient(ctrl)
 
-	createdAction := createMuteChatAction(actionModel, telegramClient)
+	createdAction := CreateMuteChatAction(actionModel, telegramClient)
 
 	switch action := createdAction.(type) {
 	case muteChatAction:
@@ -58,7 +58,7 @@ func TestMuteChatAction_Execute_idError(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	muteUserAction := createMuteChatAction(actionModel, telegramClient)
+	muteUserAction := CreateMuteChatAction(actionModel, telegramClient)
 	err := muteUserAction.Execute(trigger)
 	dry.TestCheckEqual(t, "key id not found", err.Error())
 }
@@ -86,7 +86,7 @@ func TestMuteChatAction_Execute_unMuteError(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	muteUserAction := createMuteChatAction(actionModel, telegramClient)
+	muteUserAction := CreateMuteChatAction(actionModel, telegramClient)
 	err := muteUserAction.Execute(trigger)
 	dry.TestCheckEqual(t, "key unMute not found", err.Error())
 }
@@ -124,7 +124,7 @@ func TestMuteChatAction_Execute(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	muteUserAction := createMuteChatAction(actionModel, telegramClient)
+	muteUserAction := CreateMuteChatAction(actionModel, telegramClient)
 	err := muteUserAction.Execute(trigger)
 	dry.TestHandleError(t, err)
 }
@@ -164,7 +164,7 @@ func TestMuteChatAction_Execute_telegramError(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	muteUserAction := createMuteChatAction(actionModel, telegramClient)
+	muteUserAction := CreateMuteChatAction(actionModel, telegramClient)
 	err := muteUserAction.Execute(trigger)
 	dry.TestCheckEqual(t, errorText, err.Error())
 }

@@ -11,11 +11,11 @@ func CreateAction(actionData model.Action, telegram telegramClient.TelegramClien
 	var action interfaces.Action
 	switch actionData.Name {
 	case "sendMessage":
-		action = createSendMessageAction(actionData, telegram)
+		action = CreateSendMessageAction(telegram)
 	case "muteUser":
-		action = createMuteUserAction(actionData, telegram)
+		action = CreateMuteUserAction(telegram)
 	case "muteChat":
-		action = createMuteChatAction(actionData, telegram)
+		action = CreateMuteChatAction(telegram)
 	default:
 		return nil, fmt.Errorf("unknown action %s", actionData.Name)
 	}
