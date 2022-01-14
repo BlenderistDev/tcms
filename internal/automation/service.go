@@ -8,7 +8,6 @@ import (
 	"tcms/m/internal/automation/interfaces"
 	"tcms/m/internal/db/repository"
 	"tcms/m/internal/dry"
-	"tcms/m/internal/telegramClient"
 )
 
 type Service struct {
@@ -17,7 +16,7 @@ type Service struct {
 }
 
 // Start launch automation service
-func (s *Service) Start(automationRepo repository.AutomationRepository, telegram telegramClient.TelegramClient, triggerChan chan interfaces.Trigger) {
+func (s *Service) Start(automationRepo repository.AutomationRepository, triggerChan chan interfaces.Trigger) {
 	automations, err := automationRepo.GetAll(context.Background())
 	dry.HandleErrorPanic(err)
 

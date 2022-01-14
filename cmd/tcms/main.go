@@ -41,7 +41,7 @@ func main() {
 		automationService.AddAction("sendMessage", action.CreateSendMessageAction(telegram))
 		automationService.AddAction("muteUser", action.CreateMuteUserAction(telegram))
 		automationService.AddAction("muteChat", action.CreateMuteChatAction(telegram))
-		automationService.Start(automationRepo, telegram, triggerChan)
+		automationService.Start(automationRepo, triggerChan)
 	}()
 
 	go trigger.StartTelegramTrigger(addConsumer, triggerChan)
