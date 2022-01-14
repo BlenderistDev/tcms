@@ -11,25 +11,14 @@ import (
 )
 
 func TestCreateMuteUserAction(t *testing.T) {
-	actionModel := model.Action{
-		Name: "name",
-		Mapping: map[string]model.Mapping{
-			"test": {
-				Simple: true,
-				Name:   "name",
-				Value:  "value",
-			}},
-	}
-
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 	telegramClient := telegramClient2.NewMockTelegramClient(ctrl)
 
-	createdAction := createMuteUserAction(actionModel, telegramClient)
+	createdAction := CreateMuteUserAction(telegramClient)
 
-	switch action := createdAction.(type) {
+	switch createdAction.(type) {
 	case muteUserAction:
-		dry.TestCheckEqual(t, actionModel.Mapping, action.DataMapper.Mapping)
 	default:
 		t.Errorf("action type is not muteUserAction")
 	}
@@ -58,8 +47,8 @@ func TestMuteUserAction_Execute_peerError(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	muteUserAction := createMuteUserAction(actionModel, telegramClient)
-	err := muteUserAction.Execute(trigger)
+	muteUserAction := CreateMuteUserAction(telegramClient)
+	err := muteUserAction.Execute(actionModel, trigger)
 	dry.TestCheckEqual(t, "key peer not found", err.Error())
 }
 
@@ -86,8 +75,8 @@ func TestMuteUserAction_Execute_accessHashError(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	muteUserAction := createMuteUserAction(actionModel, telegramClient)
-	err := muteUserAction.Execute(trigger)
+	muteUserAction := CreateMuteUserAction(telegramClient)
+	err := muteUserAction.Execute(actionModel, trigger)
 	dry.TestCheckEqual(t, "key accessHash not found", err.Error())
 }
 
@@ -121,8 +110,8 @@ func TestMuteUserAction_Execute_unMuteError(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	muteUserAction := createMuteUserAction(actionModel, telegramClient)
-	err := muteUserAction.Execute(trigger)
+	muteUserAction := CreateMuteUserAction(telegramClient)
+	err := muteUserAction.Execute(actionModel, trigger)
 	dry.TestCheckEqual(t, "key unMute not found", err.Error())
 }
 
@@ -166,8 +155,8 @@ func TestMuteUserAction_Execute(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	muteUserAction := createMuteUserAction(actionModel, telegramClient)
-	err := muteUserAction.Execute(trigger)
+	muteUserAction := CreateMuteUserAction(telegramClient)
+	err := muteUserAction.Execute(actionModel, trigger)
 	dry.TestHandleError(t, err)
 }
 
@@ -213,7 +202,7 @@ func TestMuteUserAction_Execute_telegramError(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	muteUserAction := createMuteUserAction(actionModel, telegramClient)
-	err := muteUserAction.Execute(trigger)
+	muteUserAction := CreateMuteUserAction(telegramClient)
+	err := muteUserAction.Execute(actionModel, trigger)
 	dry.TestCheckEqual(t, errorText, err.Error())
 }

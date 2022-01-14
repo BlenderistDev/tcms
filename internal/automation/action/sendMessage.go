@@ -9,25 +9,22 @@ import (
 
 type sendMessageAction struct {
 	telegram telegramClient.TelegramClient
-	datamapper.DataMapper
 }
 
-func createSendMessageAction(action model.Action, client telegramClient.TelegramClient) interfaces.Action {
+func CreateSendMessageAction(client telegramClient.TelegramClient) interfaces.Action {
 	return sendMessageAction{
 		telegram: client,
-		DataMapper: datamapper.DataMapper{
-			Mapping: action.Mapping,
-		},
 	}
 }
 
-func (a sendMessageAction) Execute(trigger interfaces.Trigger) error {
-	peer, err := a.GetFromMap(trigger, "peer")
+func (a sendMessageAction) Execute(action model.Action, trigger interfaces.Trigger) error {
+	dm := datamapper.DataMapper{Mapping: action.Mapping}
+	peer, err := dm.GetFromMap(trigger, "peer")
 	if err != nil {
 		return err
 	}
 
-	message, err := a.GetFromMap(trigger, "message")
+	message, err := dm.GetFromMap(trigger, "message")
 	if err != nil {
 		return err
 	}

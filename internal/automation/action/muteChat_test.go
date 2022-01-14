@@ -11,25 +11,14 @@ import (
 )
 
 func TestCreateMuteChatAction(t *testing.T) {
-	actionModel := model.Action{
-		Name: "name",
-		Mapping: map[string]model.Mapping{
-			"test": {
-				Simple: true,
-				Name:   "name",
-				Value:  "value",
-			}},
-	}
-
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 	telegramClient := telegramClient2.NewMockTelegramClient(ctrl)
 
-	createdAction := createMuteChatAction(actionModel, telegramClient)
+	createdAction := CreateMuteChatAction(telegramClient)
 
-	switch action := createdAction.(type) {
+	switch createdAction.(type) {
 	case muteChatAction:
-		dry.TestCheckEqual(t, actionModel.Mapping, action.DataMapper.Mapping)
 	default:
 		t.Errorf("action type is not muteChatAction")
 	}
@@ -58,8 +47,8 @@ func TestMuteChatAction_Execute_idError(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	muteUserAction := createMuteChatAction(actionModel, telegramClient)
-	err := muteUserAction.Execute(trigger)
+	muteUserAction := CreateMuteChatAction(telegramClient)
+	err := muteUserAction.Execute(actionModel, trigger)
 	dry.TestCheckEqual(t, "key id not found", err.Error())
 }
 
@@ -86,8 +75,8 @@ func TestMuteChatAction_Execute_unMuteError(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	muteUserAction := createMuteChatAction(actionModel, telegramClient)
-	err := muteUserAction.Execute(trigger)
+	muteUserAction := CreateMuteChatAction(telegramClient)
+	err := muteUserAction.Execute(actionModel, trigger)
 	dry.TestCheckEqual(t, "key unMute not found", err.Error())
 }
 
@@ -124,8 +113,8 @@ func TestMuteChatAction_Execute(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	muteUserAction := createMuteChatAction(actionModel, telegramClient)
-	err := muteUserAction.Execute(trigger)
+	muteUserAction := CreateMuteChatAction(telegramClient)
+	err := muteUserAction.Execute(actionModel, trigger)
 	dry.TestHandleError(t, err)
 }
 
@@ -164,7 +153,7 @@ func TestMuteChatAction_Execute_telegramError(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	muteUserAction := createMuteChatAction(actionModel, telegramClient)
-	err := muteUserAction.Execute(trigger)
+	muteUserAction := CreateMuteChatAction(telegramClient)
+	err := muteUserAction.Execute(actionModel, trigger)
 	dry.TestCheckEqual(t, errorText, err.Error())
 }

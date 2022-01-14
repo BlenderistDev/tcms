@@ -9,30 +9,27 @@ import (
 
 type muteUserAction struct {
 	telegram telegramClient.TelegramClient
-	datamapper.DataMapper
 }
 
-func createMuteUserAction(action model.Action, client telegramClient.TelegramClient) interfaces.Action {
+func CreateMuteUserAction(client telegramClient.TelegramClient) interfaces.Action {
 	return muteUserAction{
 		telegram: client,
-		DataMapper: datamapper.DataMapper{
-			Mapping: action.Mapping,
-		},
 	}
 }
 
-func (a muteUserAction) Execute(trigger interfaces.Trigger) error {
-	peer, err := a.GetFromMap(trigger, "peer")
+func (a muteUserAction) Execute(action model.Action, trigger interfaces.Trigger) error {
+	dm := datamapper.DataMapper{Mapping: action.Mapping}
+	peer, err := dm.GetFromMap(trigger, "peer")
 	if err != nil {
 		return err
 	}
 
-	accessHash, err := a.GetFromMap(trigger, "accessHash")
+	accessHash, err := dm.GetFromMap(trigger, "accessHash")
 	if err != nil {
 		return err
 	}
 
-	unMute, err := a.GetFromMapBool(trigger, "unMute")
+	unMute, err := dm.GetFromMapBool(trigger, "unMute")
 	if err != nil {
 		return err
 	}

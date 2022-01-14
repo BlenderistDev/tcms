@@ -9,25 +9,22 @@ import (
 
 type muteChatAction struct {
 	telegram telegramClient.TelegramClient
-	datamapper.DataMapper
 }
 
-func createMuteChatAction(action model.Action, client telegramClient.TelegramClient) interfaces.Action {
+func CreateMuteChatAction(client telegramClient.TelegramClient) interfaces.Action {
 	return muteChatAction{
 		telegram: client,
-		DataMapper: datamapper.DataMapper{
-			Mapping: action.Mapping,
-		},
 	}
 }
 
-func (a muteChatAction) Execute(trigger interfaces.Trigger) error {
-	id, err := a.GetFromMap(trigger, "id")
+func (a muteChatAction) Execute(action model.Action, trigger interfaces.Trigger) error {
+	dm := datamapper.DataMapper{Mapping: action.Mapping}
+	id, err := dm.GetFromMap(trigger, "id")
 	if err != nil {
 		return err
 	}
 
-	unMute, err := a.GetFromMapBool(trigger, "unMute")
+	unMute, err := dm.GetFromMapBool(trigger, "unMute")
 	if err != nil {
 		return err
 	}

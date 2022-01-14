@@ -15,12 +15,12 @@ func TestAutomation_ExecuteNoCondition(t *testing.T) {
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
 
-	action := mock_interfaces.NewMockAction(ctrl)
+	action := mock_interfaces.NewMockActionWithModel(ctrl)
 	action.
 		EXPECT().
 		Execute(gomock.Eq(trigger))
 
-	actions := []interfaces.Action{action}
+	actions := []interfaces.ActionWithModel{action}
 
 	automation := Automation{Actions: actions}
 
@@ -34,17 +34,17 @@ func TestAutomation_ExecuteManyActions(t *testing.T) {
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
 
-	action1 := mock_interfaces.NewMockAction(ctrl)
+	action1 := mock_interfaces.NewMockActionWithModel(ctrl)
 	action1.
 		EXPECT().
 		Execute(gomock.Eq(trigger))
 
-	action2 := mock_interfaces.NewMockAction(ctrl)
+	action2 := mock_interfaces.NewMockActionWithModel(ctrl)
 	action2.
 		EXPECT().
 		Execute(gomock.Eq(trigger))
 
-	actions := []interfaces.Action{action1, action2}
+	actions := []interfaces.ActionWithModel{action1, action2}
 
 	automation := Automation{Actions: actions}
 
@@ -58,7 +58,7 @@ func TestAutomation_ExecuteWithConditionTrue(t *testing.T) {
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
 
-	action := mock_interfaces.NewMockAction(ctrl)
+	action := mock_interfaces.NewMockActionWithModel(ctrl)
 	action.
 		EXPECT().
 		Execute(gomock.Eq(trigger))
@@ -69,7 +69,7 @@ func TestAutomation_ExecuteWithConditionTrue(t *testing.T) {
 		Check(gomock.Eq(trigger)).
 		Return(true, nil)
 
-	actions := []interfaces.Action{action}
+	actions := []interfaces.ActionWithModel{action}
 
 	automation := Automation{Actions: actions, Condition: condition}
 
@@ -83,7 +83,7 @@ func TestAutomation_ExecuteWithConditionFalse(t *testing.T) {
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
 
-	action := mock_interfaces.NewMockAction(ctrl)
+	action := mock_interfaces.NewMockActionWithModel(ctrl)
 
 	condition := mock_interfaces.NewMockCondition(ctrl)
 	condition.
@@ -91,7 +91,7 @@ func TestAutomation_ExecuteWithConditionFalse(t *testing.T) {
 		Check(gomock.Eq(trigger)).
 		Return(false, nil)
 
-	actions := []interfaces.Action{action}
+	actions := []interfaces.ActionWithModel{action}
 
 	automation := Automation{Actions: actions, Condition: condition}
 
@@ -105,7 +105,7 @@ func TestAutomation_ExecuteWithConditionError(t *testing.T) {
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
 
-	action := mock_interfaces.NewMockAction(ctrl)
+	action := mock_interfaces.NewMockActionWithModel(ctrl)
 
 	condition := mock_interfaces.NewMockCondition(ctrl)
 	condition.
@@ -113,7 +113,7 @@ func TestAutomation_ExecuteWithConditionError(t *testing.T) {
 		Check(gomock.Eq(trigger)).
 		Return(true, fmt.Errorf("some error"))
 
-	actions := []interfaces.Action{action}
+	actions := []interfaces.ActionWithModel{action}
 
 	automation := Automation{Actions: actions, Condition: condition}
 
@@ -128,13 +128,13 @@ func TestAutomation_ExecuteWithActionError(t *testing.T) {
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
 
 	actionError := "some error"
-	action := mock_interfaces.NewMockAction(ctrl)
+	action := mock_interfaces.NewMockActionWithModel(ctrl)
 	action.
 		EXPECT().
 		Execute(gomock.Eq(trigger)).
 		Return(fmt.Errorf(actionError))
 
-	actions := []interfaces.Action{action}
+	actions := []interfaces.ActionWithModel{action}
 
 	automation := Automation{Actions: actions}
 
