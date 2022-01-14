@@ -7,6 +7,7 @@ package mock_interfaces
 import (
 	reflect "reflect"
 	interfaces "tcms/m/internal/automation/interfaces"
+	model "tcms/m/internal/db/model"
 
 	gomock "github.com/golang/mock/gomock"
 )
@@ -86,17 +87,17 @@ func (m *MockAction) EXPECT() *MockActionMockRecorder {
 }
 
 // Execute mocks base method.
-func (m *MockAction) Execute(trigger interfaces.Trigger) error {
+func (m *MockAction) Execute(action model.Action, trigger interfaces.Trigger) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Execute", trigger)
+	ret := m.ctrl.Call(m, "Execute", action, trigger)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Execute indicates an expected call of Execute.
-func (mr *MockActionMockRecorder) Execute(trigger interface{}) *gomock.Call {
+func (mr *MockActionMockRecorder) Execute(action, trigger interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Execute", reflect.TypeOf((*MockAction)(nil).Execute), trigger)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Execute", reflect.TypeOf((*MockAction)(nil).Execute), action, trigger)
 }
 
 // MockCondition is a mock of Condition interface.
