@@ -24,13 +24,10 @@ func (s *Service) Start(automationRepo repository.AutomationRepository, telegram
 	s.list = make(map[string][]core.Automation, len(automations))
 
 	for _, automation := range automations {
-		actions := make([]core.ActionWithModel, len(automation.Actions))
+		actions := make([]interfaces.ActionWithModel, len(automation.Actions))
 		for i, action := range automation.Actions {
 			if err == nil {
-				actions[i] = core.ActionWithModel{
-					Action: s.getAction(action.Name),
-					Model:  action,
-				}
+				actions[i] = core.GetActionWithModel(s.getAction(action.Name), action)
 			} else {
 				fmt.Println(err)
 			}

@@ -137,3 +137,40 @@ func (mr *MockConditionMockRecorder) Check(trigger interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Check", reflect.TypeOf((*MockCondition)(nil).Check), trigger)
 }
+
+// MockActionWithModel is a mock of ActionWithModel interface.
+type MockActionWithModel struct {
+	ctrl     *gomock.Controller
+	recorder *MockActionWithModelMockRecorder
+}
+
+// MockActionWithModelMockRecorder is the mock recorder for MockActionWithModel.
+type MockActionWithModelMockRecorder struct {
+	mock *MockActionWithModel
+}
+
+// NewMockActionWithModel creates a new mock instance.
+func NewMockActionWithModel(ctrl *gomock.Controller) *MockActionWithModel {
+	mock := &MockActionWithModel{ctrl: ctrl}
+	mock.recorder = &MockActionWithModelMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockActionWithModel) EXPECT() *MockActionWithModelMockRecorder {
+	return m.recorder
+}
+
+// Execute mocks base method.
+func (m *MockActionWithModel) Execute(trigger interfaces.Trigger) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Execute", trigger)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Execute indicates an expected call of Execute.
+func (mr *MockActionWithModelMockRecorder) Execute(trigger interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Execute", reflect.TypeOf((*MockActionWithModel)(nil).Execute), trigger)
+}

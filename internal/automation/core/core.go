@@ -16,16 +16,23 @@ type ActionWithModel struct {
 	Model  model.Action
 }
 
-func (m ActionWithModel) Execute(trigger interfaces.Trigger) error {
+func GetActionWithModel(action interfaces.Action, model model.Action) interfaces.ActionWithModel {
+	return &ActionWithModel{
+		Action: action,
+		Model:  model,
+	}
+}
+
+func (m *ActionWithModel) Execute(trigger interfaces.Trigger) error {
 	return m.Action.Execute(m.Model, trigger)
 }
 
 type Automation struct {
-	Actions   []ActionWithModel
+	Actions   []interfaces.ActionWithModel
 	Condition interfaces.Condition
 }
 
-func (a Automation) Execute(trigger interfaces.Trigger) error {
+func (a *Automation) Execute(trigger interfaces.Trigger) error {
 	if a.Condition == nil || a.checkCondition(trigger) {
 		err := a.executeActions(trigger)
 		if err != nil {
@@ -35,7 +42,7 @@ func (a Automation) Execute(trigger interfaces.Trigger) error {
 	return nil
 }
 
-func (a Automation) checkCondition(trigger interfaces.Trigger) bool {
+func (a *Automation) checkCondition(trigger interfaces.Trigger) bool {
 	res, err := a.Condition.Check(trigger)
 	if err != nil {
 		dry.HandleError(err)
@@ -44,7 +51,7 @@ func (a Automation) checkCondition(trigger interfaces.Trigger) bool {
 	return res
 }
 
-func (a Automation) executeActions(trigger interfaces.Trigger) error {
+func (a *Automation) executeActions(trigger interfaces.Trigger) error {
 	for _, action := range a.Actions {
 		err := action.Execute(trigger)
 		if err != nil {

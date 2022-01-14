@@ -14,3 +14,7 @@ type Action interface {
 type Condition interface {
 	Check(trigger Trigger) (bool, error)
 }
+
+type ActionWithModel interface {
+	Execute(trigger Trigger) error
+}
