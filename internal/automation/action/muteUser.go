@@ -11,7 +11,7 @@ type muteUserAction struct {
 	telegram telegramClient.TelegramClient
 }
 
-func CreateMuteUserAction(client telegramClient.TelegramClient) interfaces.Action {
+func CreateMuteUserAction(client telegramClient.TelegramClient) Action {
 	return muteUserAction{
 		telegram: client,
 	}

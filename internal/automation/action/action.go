@@ -1,4 +1,4 @@
-package core
+package action
 
 import (
 	"tcms/m/internal/automation/interfaces"

@@ -55,7 +55,7 @@ func main() {
 			for _, a := range auto.Actions {
 				act, err := action.CreateAction(a.Name, telegram)
 				dry.HandleError(err)
-				coreAutomation.AddAction(core.GetActionWithModel(act, a))
+				coreAutomation.AddAction(action.GetActionWithModel(act, a))
 			}
 
 			if auto.Condition != nil {

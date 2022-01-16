@@ -2,12 +2,11 @@ package action
 
 import (
 	"fmt"
-	"tcms/m/internal/automation/interfaces"
 	"tcms/m/internal/telegramClient"
 )
 
-func CreateAction(name string, telegram telegramClient.TelegramClient) (interfaces.Action, error) {
-	var action interfaces.Action
+func CreateAction(name string, telegram telegramClient.TelegramClient) (Action, error) {
+	var action Action
 	switch name {
 	case "sendMessage":
 		action = CreateSendMessageAction(telegram)

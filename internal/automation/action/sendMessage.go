@@ -11,7 +11,7 @@ type sendMessageAction struct {
 	telegram telegramClient.TelegramClient
 }
 
-func CreateSendMessageAction(client telegramClient.TelegramClient) interfaces.Action {
+func CreateSendMessageAction(client telegramClient.TelegramClient) Action {
 	return sendMessageAction{
 		telegram: client,
 	}
