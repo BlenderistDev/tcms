@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 	"github.com/joho/godotenv"
+	action2 "tcms/m/internal/action"
 	"tcms/m/internal/automation"
-	"tcms/m/internal/automation/action"
 	condition2 "tcms/m/internal/automation/condition"
 	"tcms/m/internal/automation/core"
 	"tcms/m/internal/automation/interfaces"
@@ -53,9 +53,9 @@ func main() {
 			}
 
 			for _, a := range auto.Actions {
-				act, err := action.CreateAction(a.Name, telegram)
+				act, err := action2.CreateAction(a.Name, telegram)
 				dry.HandleError(err)
-				coreAutomation.AddAction(action.GetActionWithModel(act, a))
+				coreAutomation.AddAction(action2.GetActionWithModel(act, a))
 			}
 
 			if auto.Condition != nil {
