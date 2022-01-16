@@ -5,16 +5,16 @@ import (
 	"time"
 )
 
-type TimeTrigger struct {
+type timeTrigger struct {
 	Name string
 	Data map[string]string
 }
 
-func (t TimeTrigger) GetName() string {
+func (t timeTrigger) GetName() string {
 	return t.Name
 }
 
-func (t TimeTrigger) GetData() map[string]string {
+func (t timeTrigger) GetData() map[string]string {
 	return t.Data
 }
 
@@ -24,7 +24,7 @@ func StartTimeTrigger(triggerChan chan interfaces.Trigger) {
 		for {
 			select {
 			case <-ticker.C:
-				trigger := TimeTrigger{
+				trigger := timeTrigger{
 					Name: "time",
 					Data: map[string]string{
 						"timestamp": time.Now().String(),

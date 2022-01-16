@@ -6,16 +6,16 @@ import (
 	"tcms/m/internal/dry"
 )
 
-type TelegramUpdateTrigger struct {
+type telegramUpdateTrigger struct {
 	Name string            `json:"name"`
 	Data map[string]string `json:"data"`
 }
 
-func (t TelegramUpdateTrigger) GetName() string {
+func (t telegramUpdateTrigger) GetName() string {
 	return t.Name
 }
 
-func (t TelegramUpdateTrigger) GetData() map[string]string {
+func (t telegramUpdateTrigger) GetData() map[string]string {
 	return t.Data
 }
 
@@ -24,7 +24,7 @@ func StartTelegramTrigger(addConsumer chan chan []uint8, triggerChan chan interf
 	addConsumer <- ch
 	for {
 		data := <-ch
-		var trigger TelegramUpdateTrigger
+		var trigger telegramUpdateTrigger
 		err := json.Unmarshal(data, &trigger)
 		dry.HandleError(err)
 		triggerChan <- trigger
