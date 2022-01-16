@@ -48,7 +48,9 @@ func main() {
 
 			coreAutomation := core.Automation{}
 
-			coreAutomation.Triggers = auto.Triggers
+			for _, t := range auto.Triggers {
+				coreAutomation.AddTrigger(t)
+			}
 
 			for _, a := range auto.Actions {
 				act, err := action.CreateAction(a.Name, telegram)

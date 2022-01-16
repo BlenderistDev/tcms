@@ -22,7 +22,7 @@ func TestAutomation_ExecuteNoCondition(t *testing.T) {
 
 	actions := []interfaces.ActionWithModel{action}
 
-	automation := Automation{Actions: actions}
+	automation := Automation{actions: actions}
 
 	err := automation.Execute(trigger)
 	dry.TestHandleError(t, err)
@@ -46,7 +46,7 @@ func TestAutomation_ExecuteManyActions(t *testing.T) {
 
 	actions := []interfaces.ActionWithModel{action1, action2}
 
-	automation := Automation{Actions: actions}
+	automation := Automation{actions: actions}
 
 	err := automation.Execute(trigger)
 	dry.TestHandleError(t, err)
@@ -71,7 +71,7 @@ func TestAutomation_ExecuteWithConditionTrue(t *testing.T) {
 
 	actions := []interfaces.ActionWithModel{action}
 
-	automation := Automation{Actions: actions, Condition: condition}
+	automation := Automation{actions: actions, condition: condition}
 
 	err := automation.Execute(trigger)
 	dry.TestHandleError(t, err)
@@ -93,7 +93,7 @@ func TestAutomation_ExecuteWithConditionFalse(t *testing.T) {
 
 	actions := []interfaces.ActionWithModel{action}
 
-	automation := Automation{Actions: actions, Condition: condition}
+	automation := Automation{actions: actions, condition: condition}
 
 	err := automation.Execute(trigger)
 	dry.TestHandleError(t, err)
@@ -115,7 +115,7 @@ func TestAutomation_ExecuteWithConditionError(t *testing.T) {
 
 	actions := []interfaces.ActionWithModel{action}
 
-	automation := Automation{Actions: actions, Condition: condition}
+	automation := Automation{actions: actions, condition: condition}
 
 	err := automation.Execute(trigger)
 	dry.TestHandleError(t, err)
@@ -136,7 +136,7 @@ func TestAutomation_ExecuteWithActionError(t *testing.T) {
 
 	actions := []interfaces.ActionWithModel{action}
 
-	automation := Automation{Actions: actions}
+	automation := Automation{actions: actions}
 
 	err := automation.Execute(trigger)
 	dry.TestCheckEqual(t, "error while executing action: "+actionError, err.Error())

@@ -100,7 +100,7 @@ func (mr *MockActionMockRecorder) Execute(action, trigger interface{}) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Execute", reflect.TypeOf((*MockAction)(nil).Execute), action, trigger)
 }
 
-// MockCondition is a mock of Condition interface.
+// MockCondition is a mock of condition interface.
 type MockCondition struct {
 	ctrl     *gomock.Controller
 	recorder *MockConditionMockRecorder

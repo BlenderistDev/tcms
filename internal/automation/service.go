@@ -24,7 +24,7 @@ func (s *Service) Init() {
 }
 
 func (s *Service) AddAutomation(automation core.Automation) {
-	for _, trigger := range automation.Triggers {
+	for _, trigger := range automation.GetTriggers() {
 		s.list[trigger] = append(s.list[trigger], automation)
 	}
 }
