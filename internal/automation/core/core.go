@@ -30,6 +30,7 @@ func (m *actionWithModel) Execute(trigger interfaces.Trigger) error {
 type Automation struct {
 	Actions   []interfaces.ActionWithModel
 	Condition interfaces.Condition
+	Triggers  []string
 }
 
 func (a *Automation) Execute(trigger interfaces.Trigger) error {
@@ -40,6 +41,14 @@ func (a *Automation) Execute(trigger interfaces.Trigger) error {
 		}
 	}
 	return nil
+}
+
+func (a *Automation) AddAction(action interfaces.ActionWithModel) {
+	a.Actions = append(a.Actions, action)
+}
+
+func (a Automation) AddCondition(condition interfaces.Condition) {
+	a.Condition = condition
 }
 
 func (a *Automation) checkCondition(trigger interfaces.Trigger) bool {

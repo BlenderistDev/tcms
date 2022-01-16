@@ -1,64 +1,32 @@
 package automation
 
 import (
-	"context"
 	"fmt"
-	condition2 "tcms/m/internal/automation/condition"
 	"tcms/m/internal/automation/core"
 	"tcms/m/internal/automation/interfaces"
-	"tcms/m/internal/db/repository"
 	"tcms/m/internal/dry"
 )
 
 type Service struct {
-	actionMap map[string]interfaces.Action
-	list      map[string][]core.Automation
+	list map[string][]core.Automation
 }
 
 // Start launch automation service
-func (s *Service) Start(automationRepo repository.AutomationRepository, triggerChan chan interfaces.Trigger) {
-	automations, err := automationRepo.GetAll(context.Background())
-	dry.HandleErrorPanic(err)
-
-	s.list = make(map[string][]core.Automation, len(automations))
-
-	for _, automation := range automations {
-		actions := make([]interfaces.ActionWithModel, len(automation.Actions))
-		for i, action := range automation.Actions {
-			if err == nil {
-				actions[i] = core.GetActionWithModel(s.getAction(action.Name), action)
-			} else {
-				fmt.Println(err)
-			}
-		}
-
-		coreAutomation := core.Automation{Actions: actions}
-
-		if automation.Condition != nil {
-			condition, err := condition2.CreateCondition(automation.Condition)
-			dry.HandleError(err)
-			coreAutomation.Condition = condition
-		}
-		for _, trigger := range automation.Triggers {
-			s.list[trigger] = append(s.list[trigger], coreAutomation)
-		}
-	}
-
+func (s *Service) Start(triggerChan chan interfaces.Trigger) {
 	for {
 		trigger := <-triggerChan
 		s.HandleTrigger(trigger)
 	}
 }
 
-func (s *Service) AddAction(name string, action interfaces.Action) {
-	if s.actionMap == nil {
-		s.actionMap = map[string]interfaces.Action{}
-	}
-	s.actionMap[name] = action
+func (s *Service) Init() {
+	s.list = make(map[string][]core.Automation)
 }
 
-func (s *Service) getAction(name string) interfaces.Action {
-	return s.actionMap[name]
+func (s *Service) AddAutomation(automation core.Automation) {
+	for _, trigger := range automation.Triggers {
+		s.list[trigger] = append(s.list[trigger], automation)
+	}
 }
 
 func (s *Service) HandleTrigger(trigger interfaces.Trigger) {

@@ -3,13 +3,12 @@ package action
 import (
 	"fmt"
 	"tcms/m/internal/automation/interfaces"
-	"tcms/m/internal/db/model"
 	"tcms/m/internal/telegramClient"
 )
 
-func CreateAction(actionData model.Action, telegram telegramClient.TelegramClient) (interfaces.Action, error) {
+func CreateAction(name string, telegram telegramClient.TelegramClient) (interfaces.Action, error) {
 	var action interfaces.Action
-	switch actionData.Name {
+	switch name {
 	case "sendMessage":
 		action = CreateSendMessageAction(telegram)
 	case "muteUser":
@@ -17,7 +16,7 @@ func CreateAction(actionData model.Action, telegram telegramClient.TelegramClien
 	case "muteChat":
 		action = CreateMuteChatAction(telegram)
 	default:
-		return nil, fmt.Errorf("unknown action %s", actionData.Name)
+		return nil, fmt.Errorf("unknown action %s", name)
 	}
 	return action, nil
 }

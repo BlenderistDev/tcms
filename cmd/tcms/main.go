@@ -5,6 +5,8 @@ import (
 	"github.com/joho/godotenv"
 	"tcms/m/internal/automation"
 	"tcms/m/internal/automation/action"
+	condition2 "tcms/m/internal/automation/condition"
+	"tcms/m/internal/automation/core"
 	"tcms/m/internal/automation/interfaces"
 	"tcms/m/internal/automation/trigger"
 	"tcms/m/internal/db"
@@ -27,6 +29,8 @@ func main() {
 	dry.HandleErrorPanic(err)
 
 	automationRepo := repository.CreateAutomationRepository(connection)
+	automations, err := automationRepo.GetAll(context.Background())
+	dry.HandleErrorPanic(err)
 
 	addConsumer := make(chan chan []uint8)
 	quitKafka := make(chan bool)
@@ -38,10 +42,30 @@ func main() {
 
 	go func() {
 		automationService := automation.Service{}
-		automationService.AddAction("sendMessage", action.CreateSendMessageAction(telegram))
-		automationService.AddAction("muteUser", action.CreateMuteUserAction(telegram))
-		automationService.AddAction("muteChat", action.CreateMuteChatAction(telegram))
-		automationService.Start(automationRepo, triggerChan)
+		automationService.Init()
+
+		for _, auto := range automations {
+
+			coreAutomation := core.Automation{}
+
+			coreAutomation.Triggers = auto.Triggers
+
+			for _, a := range auto.Actions {
+				act, err := action.CreateAction(a.Name, telegram)
+				dry.HandleError(err)
+				coreAutomation.AddAction(core.GetActionWithModel(act, a))
+			}
+
+			if auto.Condition != nil {
+				condition, err := condition2.CreateCondition(auto.Condition)
+				dry.HandleError(err)
+				coreAutomation.AddCondition(condition)
+			}
+
+			automationService.AddAutomation(coreAutomation)
+		}
+
+		automationService.Start(triggerChan)
 	}()
 
 	go trigger.StartTelegramTrigger(addConsumer, triggerChan)
