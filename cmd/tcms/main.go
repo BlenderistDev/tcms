@@ -8,12 +8,12 @@ import (
 	condition2 "tcms/m/internal/automation/condition"
 	"tcms/m/internal/automation/core"
 	"tcms/m/internal/automation/interfaces"
-	"tcms/m/internal/automation/trigger"
 	"tcms/m/internal/db"
 	"tcms/m/internal/db/repository"
 	"tcms/m/internal/dry"
 	"tcms/m/internal/kafka"
 	"tcms/m/internal/telegramClient"
+	trigger2 "tcms/m/internal/trigger"
 	"tcms/m/internal/webserver"
 )
 
@@ -70,8 +70,8 @@ func main() {
 		automationService.Start(triggerChan)
 	}()
 
-	go trigger.StartTelegramTrigger(addConsumer, triggerChan)
-	go trigger.StartTimeTrigger(triggerChan)
+	go trigger2.StartTelegramTrigger(addConsumer, triggerChan)
+	go trigger2.StartTimeTrigger(triggerChan)
 	go webserver.StartWebServer(telegram, addConsumer)
 
 	select {}
