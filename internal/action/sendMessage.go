@@ -18,7 +18,7 @@ func CreateSendMessageAction(client telegramClient.TelegramClient) Action {
 }
 
 func (a sendMessageAction) Execute(action model.Action, trigger interfaces.Trigger) error {
-	dm := datamapper.DataMapper{Mapping: action.Mapping}
+	dm := datamapper.DataMapper{Mapping: model.ConvertMappingToDmMapping(action.Mapping)}
 	peer, err := dm.GetFromMap(trigger, "peer")
 	if err != nil {
 		return err

@@ -11,7 +11,7 @@ func CreateCondition(conditionData *model.Condition) (interfaces.Condition, erro
 	var condition interfaces.Condition
 	var err error
 
-	dm := datamapper.DataMapper{Mapping: conditionData.Mapping}
+	dm := datamapper.DataMapper{Mapping: model.ConvertMappingToDmMapping(conditionData.Mapping)}
 
 	var subConditions []interfaces.Condition
 

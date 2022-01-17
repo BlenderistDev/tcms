@@ -5,11 +5,15 @@ import (
 	"math"
 	"strconv"
 	"tcms/m/internal/automation/interfaces"
-	"tcms/m/internal/db/model"
 )
 
+type Mapping interface {
+	IsSimple() bool
+	GetValue() string
+}
+
 type DataMapper struct {
-	Mapping map[string]model.Mapping
+	Mapping map[string]Mapping
 }
 
 func (a DataMapper) GetFromMapInt64(trigger interfaces.Trigger, key string) (int64, error) {
@@ -37,11 +41,11 @@ func (a DataMapper) GetFromMapInt32(trigger interfaces.Trigger, key string) (int
 func (a DataMapper) GetFromMap(trigger interfaces.Trigger, key string) (string, error) {
 	mappingData, ok := a.Mapping[key]
 	if ok {
-		if mappingData.Simple {
-			return mappingData.Value, nil
+		if mappingData.IsSimple() {
+			return mappingData.GetValue(), nil
 		} else {
 			triggerData := trigger.GetData()
-			value, ok := triggerData[mappingData.Value]
+			value, ok := triggerData[mappingData.GetValue()]
 			if ok {
 				return value, nil
 			} else {
