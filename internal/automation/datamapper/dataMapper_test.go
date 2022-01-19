@@ -17,12 +17,9 @@ func TestGetFromMap_simpleMapping(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	mapping := map[string]model.Mapping{
-		name: {
-			Simple: true,
-			Name:   name,
-			Value:  value,
-		},
+	m := mock_datamapper.NewMockMapping(ctrl)
+	mapping := map[string]Mapping{
+		name: m,
 	}
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
 
