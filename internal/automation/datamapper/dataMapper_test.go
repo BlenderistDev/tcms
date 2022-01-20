@@ -4,9 +4,8 @@ import (
 	"github.com/golang/mock/gomock"
 	"math"
 	"strconv"
-	"tcms/m/internal/db/model"
 	"tcms/m/internal/dry"
-	mock_interfaces "tcms/m/internal/testing/automation/interfaces"
+	mock_datamapper "tcms/m/internal/testing/automation/datamapper"
 	"testing"
 )
 
@@ -18,14 +17,25 @@ func TestGetFromMap_simpleMapping(t *testing.T) {
 	defer ctrl.Finish()
 
 	m := mock_datamapper.NewMockMapping(ctrl)
+	m.
+		EXPECT().
+		IsSimple().
+		Return(true)
+
+	m.
+		EXPECT().
+		GetValue().
+		Return(value)
+
 	mapping := map[string]Mapping{
 		name: m,
 	}
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
+
+	data := make(map[string]string)
 
 	datamapper := DataMapper{Mapping: mapping}
 
-	mapValue, err := datamapper.GetFromMap(trigger, "name")
+	mapValue, err := datamapper.GetFromMap(data, "name")
 	dry.TestHandleError(t, err)
 	dry.TestCheckEqual(t, value, mapValue)
 }
@@ -38,27 +48,28 @@ func TestGetFromMap_notSimpleMapping(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	mapping := map[string]model.Mapping{
-		name: {
-			Simple: false,
-			Name:   name,
-			Value:  value,
-		},
+	m := mock_datamapper.NewMockMapping(ctrl)
+	m.
+		EXPECT().
+		IsSimple().
+		Return(false)
+
+	m.
+		EXPECT().
+		GetValue().
+		Return(value)
+
+	mapping := map[string]Mapping{
+		name: m,
 	}
 
-	triggerData := map[string]string{
+	data := map[string]string{
 		"value": resultValue,
 	}
 
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	trigger.
-		EXPECT().
-		GetData().
-		Return(triggerData)
-
 	datamapper := DataMapper{Mapping: mapping}
 
-	mapValue, err := datamapper.GetFromMap(trigger, name)
+	mapValue, err := datamapper.GetFromMap(data, name)
 	dry.TestHandleError(t, err)
 	dry.TestCheckEqual(t, resultValue, mapValue)
 }
@@ -71,19 +82,26 @@ func TestGetFromInt32_simpleMapping(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	mapping := map[string]model.Mapping{
-		name: {
-			Simple: true,
-			Name:   name,
-			Value:  value,
-		},
+	m := mock_datamapper.NewMockMapping(ctrl)
+	m.
+		EXPECT().
+		IsSimple().
+		Return(true)
+
+	m.
+		EXPECT().
+		GetValue().
+		Return(value)
+
+	mapping := map[string]Mapping{
+		name: m,
 	}
 
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	data := make(map[string]string)
 
 	datamapper := DataMapper{Mapping: mapping}
 
-	mapValue, err := datamapper.GetFromMapInt32(trigger, "name")
+	mapValue, err := datamapper.GetFromMapInt32(data, "name")
 	dry.TestHandleError(t, err)
 	dry.TestCheckEqual(t, valueInt, mapValue)
 }
@@ -95,19 +113,26 @@ func TestGetFromInt32_bigValue(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	mapping := map[string]model.Mapping{
-		name: {
-			Simple: true,
-			Name:   name,
-			Value:  strconv.Itoa(valueInt),
-		},
+	m := mock_datamapper.NewMockMapping(ctrl)
+	m.
+		EXPECT().
+		IsSimple().
+		Return(true)
+
+	m.
+		EXPECT().
+		GetValue().
+		Return(strconv.Itoa(valueInt))
+
+	mapping := map[string]Mapping{
+		name: m,
 	}
 
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	data := make(map[string]string)
 
 	datamapper := DataMapper{Mapping: mapping}
 
-	_, err := datamapper.GetFromMapInt32(trigger, "name")
+	_, err := datamapper.GetFromMapInt32(data, name)
 	dry.TestCheckEqual(t, "number 2147483648 is greater, than MaxInt32", err.Error())
 }
 
@@ -120,27 +145,28 @@ func TestGetFromMapInt32_notSimpleMapping(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	mapping := map[string]model.Mapping{
-		name: {
-			Simple: false,
-			Name:   name,
-			Value:  value,
-		},
+	m := mock_datamapper.NewMockMapping(ctrl)
+	m.
+		EXPECT().
+		IsSimple().
+		Return(false)
+
+	m.
+		EXPECT().
+		GetValue().
+		Return(value)
+
+	mapping := map[string]Mapping{
+		name: m,
 	}
 
-	triggerData := map[string]string{
+	data := map[string]string{
 		"value": resultValue,
 	}
 
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	trigger.
-		EXPECT().
-		GetData().
-		Return(triggerData)
-
 	datamapper := DataMapper{Mapping: mapping}
 
-	mapValue, err := datamapper.GetFromMapInt32(trigger, name)
+	mapValue, err := datamapper.GetFromMapInt32(data, name)
 	dry.TestHandleError(t, err)
 	dry.TestCheckEqual(t, resultValueInt, mapValue)
 }
@@ -153,19 +179,26 @@ func TestGetFromInt64_simpleMapping(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	mapping := map[string]model.Mapping{
-		name: {
-			Simple: true,
-			Name:   name,
-			Value:  value,
-		},
+	m := mock_datamapper.NewMockMapping(ctrl)
+	m.
+		EXPECT().
+		IsSimple().
+		Return(true)
+
+	m.
+		EXPECT().
+		GetValue().
+		Return(value)
+
+	mapping := map[string]Mapping{
+		name: m,
 	}
 
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	data := make(map[string]string)
 
 	datamapper := DataMapper{Mapping: mapping}
 
-	mapValue, err := datamapper.GetFromMapInt64(trigger, "name")
+	mapValue, err := datamapper.GetFromMapInt64(data, name)
 	dry.TestHandleError(t, err)
 	dry.TestCheckEqual(t, valueInt, mapValue)
 }
@@ -179,27 +212,28 @@ func TestGetFromMapInt64_notSimpleMapping(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	mapping := map[string]model.Mapping{
-		name: {
-			Simple: false,
-			Name:   name,
-			Value:  value,
-		},
+	m := mock_datamapper.NewMockMapping(ctrl)
+	m.
+		EXPECT().
+		IsSimple().
+		Return(false)
+
+	m.
+		EXPECT().
+		GetValue().
+		Return(value)
+
+	mapping := map[string]Mapping{
+		name: m,
 	}
 
-	triggerData := map[string]string{
+	data := map[string]string{
 		"value": resultValue,
 	}
 
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	trigger.
-		EXPECT().
-		GetData().
-		Return(triggerData)
-
 	datamapper := DataMapper{Mapping: mapping}
 
-	mapValue, err := datamapper.GetFromMapInt64(trigger, name)
+	mapValue, err := datamapper.GetFromMapInt64(data, name)
 	dry.TestHandleError(t, err)
 
 	if mapValue != resultValueInt {
