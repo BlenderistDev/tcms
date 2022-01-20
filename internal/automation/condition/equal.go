@@ -16,11 +16,11 @@ func createEqualCondition(dataMapper datamapper.DataMapper, _ []interfaces.Condi
 }
 
 func (c equalCondition) Check(trigger interfaces.Trigger) (bool, error) {
-	value1, err := c.GetFromMap(trigger, "value1")
+	value1, err := c.GetFromMap(trigger.GetData(), "value1")
 	if err != nil {
 		return false, err
 	}
-	value2, err := c.GetFromMap(trigger, "value2")
+	value2, err := c.GetFromMap(trigger.GetData(), "value2")
 	if err != nil {
 		return false, err
 	}

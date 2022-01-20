@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math"
 	"strconv"
-	"tcms/m/internal/automation/interfaces"
 )
 
 type Mapping interface {
@@ -16,8 +15,8 @@ type DataMapper struct {
 	Mapping map[string]Mapping
 }
 
-func (a DataMapper) GetFromMapInt64(trigger interfaces.Trigger, key string) (int64, error) {
-	s, err := a.GetFromMap(trigger, key)
+func (a DataMapper) GetFromMapInt64(data map[string]string, key string) (int64, error) {
+	s, err := a.GetFromMap(data, key)
 	if err != nil {
 		return 0, err
 	}
@@ -30,22 +29,21 @@ func (a DataMapper) GetFromMapInt64(trigger interfaces.Trigger, key string) (int
 	return i, nil
 }
 
-func (a DataMapper) GetFromMapInt32(trigger interfaces.Trigger, key string) (int32, error) {
-	i, err := a.GetFromMapInt64(trigger, key)
+func (a DataMapper) GetFromMapInt32(data map[string]string, key string) (int32, error) {
+	i, err := a.GetFromMapInt64(data, key)
 	if i > math.MaxInt32 {
 		return 0, fmt.Errorf("number %d is greater, than MaxInt32", i)
 	}
 	return int32(i), err
 }
 
-func (a DataMapper) GetFromMap(trigger interfaces.Trigger, key string) (string, error) {
+func (a DataMapper) GetFromMap(data map[string]string, key string) (string, error) {
 	mappingData, ok := a.Mapping[key]
 	if ok {
 		if mappingData.IsSimple() {
 			return mappingData.GetValue(), nil
 		} else {
-			triggerData := trigger.GetData()
-			value, ok := triggerData[mappingData.GetValue()]
+			value, ok := data[mappingData.GetValue()]
 			if ok {
 				return value, nil
 			} else {
@@ -57,8 +55,8 @@ func (a DataMapper) GetFromMap(trigger interfaces.Trigger, key string) (string, 
 	return "", fmt.Errorf("key %s not found", key)
 }
 
-func (a DataMapper) GetFromMapBool(trigger interfaces.Trigger, key string) (bool, error) {
-	s, err := a.GetFromMap(trigger, key)
+func (a DataMapper) GetFromMapBool(data map[string]string, key string) (bool, error) {
+	s, err := a.GetFromMap(data, key)
 	if err != nil {
 		return false, err
 	}

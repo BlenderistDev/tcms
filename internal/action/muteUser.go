@@ -19,17 +19,17 @@ func CreateMuteUserAction(client telegramClient.TelegramClient) Action {
 
 func (a muteUserAction) Execute(action model.Action, trigger interfaces.Trigger) error {
 	dm := datamapper.DataMapper{Mapping: model.ConvertMappingToDmMapping(action.Mapping)}
-	peer, err := dm.GetFromMap(trigger, "peer")
+	peer, err := dm.GetFromMap(trigger.GetData(), "peer")
 	if err != nil {
 		return err
 	}
 
-	accessHash, err := dm.GetFromMap(trigger, "accessHash")
+	accessHash, err := dm.GetFromMap(trigger.GetData(), "accessHash")
 	if err != nil {
 		return err
 	}
 
-	unMute, err := dm.GetFromMapBool(trigger, "unMute")
+	unMute, err := dm.GetFromMapBool(trigger.GetData(), "unMute")
 	if err != nil {
 		return err
 	}
