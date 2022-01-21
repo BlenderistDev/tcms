@@ -244,16 +244,12 @@ func TestGetFromMapInt64_notSimpleMapping(t *testing.T) {
 func TestGetFromInt64_valueNotExist(t *testing.T) {
 	const key = "name"
 
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
+	mapping := make(map[string]Mapping)
 
-	mapping := map[string]model.Mapping{}
-
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
-
+	data := make(map[string]string)
 	datamapper := DataMapper{Mapping: mapping}
 
-	_, err := datamapper.GetFromMapInt64(trigger, key)
+	_, err := datamapper.GetFromMapInt64(data, key)
 	dry.TestCheckEqual(t, "key "+key+" not found", err.Error())
 }
 
@@ -264,36 +260,37 @@ func TestGetFromInt64_valueIncorrect(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	mapping := map[string]model.Mapping{
-		key: {
-			Simple: true,
-			Name:   key,
-			Value:  value,
-		},
+	m := mock_datamapper.NewMockMapping(ctrl)
+	m.
+		EXPECT().
+		IsSimple().
+		Return(true)
+
+	m.
+		EXPECT().
+		GetValue().
+		Return(value)
+
+	mapping := map[string]Mapping{
+		key: m,
 	}
 
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	data := make(map[string]string)
 
 	datamapper := DataMapper{Mapping: mapping}
 
-	_, err := datamapper.GetFromMapInt64(trigger, key)
+	_, err := datamapper.GetFromMapInt64(data, key)
 	dry.TestCheckEqual(t, "strconv.ParseInt: parsing \""+value+"\": invalid syntax", err.Error())
 }
 
 func TestGetFromMap_valueNotExist(t *testing.T) {
 	const key = "name"
 
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-
-	mapping := map[string]model.Mapping{}
-
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
-
+	mapping := make(map[string]Mapping)
+	data := make(map[string]string)
 	datamapper := DataMapper{Mapping: mapping}
 
-	_, err := datamapper.GetFromMap(trigger, key)
-
+	_, err := datamapper.GetFromMap(data, key)
 	dry.TestCheckEqual(t, "key "+key+" not found", err.Error())
 }
 
@@ -303,26 +300,25 @@ func TestGetFromMap_notSimpleMapping_valueNotExist(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	mapping := map[string]model.Mapping{
-		key: {
-			Simple: false,
-			Name:   key,
-			Value:  "",
-		},
+	m := mock_datamapper.NewMockMapping(ctrl)
+	m.
+		EXPECT().
+		IsSimple().
+		Return(false)
+
+	m.
+		EXPECT().
+		GetValue().
+		Return("")
+
+	mapping := map[string]Mapping{
+		key: m,
 	}
 
-	triggerData := map[string]string{}
-
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
-	trigger.
-		EXPECT().
-		GetData().
-		Return(triggerData)
-
+	data := make(map[string]string)
 	datamapper := DataMapper{Mapping: mapping}
 
-	_, err := datamapper.GetFromMap(trigger, key)
-
+	_, err := datamapper.GetFromMap(data, key)
 	dry.TestCheckEqual(t, "key "+key+" not found in trigger data", err.Error())
 }
 
@@ -337,16 +333,13 @@ func TestGetFromBool_simpleMapping_falseValue(t *testing.T) {
 func TestGetFromMapBool_valueNotExist(t *testing.T) {
 	const key = "name"
 
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
+	mapping := make(map[string]Mapping)
 
-	mapping := map[string]model.Mapping{}
-
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	data := make(map[string]string)
 
 	datamapper := DataMapper{Mapping: mapping}
 
-	_, err := datamapper.GetFromMapBool(trigger, key)
+	_, err := datamapper.GetFromMapBool(data, key)
 
 	dry.TestCheckEqual(t, "key "+key+" not found", err.Error())
 }
@@ -356,19 +349,26 @@ func testGetFromBool_simpleMapping(t *testing.T, value string, res bool) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	mapping := map[string]model.Mapping{
-		name: {
-			Simple: true,
-			Name:   name,
-			Value:  value,
-		},
+	m := mock_datamapper.NewMockMapping(ctrl)
+	m.
+		EXPECT().
+		IsSimple().
+		Return(true)
+
+	m.
+		EXPECT().
+		GetValue().
+		Return(value)
+
+	mapping := map[string]Mapping{
+		name: m,
 	}
 
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	data := make(map[string]string)
 
 	datamapper := DataMapper{Mapping: mapping}
 
-	mapValue, err := datamapper.GetFromMapBool(trigger, name)
+	mapValue, err := datamapper.GetFromMapBool(data, name)
 	dry.TestHandleError(t, err)
 	dry.TestCheckEqual(t, res, mapValue)
 }
