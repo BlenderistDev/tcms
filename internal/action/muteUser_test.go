@@ -47,6 +47,8 @@ func TestMuteUserAction_Execute_peerError(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	trigger.EXPECT().GetData().Return(make(map[string]string))
+
 	muteUserAction := CreateMuteUserAction(telegramClient)
 	err := muteUserAction.Execute(actionModel, trigger)
 	dry.TestCheckEqual(t, "key peer not found", err.Error())
@@ -75,6 +77,9 @@ func TestMuteUserAction_Execute_accessHashError(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	trigger.EXPECT().GetData().Return(make(map[string]string))
+	trigger.EXPECT().GetData().Return(make(map[string]string))
+
 	muteUserAction := CreateMuteUserAction(telegramClient)
 	err := muteUserAction.Execute(actionModel, trigger)
 	dry.TestCheckEqual(t, "key accessHash not found", err.Error())
@@ -110,6 +115,10 @@ func TestMuteUserAction_Execute_unMuteError(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	trigger.EXPECT().GetData().Return(make(map[string]string))
+	trigger.EXPECT().GetData().Return(make(map[string]string))
+	trigger.EXPECT().GetData().Return(make(map[string]string))
+
 	muteUserAction := CreateMuteUserAction(telegramClient)
 	err := muteUserAction.Execute(actionModel, trigger)
 	dry.TestCheckEqual(t, "key unMute not found", err.Error())
@@ -155,6 +164,8 @@ func TestMuteUserAction_Execute(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	trigger.EXPECT().GetData().Return(make(map[string]string)).Times(3)
+
 	muteUserAction := CreateMuteUserAction(telegramClient)
 	err := muteUserAction.Execute(actionModel, trigger)
 	dry.TestHandleError(t, err)
@@ -202,6 +213,8 @@ func TestMuteUserAction_Execute_telegramError(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	trigger.EXPECT().GetData().Return(make(map[string]string)).Times(3)
+
 	muteUserAction := CreateMuteUserAction(telegramClient)
 	err := muteUserAction.Execute(actionModel, trigger)
 	dry.TestCheckEqual(t, errorText, err.Error())
