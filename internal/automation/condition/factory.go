@@ -25,7 +25,7 @@ func CreateCondition(conditionData *model.Condition) (interfaces.Condition, erro
 
 	switch conditionData.Name {
 	case "equal":
-		condition = createEqualCondition(dm, subConditions)
+		condition = createEqualCondition(dm)
 	case "not":
 		if len(subConditions) != 1 {
 			return nil, fmt.Errorf("not condition can have only one subcondition")
