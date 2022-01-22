@@ -43,7 +43,6 @@ func main() {
 
 	go func() {
 		automationService := automation.Service{}
-		automationService.Init()
 
 		for _, auto := range automations {
 
