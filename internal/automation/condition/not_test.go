@@ -13,7 +13,7 @@ func TestNotCondition_createNotCondition(t *testing.T) {
 	defer ctrl.Finish()
 	subCondition := mock_interfaces.NewMockCondition(ctrl)
 
-	createdCondition := createNotCondition(subCondition)
+	createdCondition := CreateNotCondition(subCondition)
 
 	switch condition := createdCondition.(type) {
 	case notCondition:
@@ -35,7 +35,7 @@ func TestNotCondition_SubConditionError(t *testing.T) {
 		Check(gomock.Eq(trigger)).
 		Return(false, fmt.Errorf(errText))
 
-	createdCondition := createNotCondition(subCondition)
+	createdCondition := CreateNotCondition(subCondition)
 
 	res, err := createdCondition.Check(trigger)
 	dry.TestCheckEqual(t, false, res)
@@ -61,7 +61,7 @@ func testNotConditionCheckWithSubCondition(t *testing.T, subConditionRes bool) {
 		Check(gomock.Eq(trigger)).
 		Return(subConditionRes, nil)
 
-	createdCondition := createNotCondition(subCondition)
+	createdCondition := CreateNotCondition(subCondition)
 
 	res, err := createdCondition.Check(trigger)
 	dry.TestHandleError(t, err)

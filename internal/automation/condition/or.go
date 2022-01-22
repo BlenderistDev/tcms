@@ -9,7 +9,7 @@ type orCondition struct {
 	subConditions []interfaces.Condition
 }
 
-func createOrCondition(subConditions []interfaces.Condition) (interfaces.Condition, error) {
+func CreateOrCondition(subConditions []interfaces.Condition) (interfaces.Condition, error) {
 	if len(subConditions) < 2 {
 		return nil, fmt.Errorf("or condition should have at least two subconditions")
 	}

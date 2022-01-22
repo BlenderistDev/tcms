@@ -9,7 +9,7 @@ type equalCondition struct {
 	dm datamapper.DataMapper
 }
 
-func createEqualCondition(dataMapper datamapper.DataMapper) interfaces.Condition {
+func CreateEqualCondition(dataMapper datamapper.DataMapper) interfaces.Condition {
 	return equalCondition{
 		dm: dataMapper,
 	}

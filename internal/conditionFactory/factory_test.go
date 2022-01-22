@@ -1,6 +1,7 @@
-package condition
+package conditionFactory
 
 import (
+	"tcms/m/internal/automation/interfaces"
 	"tcms/m/internal/db/model"
 	"tcms/m/internal/dry"
 	"testing"
@@ -14,7 +15,7 @@ func TestCreateCondition_createEqual(t *testing.T) {
 	condition, err := CreateCondition(&conditionModel)
 	dry.TestHandleError(t, err)
 	switch condition.(type) {
-	case equalCondition:
+	case interfaces.Condition:
 	default:
 		t.Errorf("condition type is not equal")
 	}

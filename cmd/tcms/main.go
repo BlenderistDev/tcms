@@ -5,9 +5,9 @@ import (
 	"github.com/joho/godotenv"
 	action2 "tcms/m/internal/action"
 	"tcms/m/internal/automation"
-	condition2 "tcms/m/internal/automation/condition"
 	"tcms/m/internal/automation/core"
 	"tcms/m/internal/automation/interfaces"
+	"tcms/m/internal/conditionFactory"
 	"tcms/m/internal/db"
 	"tcms/m/internal/db/repository"
 	"tcms/m/internal/dry"
@@ -59,7 +59,7 @@ func main() {
 			}
 
 			if auto.Condition != nil {
-				condition, err := condition2.CreateCondition(auto.Condition)
+				condition, err := conditionFactory.CreateCondition(auto.Condition)
 				dry.HandleError(err)
 				coreAutomation.AddCondition(condition)
 			}

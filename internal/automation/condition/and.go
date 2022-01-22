@@ -9,7 +9,7 @@ type andCondition struct {
 	subConditions []interfaces.Condition
 }
 
-func createAndCondition(subConditions []interfaces.Condition) (interfaces.Condition, error) {
+func CreateAndCondition(subConditions []interfaces.Condition) (interfaces.Condition, error) {
 	if len(subConditions) < 2 {
 		return nil, fmt.Errorf("and condition should have at least two subconditions")
 	}

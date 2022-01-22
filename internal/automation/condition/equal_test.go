@@ -18,7 +18,7 @@ func TestEqualCondition(t *testing.T) {
 	mapping := make(map[string]datamapper.Mapping)
 
 	dm := datamapper.DataMapper{Mapping: mapping}
-	createdCondition := createEqualCondition(dm)
+	createdCondition := CreateEqualCondition(dm)
 
 	switch createdCondition.(type) {
 	case equalCondition:
@@ -63,7 +63,7 @@ func TestEqualCondition_Check(t *testing.T) {
 	trigger.EXPECT().GetData().Return(make(map[string]string))
 
 	dm := datamapper.DataMapper{Mapping: mapping}
-	createdCondition := createEqualCondition(dm)
+	createdCondition := CreateEqualCondition(dm)
 
 	res, err := createdCondition.Check(trigger)
 	dry.TestHandleError(t, err)
@@ -83,7 +83,7 @@ func TestEqualCondition_Check_value1NotExist(t *testing.T) {
 	}
 
 	dm := datamapper.DataMapper{Mapping: mapping}
-	createdCondition := createEqualCondition(dm)
+	createdCondition := CreateEqualCondition(dm)
 	_, err := createdCondition.Check(trigger)
 	dry.TestCheckEqual(t, fmt.Sprintf("key %s not found", "value1"), err.Error())
 }
@@ -111,7 +111,7 @@ func TestEqualCondition_Check_value2NotExist(t *testing.T) {
 	}
 
 	dm := datamapper.DataMapper{Mapping: mapping}
-	createdCondition := createEqualCondition(dm)
+	createdCondition := CreateEqualCondition(dm)
 	_, err := createdCondition.Check(trigger)
 	dry.TestCheckEqual(t, fmt.Sprintf("key %s not found", "value2"), err.Error())
 }

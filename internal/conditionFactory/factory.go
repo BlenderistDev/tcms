@@ -1,7 +1,8 @@
-package condition
+package conditionFactory
 
 import (
 	"fmt"
+	condition2 "tcms/m/internal/automation/condition"
 	"tcms/m/internal/automation/datamapper"
 	"tcms/m/internal/automation/interfaces"
 	"tcms/m/internal/db/model"
@@ -25,19 +26,19 @@ func CreateCondition(conditionData *model.Condition) (interfaces.Condition, erro
 
 	switch conditionData.Name {
 	case "equal":
-		condition = createEqualCondition(dm)
+		condition = condition2.CreateEqualCondition(dm)
 	case "not":
 		if len(subConditions) != 1 {
 			return nil, fmt.Errorf("not condition can have only one subcondition")
 		}
-		condition = createNotCondition(subConditions[0])
+		condition = condition2.CreateNotCondition(subConditions[0])
 	case "or":
-		condition, err = createOrCondition(subConditions)
+		condition, err = condition2.CreateOrCondition(subConditions)
 		if err != nil {
 			return nil, err
 		}
 	case "and":
-		condition, err = createAndCondition(subConditions)
+		condition, err = condition2.CreateAndCondition(subConditions)
 		if err != nil {
 			return nil, err
 		}

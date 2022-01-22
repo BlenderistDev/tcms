@@ -8,7 +8,7 @@ type notCondition struct {
 	subCondition interfaces.Condition
 }
 
-func createNotCondition(condition interfaces.Condition) interfaces.Condition {
+func CreateNotCondition(condition interfaces.Condition) interfaces.Condition {
 	return notCondition{
 		subCondition: condition,
 	}
