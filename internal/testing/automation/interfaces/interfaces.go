@@ -7,7 +7,6 @@ package mock_interfaces
 import (
 	reflect "reflect"
 	interfaces "tcms/m/internal/automation/interfaces"
-	model "tcms/m/internal/db/model"
 
 	gomock "github.com/golang/mock/gomock"
 )
@@ -63,44 +62,7 @@ func (mr *MockTriggerMockRecorder) GetName() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetName", reflect.TypeOf((*MockTrigger)(nil).GetName))
 }
 
-// MockAction is a mock of action interface.
-type MockAction struct {
-	ctrl     *gomock.Controller
-	recorder *MockActionMockRecorder
-}
-
-// MockActionMockRecorder is the mock recorder for MockAction.
-type MockActionMockRecorder struct {
-	mock *MockAction
-}
-
-// NewMockAction creates a new mock instance.
-func NewMockAction(ctrl *gomock.Controller) *MockAction {
-	mock := &MockAction{ctrl: ctrl}
-	mock.recorder = &MockActionMockRecorder{mock}
-	return mock
-}
-
-// EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockAction) EXPECT() *MockActionMockRecorder {
-	return m.recorder
-}
-
-// Execute mocks base method.
-func (m *MockAction) Execute(action model.Action, trigger interfaces.Trigger) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Execute", action, trigger)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// Execute indicates an expected call of Execute.
-func (mr *MockActionMockRecorder) Execute(action, trigger interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Execute", reflect.TypeOf((*MockAction)(nil).Execute), action, trigger)
-}
-
-// MockCondition is a mock of condition interface.
+// MockCondition is a mock of Condition interface.
 type MockCondition struct {
 	ctrl     *gomock.Controller
 	recorder *MockConditionMockRecorder
@@ -138,31 +100,31 @@ func (mr *MockConditionMockRecorder) Check(trigger interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Check", reflect.TypeOf((*MockCondition)(nil).Check), trigger)
 }
 
-// MockActionWithModel is a mock of Action interface.
-type MockActionWithModel struct {
+// MockAction is a mock of Action interface.
+type MockAction struct {
 	ctrl     *gomock.Controller
-	recorder *MockActionWithModelMockRecorder
+	recorder *MockActionMockRecorder
 }
 
-// MockActionWithModelMockRecorder is the mock recorder for MockActionWithModel.
-type MockActionWithModelMockRecorder struct {
-	mock *MockActionWithModel
+// MockActionMockRecorder is the mock recorder for MockAction.
+type MockActionMockRecorder struct {
+	mock *MockAction
 }
 
-// NewMockActionWithModel creates a new mock instance.
-func NewMockActionWithModel(ctrl *gomock.Controller) *MockActionWithModel {
-	mock := &MockActionWithModel{ctrl: ctrl}
-	mock.recorder = &MockActionWithModelMockRecorder{mock}
+// NewMockAction creates a new mock instance.
+func NewMockAction(ctrl *gomock.Controller) *MockAction {
+	mock := &MockAction{ctrl: ctrl}
+	mock.recorder = &MockActionMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockActionWithModel) EXPECT() *MockActionWithModelMockRecorder {
+func (m *MockAction) EXPECT() *MockActionMockRecorder {
 	return m.recorder
 }
 
 // Execute mocks base method.
-func (m *MockActionWithModel) Execute(trigger interfaces.Trigger) error {
+func (m *MockAction) Execute(trigger interfaces.Trigger) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Execute", trigger)
 	ret0, _ := ret[0].(error)
@@ -170,7 +132,94 @@ func (m *MockActionWithModel) Execute(trigger interfaces.Trigger) error {
 }
 
 // Execute indicates an expected call of Execute.
-func (mr *MockActionWithModelMockRecorder) Execute(trigger interface{}) *gomock.Call {
+func (mr *MockActionMockRecorder) Execute(trigger interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Execute", reflect.TypeOf((*MockActionWithModel)(nil).Execute), trigger)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Execute", reflect.TypeOf((*MockAction)(nil).Execute), trigger)
+}
+
+// MockAutomation is a mock of Automation interface.
+type MockAutomation struct {
+	ctrl     *gomock.Controller
+	recorder *MockAutomationMockRecorder
+}
+
+// MockAutomationMockRecorder is the mock recorder for MockAutomation.
+type MockAutomationMockRecorder struct {
+	mock *MockAutomation
+}
+
+// NewMockAutomation creates a new mock instance.
+func NewMockAutomation(ctrl *gomock.Controller) *MockAutomation {
+	mock := &MockAutomation{ctrl: ctrl}
+	mock.recorder = &MockAutomationMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockAutomation) EXPECT() *MockAutomationMockRecorder {
+	return m.recorder
+}
+
+// AddAction mocks base method.
+func (m *MockAutomation) AddAction(action interfaces.Action) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "AddAction", action)
+}
+
+// AddAction indicates an expected call of AddAction.
+func (mr *MockAutomationMockRecorder) AddAction(action interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddAction", reflect.TypeOf((*MockAutomation)(nil).AddAction), action)
+}
+
+// AddCondition mocks base method.
+func (m *MockAutomation) AddCondition(condition interfaces.Condition) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "AddCondition", condition)
+}
+
+// AddCondition indicates an expected call of AddCondition.
+func (mr *MockAutomationMockRecorder) AddCondition(condition interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddCondition", reflect.TypeOf((*MockAutomation)(nil).AddCondition), condition)
+}
+
+// AddTrigger mocks base method.
+func (m *MockAutomation) AddTrigger(trigger string) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "AddTrigger", trigger)
+}
+
+// AddTrigger indicates an expected call of AddTrigger.
+func (mr *MockAutomationMockRecorder) AddTrigger(trigger interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddTrigger", reflect.TypeOf((*MockAutomation)(nil).AddTrigger), trigger)
+}
+
+// Execute mocks base method.
+func (m *MockAutomation) Execute(trigger interfaces.Trigger) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Execute", trigger)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Execute indicates an expected call of Execute.
+func (mr *MockAutomationMockRecorder) Execute(trigger interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Execute", reflect.TypeOf((*MockAutomation)(nil).Execute), trigger)
+}
+
+// GetTriggers mocks base method.
+func (m *MockAutomation) GetTriggers() []string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetTriggers")
+	ret0, _ := ret[0].([]string)
+	return ret0
+}
+
+// GetTriggers indicates an expected call of GetTriggers.
+func (mr *MockAutomationMockRecorder) GetTriggers() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTriggers", reflect.TypeOf((*MockAutomation)(nil).GetTriggers))
 }

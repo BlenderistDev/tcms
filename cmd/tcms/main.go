@@ -46,7 +46,7 @@ func main() {
 
 		for _, auto := range automations {
 
-			coreAutomation := core.Automation{}
+			coreAutomation := core.GetAutomation()
 
 			for _, t := range auto.Triggers {
 				coreAutomation.AddTrigger(t)

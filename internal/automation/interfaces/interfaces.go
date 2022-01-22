@@ -12,3 +12,11 @@ type Condition interface {
 type Action interface {
 	Execute(trigger Trigger) error
 }
+
+type Automation interface {
+	Execute(trigger Trigger) error
+	AddTrigger(trigger string)
+	GetTriggers() []string
+	AddAction(action Action)
+	AddCondition(condition Condition)
+}

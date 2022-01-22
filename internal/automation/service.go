@@ -2,12 +2,11 @@ package automation
 
 import (
 	"fmt"
-	"tcms/m/internal/automation/core"
 	"tcms/m/internal/automation/interfaces"
 )
 
 type Service struct {
-	list map[string][]core.Automation
+	list map[string][]interfaces.Automation
 }
 
 // Start launch automation service
@@ -21,9 +20,9 @@ func (s *Service) Start(triggerChan chan interfaces.Trigger, errChan chan error)
 	}
 }
 
-func (s *Service) AddAutomation(automation core.Automation) {
+func (s *Service) AddAutomation(automation interfaces.Automation) {
 	if len(s.list) == 0 {
-		s.list = make(map[string][]core.Automation)
+		s.list = make(map[string][]interfaces.Automation)
 	}
 	for _, trigger := range automation.GetTriggers() {
 		s.list[trigger] = append(s.list[trigger], automation)
