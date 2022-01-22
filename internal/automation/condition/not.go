@@ -7,17 +7,15 @@ import (
 )
 
 type notCondition struct {
-	datamapper.DataMapper
 	subCondition interfaces.Condition
 }
 
-func createNotCondition(dataMapper datamapper.DataMapper, subConditions []interfaces.Condition) (interfaces.Condition, error) {
+func createNotCondition(_ datamapper.DataMapper, subConditions []interfaces.Condition) (interfaces.Condition, error) {
 	if len(subConditions) != 1 {
 		return nil, fmt.Errorf("not condition can have only one subcondition")
 	}
 
 	return notCondition{
-		DataMapper:   dataMapper,
 		subCondition: subConditions[0],
 	}, nil
 }
