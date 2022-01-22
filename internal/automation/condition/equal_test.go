@@ -15,18 +15,13 @@ func TestEqualCondition(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	m := mock_datamapper.NewMockMapping(ctrl)
-
-	mapping := map[string]datamapper.Mapping{
-		"test": m,
-	}
+	mapping := make(map[string]datamapper.Mapping)
 
 	dm := datamapper.DataMapper{Mapping: mapping}
 	createdCondition := createEqualCondition(dm, nil)
 
-	switch condition := createdCondition.(type) {
+	switch createdCondition.(type) {
 	case equalCondition:
-		dry.TestCheckEqual(t, mapping, condition.DataMapper.Mapping)
 	default:
 		t.Errorf("condition type is not sendMessageAction")
 	}
