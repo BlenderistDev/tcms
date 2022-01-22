@@ -118,7 +118,7 @@ func TestAutomation_ExecuteWithConditionError(t *testing.T) {
 	automation := Automation{actions: actions, condition: condition}
 
 	err := automation.Execute(trigger)
-	dry.TestHandleError(t, err)
+	dry.TestCheckEqual(t, "some error", err.Error())
 }
 
 func TestAutomation_ExecuteWithActionError(t *testing.T) {

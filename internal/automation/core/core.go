@@ -3,7 +3,6 @@ package core
 import (
 	"fmt"
 	"tcms/m/internal/automation/interfaces"
-	"tcms/m/internal/dry"
 )
 
 type Automation struct {
@@ -13,11 +12,18 @@ type Automation struct {
 }
 
 func (a *Automation) Execute(trigger interfaces.Trigger) error {
-	if a.condition == nil || a.checkCondition(trigger) {
-		err := a.executeActions(trigger)
+	if a.condition != nil {
+		checkRes, err := a.checkCondition(trigger)
 		if err != nil {
 			return err
 		}
+		if !checkRes {
+			return nil
+		}
+	}
+	err := a.executeActions(trigger)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -38,13 +44,12 @@ func (a *Automation) AddCondition(condition interfaces.Condition) {
 	a.condition = condition
 }
 
-func (a *Automation) checkCondition(trigger interfaces.Trigger) bool {
+func (a *Automation) checkCondition(trigger interfaces.Trigger) (bool, error) {
 	res, err := a.condition.Check(trigger)
 	if err != nil {
-		dry.HandleError(err)
-		return false
+		return false, err
 	}
-	return res
+	return res, nil
 }
 
 func (a *Automation) executeActions(trigger interfaces.Trigger) error {
