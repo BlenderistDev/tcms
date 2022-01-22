@@ -3,7 +3,6 @@ package condition
 import (
 	"fmt"
 	"github.com/golang/mock/gomock"
-	"tcms/m/internal/automation/datamapper"
 	"tcms/m/internal/automation/interfaces"
 	"tcms/m/internal/dry"
 	mock_interfaces "tcms/m/internal/testing/automation/interfaces"
@@ -17,7 +16,7 @@ func TestOrCondition_createOrCondition(t *testing.T) {
 	subCondition2 := mock_interfaces.NewMockCondition(ctrl)
 
 	subConditions := []interfaces.Condition{subCondition1, subCondition2}
-	createdCondition, err := createOrCondition(datamapper.DataMapper{}, subConditions)
+	createdCondition, err := createOrCondition(subConditions)
 	dry.TestHandleError(t, err)
 
 	switch condition := createdCondition.(type) {
@@ -33,7 +32,7 @@ func TestOrCondition_createOrCondition_withLessConditions(t *testing.T) {
 	defer ctrl.Finish()
 	subCondition := mock_interfaces.NewMockCondition(ctrl)
 	subConditions := []interfaces.Condition{subCondition}
-	_, err := createOrCondition(datamapper.DataMapper{}, subConditions)
+	_, err := createOrCondition(subConditions)
 	dry.TestCheckEqual(t, "or condition should have at least two subconditions", err.Error())
 }
 
@@ -62,7 +61,7 @@ func testOrConditionCheckWithSubCondition(t *testing.T, res1, res2 bool) {
 		Return(res2, nil)
 
 	subConditions := []interfaces.Condition{subCondition1, subCondition2}
-	createdCondition, err := createOrCondition(datamapper.DataMapper{}, subConditions)
+	createdCondition, err := createOrCondition(subConditions)
 	dry.TestHandleError(t, err)
 
 	res, err := createdCondition.Check(trigger)
@@ -90,7 +89,7 @@ func TestOrCondition_SubConditionError(t *testing.T) {
 		Return(true, fmt.Errorf(errText))
 
 	subConditions := []interfaces.Condition{subCondition1, subCondition2}
-	createdCondition, err := createOrCondition(datamapper.DataMapper{}, subConditions)
+	createdCondition, err := createOrCondition(subConditions)
 	dry.TestHandleError(t, err)
 
 	res, err := createdCondition.Check(trigger)

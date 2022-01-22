@@ -2,7 +2,6 @@ package condition
 
 import (
 	"fmt"
-	"tcms/m/internal/automation/datamapper"
 	"tcms/m/internal/automation/interfaces"
 )
 
@@ -10,7 +9,7 @@ type orCondition struct {
 	subConditions []interfaces.Condition
 }
 
-func createOrCondition(_ datamapper.DataMapper, subConditions []interfaces.Condition) (interfaces.Condition, error) {
+func createOrCondition(subConditions []interfaces.Condition) (interfaces.Condition, error) {
 	if len(subConditions) < 2 {
 		return nil, fmt.Errorf("or condition should have at least two subconditions")
 	}

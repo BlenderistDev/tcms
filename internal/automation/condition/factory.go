@@ -32,7 +32,7 @@ func CreateCondition(conditionData *model.Condition) (interfaces.Condition, erro
 		}
 		condition = createNotCondition(subConditions[0])
 	case "or":
-		condition, err = createOrCondition(dm, subConditions)
+		condition, err = createOrCondition(subConditions)
 		if err != nil {
 			return nil, err
 		}
