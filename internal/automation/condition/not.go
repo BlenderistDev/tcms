@@ -1,8 +1,6 @@
 package condition
 
 import (
-	"fmt"
-	"tcms/m/internal/automation/datamapper"
 	"tcms/m/internal/automation/interfaces"
 )
 
@@ -10,14 +8,10 @@ type notCondition struct {
 	subCondition interfaces.Condition
 }
 
-func createNotCondition(_ datamapper.DataMapper, subConditions []interfaces.Condition) (interfaces.Condition, error) {
-	if len(subConditions) != 1 {
-		return nil, fmt.Errorf("not condition can have only one subcondition")
-	}
-
+func createNotCondition(condition interfaces.Condition) interfaces.Condition {
 	return notCondition{
-		subCondition: subConditions[0],
-	}, nil
+		subCondition: condition,
+	}
 }
 
 func (c notCondition) Check(trigger interfaces.Trigger) (bool, error) {

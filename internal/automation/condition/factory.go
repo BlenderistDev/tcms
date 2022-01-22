@@ -27,10 +27,10 @@ func CreateCondition(conditionData *model.Condition) (interfaces.Condition, erro
 	case "equal":
 		condition = createEqualCondition(dm, subConditions)
 	case "not":
-		condition, err = createNotCondition(dm, subConditions)
-		if err != nil {
-			return nil, err
+		if len(subConditions) != 1 {
+			return nil, fmt.Errorf("not condition can have only one subcondition")
 		}
+		condition = createNotCondition(subConditions[0])
 	case "or":
 		condition, err = createOrCondition(dm, subConditions)
 		if err != nil {
