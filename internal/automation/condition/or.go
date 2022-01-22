@@ -7,17 +7,15 @@ import (
 )
 
 type orCondition struct {
-	datamapper.DataMapper
 	subConditions []interfaces.Condition
 }
 
-func createOrCondition(dataMapper datamapper.DataMapper, subConditions []interfaces.Condition) (interfaces.Condition, error) {
+func createOrCondition(_ datamapper.DataMapper, subConditions []interfaces.Condition) (interfaces.Condition, error) {
 	if len(subConditions) < 2 {
 		return nil, fmt.Errorf("or condition should have at least two subconditions")
 	}
 
 	return orCondition{
-		DataMapper:    dataMapper,
 		subConditions: subConditions,
 	}, nil
 }
