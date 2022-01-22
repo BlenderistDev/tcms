@@ -7,17 +7,15 @@ import (
 )
 
 type andCondition struct {
-	datamapper.DataMapper
 	subConditions []interfaces.Condition
 }
 
-func createAndCondition(dataMapper datamapper.DataMapper, subConditions []interfaces.Condition) (interfaces.Condition, error) {
+func createAndCondition(_ datamapper.DataMapper, subConditions []interfaces.Condition) (interfaces.Condition, error) {
 	if len(subConditions) < 2 {
 		return nil, fmt.Errorf("and condition should have at least two subconditions")
 	}
 
 	return andCondition{
-		DataMapper:    dataMapper,
 		subConditions: subConditions,
 	}, nil
 }
