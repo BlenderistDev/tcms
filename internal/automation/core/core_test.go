@@ -164,3 +164,13 @@ func TestAutomation_GetTriggerList(t *testing.T) {
 	automation := Automation{triggers: expect}
 	dry.TestCheckEqual(t, expect, automation.GetTriggers())
 }
+
+func TestAutomation_AddAction(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	action := mock_interfaces.NewMockActionWithModel(ctrl)
+	expected := []interfaces.Action{action}
+	automation := Automation{}
+	automation.AddAction(action)
+	dry.TestCheckEqual(t, expected, automation.actions)
+}
