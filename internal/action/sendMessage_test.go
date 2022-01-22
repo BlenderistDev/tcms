@@ -26,12 +26,10 @@ func TestCreateSendMessageAction(t *testing.T) {
 
 func TestSendMessageAction_Execute(t *testing.T) {
 	const (
-		messageKey      = "message"
-		messageValue    = "test message"
-		accessHashKey   = "accessHash"
-		accessHashValue = "456456"
-		peerKey         = "peer"
-		peerValue       = "123123"
+		messageKey   = "message"
+		messageValue = "test message"
+		peerKey      = "peer"
+		peerValue    = "123123"
 	)
 
 	ctrl := gomock.NewController(t)
@@ -50,11 +48,6 @@ func TestSendMessageAction_Execute(t *testing.T) {
 				Name:   peerKey,
 				Value:  peerValue,
 			},
-			accessHashKey: {
-				Simple: true,
-				Name:   accessHashKey,
-				Value:  accessHashValue,
-			},
 			messageKey: {
 				Simple: true,
 				Name:   messageKey,
@@ -64,6 +57,9 @@ func TestSendMessageAction_Execute(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	trigger.EXPECT().GetData().Return(make(map[string]string))
+	trigger.EXPECT().GetData().Return(make(map[string]string))
+
 	sendMessageAction := CreateSendMessageAction(telegramClient)
 	err := sendMessageAction.Execute(actionModel, trigger)
 	dry.TestHandleError(t, err)
@@ -99,6 +95,8 @@ func TestSendMessageAction_Execute_peerError(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	trigger.EXPECT().GetData().Return(make(map[string]string))
+
 	sendMessageAction := CreateSendMessageAction(telegramClient)
 	err := sendMessageAction.Execute(actionModel, trigger)
 	dry.TestCheckEqual(t, "key peer not found", err.Error())
@@ -106,10 +104,8 @@ func TestSendMessageAction_Execute_peerError(t *testing.T) {
 
 func TestSendMessageAction_Execute_messageError(t *testing.T) {
 	const (
-		accessHashKey   = "accessHash"
-		accessHashValue = "456456"
-		peerKey         = "peer"
-		peerValue       = "123123"
+		peerKey   = "peer"
+		peerValue = "123123"
 	)
 
 	ctrl := gomock.NewController(t)
@@ -125,15 +121,13 @@ func TestSendMessageAction_Execute_messageError(t *testing.T) {
 				Name:   peerKey,
 				Value:  peerValue,
 			},
-			accessHashKey: {
-				Simple: true,
-				Name:   accessHashKey,
-				Value:  accessHashValue,
-			},
 		},
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	trigger.EXPECT().GetData().Return(make(map[string]string))
+	trigger.EXPECT().GetData().Return(make(map[string]string))
+
 	sendMessageAction := CreateSendMessageAction(telegramClient)
 	err := sendMessageAction.Execute(actionModel, trigger)
 	dry.TestCheckEqual(t, "key message not found", err.Error())
@@ -141,13 +135,11 @@ func TestSendMessageAction_Execute_messageError(t *testing.T) {
 
 func TestSendMessageAction_Execute_telegramError(t *testing.T) {
 	const (
-		messageKey      = "message"
-		messageValue    = "test message"
-		accessHashKey   = "accessHash"
-		accessHashValue = "456456"
-		peerKey         = "peer"
-		peerValue       = "123123"
-		errorTexxt      = "some error"
+		messageKey   = "message"
+		messageValue = "test message"
+		peerKey      = "peer"
+		peerValue    = "123123"
+		errorTexxt   = "some error"
 	)
 
 	ctrl := gomock.NewController(t)
@@ -167,11 +159,6 @@ func TestSendMessageAction_Execute_telegramError(t *testing.T) {
 				Name:   peerKey,
 				Value:  peerValue,
 			},
-			accessHashKey: {
-				Simple: true,
-				Name:   accessHashKey,
-				Value:  accessHashValue,
-			},
 			messageKey: {
 				Simple: true,
 				Name:   messageKey,
@@ -181,6 +168,9 @@ func TestSendMessageAction_Execute_telegramError(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	trigger.EXPECT().GetData().Return(make(map[string]string))
+	trigger.EXPECT().GetData().Return(make(map[string]string))
+
 	sendMessageAction := CreateSendMessageAction(telegramClient)
 	err := sendMessageAction.Execute(actionModel, trigger)
 	dry.TestCheckEqual(t, errorTexxt, err.Error())
