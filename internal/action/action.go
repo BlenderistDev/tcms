@@ -14,7 +14,7 @@ type actionWithModel struct {
 	model  model.Action
 }
 
-func GetActionWithModel(action Action, model model.Action) interfaces.ActionWithModel {
+func GetActionWithModel(action Action, model model.Action) interfaces.Action {
 	return &actionWithModel{
 		action: action,
 		model:  model,

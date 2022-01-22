@@ -9,6 +9,6 @@ type Condition interface {
 	Check(trigger Trigger) (bool, error)
 }
 
-type ActionWithModel interface {
+type Action interface {
 	Execute(trigger Trigger) error
 }

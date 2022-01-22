@@ -138,7 +138,7 @@ func (mr *MockConditionMockRecorder) Check(trigger interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Check", reflect.TypeOf((*MockCondition)(nil).Check), trigger)
 }
 
-// MockActionWithModel is a mock of ActionWithModel interface.
+// MockActionWithModel is a mock of Action interface.
 type MockActionWithModel struct {
 	ctrl     *gomock.Controller
 	recorder *MockActionWithModelMockRecorder

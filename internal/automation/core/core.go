@@ -7,7 +7,7 @@ import (
 )
 
 type Automation struct {
-	actions   []interfaces.ActionWithModel
+	actions   []interfaces.Action
 	condition interfaces.Condition
 	triggers  []string
 }
@@ -30,7 +30,7 @@ func (a *Automation) GetTriggers() []string {
 	return a.triggers
 }
 
-func (a *Automation) AddAction(action interfaces.ActionWithModel) {
+func (a *Automation) AddAction(action interfaces.Action) {
 	a.actions = append(a.actions, action)
 }
 
