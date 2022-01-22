@@ -158,3 +158,9 @@ func TestAutomation_AddTrigger(t *testing.T) {
 	automation.AddTrigger(t2)
 	dry.TestCheckEqual(t, expect, automation.triggers)
 }
+
+func TestAutomation_GetTriggerList(t *testing.T) {
+	expect := []string{"trigger1", "trigger2"}
+	automation := Automation{triggers: expect}
+	dry.TestCheckEqual(t, expect, automation.GetTriggers())
+}
