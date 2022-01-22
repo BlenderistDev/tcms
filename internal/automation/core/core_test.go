@@ -174,3 +174,12 @@ func TestAutomation_AddAction(t *testing.T) {
 	automation.AddAction(action)
 	dry.TestCheckEqual(t, expected, automation.actions)
 }
+
+func TestAutomation_AddCondition(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	condition := mock_interfaces.NewMockCondition(ctrl)
+	automation := Automation{}
+	automation.AddCondition(condition)
+	dry.TestCheckEqual(t, condition, automation.condition)
+}
