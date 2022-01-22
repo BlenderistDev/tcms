@@ -47,6 +47,8 @@ func TestMuteChatAction_Execute_idError(t *testing.T) {
 	}
 
 	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	trigger.EXPECT().GetData().Return(make(map[string]string))
+
 	muteUserAction := CreateMuteChatAction(telegramClient)
 	err := muteUserAction.Execute(actionModel, trigger)
 	dry.TestCheckEqual(t, "key id not found", err.Error())
