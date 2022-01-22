@@ -39,6 +39,7 @@ func main() {
 	go kafka.CreateKafkaSubscription(addConsumer, kafkaError, quitKafka)
 
 	triggerChan := make(chan interfaces.Trigger)
+	errChan := make(chan error)
 
 	go func() {
 		automationService := automation.Service{}
@@ -67,7 +68,7 @@ func main() {
 			automationService.AddAutomation(coreAutomation)
 		}
 
-		automationService.Start(triggerChan)
+		automationService.Start(triggerChan, errChan)
 	}()
 
 	go trigger2.StartTelegramTrigger(addConsumer, triggerChan)

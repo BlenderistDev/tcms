@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"tcms/m/internal/automation/core"
 	"tcms/m/internal/automation/interfaces"
-	"tcms/m/internal/dry"
 )
 
 type Service struct {
@@ -12,10 +11,13 @@ type Service struct {
 }
 
 // Start launch automation service
-func (s *Service) Start(triggerChan chan interfaces.Trigger) {
+func (s *Service) Start(triggerChan chan interfaces.Trigger, errChan chan error) {
 	for {
 		trigger := <-triggerChan
-		s.HandleTrigger(trigger)
+		err := s.handleTrigger(trigger)
+		if err != nil {
+			errChan <- err
+		}
 	}
 }
 
@@ -29,15 +31,17 @@ func (s *Service) AddAutomation(automation core.Automation) {
 	}
 }
 
-func (s *Service) HandleTrigger(trigger interfaces.Trigger) {
+func (s *Service) handleTrigger(trigger interfaces.Trigger) error {
 	automationList := s.list[trigger.GetName()]
 	if automationList == nil {
-		fmt.Printf("no automation for trigger %s\n", trigger.GetName())
-		return
+		return fmt.Errorf("no automation for trigger %s\n", trigger.GetName())
 	}
 	for _, automation := range automationList {
 		fmt.Printf("Trigger with type %s\n", trigger.GetName())
 		err := automation.Execute(trigger)
-		dry.HandleError(err)
+		if err != nil {
+			return err
+		}
 	}
+	return nil
 }
