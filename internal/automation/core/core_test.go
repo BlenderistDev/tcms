@@ -144,3 +144,17 @@ func TestAutomation_ExecuteWithActionError(t *testing.T) {
 		return
 	}
 }
+
+func TestAutomation_AddTrigger(t *testing.T) {
+	const (
+		t1 = "trigger1"
+		t2 = "trigger2"
+	)
+
+	expect := []string{t1, t2}
+
+	automation := Automation{}
+	automation.AddTrigger(t1)
+	automation.AddTrigger(t2)
+	dry.TestCheckEqual(t, expect, automation.triggers)
+}
