@@ -67,7 +67,15 @@ func main() {
 			automationService.AddAutomation(coreAutomation)
 		}
 
+		go func(errChan chan error) {
+			for {
+				err := <-errChan
+				dry.HandleError(err)
+			}
+		}(errChan)
+
 		automationService.Start(triggerChan, errChan)
+
 	}()
 
 	go trigger2.StartTelegramTrigger(addConsumer, triggerChan)

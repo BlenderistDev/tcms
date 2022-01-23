@@ -33,7 +33,7 @@ func (s *Service) handleTrigger(trigger interfaces.Trigger) error {
 	triggerName := trigger.GetName()
 	automationList := s.list[triggerName]
 	if automationList == nil {
-		return fmt.Errorf("no automation for trigger %s\n", triggerName)
+		return fmt.Errorf("no automation for trigger %s", triggerName)
 	}
 	for _, automation := range automationList {
 		fmt.Printf("Trigger with type %s\n", triggerName)
