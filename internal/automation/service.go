@@ -30,12 +30,13 @@ func (s *Service) AddAutomation(automation interfaces.Automation) {
 }
 
 func (s *Service) handleTrigger(trigger interfaces.Trigger) error {
-	automationList := s.list[trigger.GetName()]
+	triggerName := trigger.GetName()
+	automationList := s.list[triggerName]
 	if automationList == nil {
-		return fmt.Errorf("no automation for trigger %s\n", trigger.GetName())
+		return fmt.Errorf("no automation for trigger %s\n", triggerName)
 	}
 	for _, automation := range automationList {
-		fmt.Printf("Trigger with type %s\n", trigger.GetName())
+		fmt.Printf("Trigger with type %s\n", triggerName)
 		err := automation.Execute(trigger)
 		if err != nil {
 			return err

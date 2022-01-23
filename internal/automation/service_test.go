@@ -6,6 +6,7 @@ import (
 	"tcms/m/internal/dry"
 	mock_interfaces "tcms/m/internal/testing/automation/interfaces"
 	"testing"
+	"time"
 )
 
 func TestService_AddAutomation(t *testing.T) {
@@ -26,4 +27,29 @@ func TestService_AddAutomation(t *testing.T) {
 	s := Service{}
 	s.AddAutomation(automation)
 	dry.TestCheckEqual(t, expected, s.list)
+}
+
+func TestService_Start(t *testing.T) {
+	const t1 = "trigger1"
+
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	trigger.EXPECT().GetName().Return(t1)
+
+	automation := mock_interfaces.NewMockAutomation(ctrl)
+	automation.EXPECT().GetTriggers().Return([]string{t1})
+	automation.EXPECT().Execute(gomock.Eq(trigger))
+
+	service := Service{}
+	service.AddAutomation(automation)
+
+	triggerChan := make(chan interfaces.Trigger)
+	errChan := make(chan error)
+
+	go service.Start(triggerChan, errChan)
+
+	triggerChan <- trigger
+	time.Sleep(100)
 }
