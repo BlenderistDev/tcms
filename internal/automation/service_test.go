@@ -83,3 +83,31 @@ func TestService_Start_automationExecuteError(t *testing.T) {
 	err := <-errChan
 	dry.TestCheckEqual(t, errText, err.Error())
 }
+
+func TestService_Start_NoAutomationForTrigger(t *testing.T) {
+	const (
+		t1 = "trigger1"
+		t2 = "trigger2"
+	)
+
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	trigger.EXPECT().GetName().Return(t1)
+
+	automation := mock_interfaces.NewMockAutomation(ctrl)
+	automation.EXPECT().GetTriggers().Return([]string{t2})
+
+	service := Service{}
+	service.AddAutomation(automation)
+
+	triggerChan := make(chan interfaces.Trigger)
+	errChan := make(chan error)
+
+	go service.Start(triggerChan, errChan)
+
+	triggerChan <- trigger
+	err := <-errChan
+	dry.TestCheckEqual(t, "no automation for trigger "+t1, err.Error())
+}
