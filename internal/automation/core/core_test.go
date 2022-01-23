@@ -183,3 +183,12 @@ func TestAutomation_AddCondition(t *testing.T) {
 	automation.AddCondition(condition)
 	dry.TestCheckEqual(t, condition, automation.condition)
 }
+
+func TestGetAutomation(t *testing.T) {
+	a := GetAutomation()
+	switch a.(type) {
+	case interfaces.Automation:
+	default:
+		t.Errorf("automation must implement interfaces.Automation")
+	}
+}
