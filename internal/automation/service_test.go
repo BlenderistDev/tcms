@@ -1,6 +1,7 @@
 package automation
 
 import (
+	"fmt"
 	"github.com/golang/mock/gomock"
 	"tcms/m/internal/automation/interfaces"
 	"tcms/m/internal/dry"
@@ -52,4 +53,33 @@ func TestService_Start(t *testing.T) {
 
 	triggerChan <- trigger
 	time.Sleep(100)
+}
+
+func TestService_Start_automationExecuteError(t *testing.T) {
+	const (
+		t1      = "trigger1"
+		errText = "some error"
+	)
+
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	trigger.EXPECT().GetName().Return(t1)
+
+	automation := mock_interfaces.NewMockAutomation(ctrl)
+	automation.EXPECT().GetTriggers().Return([]string{t1})
+	automation.EXPECT().Execute(gomock.Eq(trigger)).Return(fmt.Errorf(errText))
+
+	service := Service{}
+	service.AddAutomation(automation)
+
+	triggerChan := make(chan interfaces.Trigger)
+	errChan := make(chan error)
+
+	go service.Start(triggerChan, errChan)
+
+	triggerChan <- trigger
+	err := <-errChan
+	dry.TestCheckEqual(t, errText, err.Error())
 }
