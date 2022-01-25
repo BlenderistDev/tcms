@@ -11,6 +11,7 @@ type automation struct {
 	triggers  []string
 }
 
+// GetAutomation returns automation implementation
 func GetAutomation() interfaces.Automation {
 	return &automation{}
 }
