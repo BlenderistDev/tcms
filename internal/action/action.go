@@ -1,20 +1,17 @@
 package action
 
 import (
+	interfaces2 "tcms/m/internal/action/interfaces"
 	"tcms/m/internal/automation/interfaces"
 	"tcms/m/internal/db/model"
 )
 
-type Action interface {
-	Execute(action model.Action, trigger interfaces.Trigger) error
-}
-
 type actionWithModel struct {
-	action Action
+	action interfaces2.ActionWithModel
 	model  model.Action
 }
 
-func GetActionWithModel(action Action, model model.Action) interfaces.Action {
+func GetActionWithModel(action interfaces2.ActionWithModel, model model.Action) interfaces.Action {
 	return &actionWithModel{
 		action: action,
 		model:  model,

@@ -1,6 +1,7 @@
-package action
+package actions
 
 import (
+	interfaces2 "tcms/m/internal/action/interfaces"
 	"tcms/m/internal/automation/datamapper"
 	"tcms/m/internal/automation/interfaces"
 	"tcms/m/internal/db/model"
@@ -11,7 +12,7 @@ type muteUserAction struct {
 	telegram telegramClient.TelegramClient
 }
 
-func CreateMuteUserAction(client telegramClient.TelegramClient) Action {
+func CreateMuteUserAction(client telegramClient.TelegramClient) interfaces2.ActionWithModel {
 	return muteUserAction{
 		telegram: client,
 	}

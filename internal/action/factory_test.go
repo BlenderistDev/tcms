@@ -2,6 +2,7 @@ package action
 
 import (
 	"github.com/golang/mock/gomock"
+	"tcms/m/internal/action/interfaces"
 	"tcms/m/internal/dry"
 	telegramClient2 "tcms/m/internal/testing/telegramClient"
 	"testing"
@@ -16,9 +17,9 @@ func TestCreateAction_createSendMessage(t *testing.T) {
 	action, err := CreateAction("sendMessage", telegramClient)
 	dry.TestHandleError(t, err)
 	switch action.(type) {
-	case sendMessageAction:
+	case interfaces.ActionWithModel:
 	default:
-		t.Errorf("action type is not sendMessageAction")
+		t.Errorf("action sendMessage is not created")
 	}
 }
 
@@ -31,9 +32,9 @@ func TestCreateAction_createMuteUser(t *testing.T) {
 	action, err := CreateAction("muteUser", telegramClient)
 	dry.TestHandleError(t, err)
 	switch action.(type) {
-	case muteUserAction:
+	case interfaces.ActionWithModel:
 	default:
-		t.Errorf("action type is not muteUserAction")
+		t.Errorf("action sendMessage is not created")
 	}
 }
 
@@ -46,9 +47,9 @@ func TestCreateAction_createMuteChat(t *testing.T) {
 	action, err := CreateAction("muteChat", telegramClient)
 	dry.TestHandleError(t, err)
 	switch action.(type) {
-	case muteChatAction:
+	case interfaces.ActionWithModel:
 	default:
-		t.Errorf("action type is not muteUserAction")
+		t.Errorf("action sendMessage is not created")
 	}
 }
 
