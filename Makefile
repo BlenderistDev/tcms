@@ -21,6 +21,9 @@ gen-telegramclient-mock:
 gen-datamapper-mock:
 	@mockgen -source=internal/automation/datamapper/dataMapper.go -destination=internal/testing/automation/datamapper/dataMapper.go
 
+gen-action-mock:
+	@mockgen -source=internal/action/interfaces/interfaces.go -destination=internal/testing/action/interfaces/interfaces.go
+
 gen-telegram:
 	@protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative proto/telegram.proto
 	@mv proto/telegram*.go pkg/telegram/
