@@ -2,9 +2,9 @@ package conditionFactory
 
 import (
 	"fmt"
+	"github.com/BlenderistDev/automation/datamapper"
+	"github.com/BlenderistDev/automation/interfaces"
 	condition2 "tcms/m/internal/automation/condition"
-	"tcms/m/internal/automation/datamapper"
-	"tcms/m/internal/automation/interfaces"
 	"tcms/m/internal/db/model"
 )
 

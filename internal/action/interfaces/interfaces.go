@@ -1,7 +1,7 @@
 package interfaces
 
 import (
-	"tcms/m/internal/automation/interfaces"
+	"github.com/BlenderistDev/automation/interfaces"
 	"tcms/m/internal/db/model"
 )
 

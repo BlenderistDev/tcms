@@ -1,7 +1,7 @@
 package condition
 
 import (
-	"tcms/m/internal/automation/interfaces"
+	"github.com/BlenderistDev/automation/interfaces"
 )
 
 type notCondition struct {

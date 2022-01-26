@@ -2,7 +2,7 @@ package condition
 
 import (
 	"fmt"
-	"tcms/m/internal/automation/interfaces"
+	"github.com/BlenderistDev/automation/interfaces"
 )
 
 type orCondition struct {

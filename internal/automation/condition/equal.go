@@ -1,8 +1,8 @@
 package condition
 
 import (
-	"tcms/m/internal/automation/datamapper"
-	"tcms/m/internal/automation/interfaces"
+	"github.com/BlenderistDev/automation/datamapper"
+	"github.com/BlenderistDev/automation/interfaces"
 )
 
 type equalCondition struct {

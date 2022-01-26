@@ -2,11 +2,11 @@ package main
 
 import (
 	"context"
+	"github.com/BlenderistDev/automation"
+	"github.com/BlenderistDev/automation/core"
+	"github.com/BlenderistDev/automation/interfaces"
 	"github.com/joho/godotenv"
 	action2 "tcms/m/internal/action"
-	"tcms/m/internal/automation"
-	"tcms/m/internal/automation/core"
-	"tcms/m/internal/automation/interfaces"
 	"tcms/m/internal/conditionFactory"
 	"tcms/m/internal/db"
 	"tcms/m/internal/db/repository"
