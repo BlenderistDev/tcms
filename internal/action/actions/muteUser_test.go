@@ -2,10 +2,10 @@ package actions
 
 import (
 	"fmt"
+	mock_interfaces "github.com/BlenderistDev/automation/testing/interfaces"
 	"github.com/golang/mock/gomock"
 	"tcms/m/internal/db/model"
 	"tcms/m/internal/dry"
-	mock_interfaces "tcms/m/internal/testing/automation/interfaces"
 	telegramClient2 "tcms/m/internal/testing/telegramClient"
 	"testing"
 )

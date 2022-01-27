@@ -6,9 +6,9 @@ package mock_interfaces
 
 import (
 	reflect "reflect"
-	interfaces "tcms/m/internal/automation/interfaces"
 	model "tcms/m/internal/db/model"
 
+	interfaces "github.com/BlenderistDev/automation/interfaces"
 	gomock "github.com/golang/mock/gomock"
 )
 
