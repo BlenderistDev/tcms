@@ -1,8 +1,8 @@
-package conditionFactory
+package condition
 
 import (
 	"github.com/BlenderistDev/automation/interfaces"
-	"tcms/m/internal/db/model"
+	"tcms/m/internal/connections/db/model"
 	"tcms/m/internal/dry"
 	"testing"
 )

@@ -2,8 +2,8 @@ package action
 
 import (
 	"fmt"
-	"tcms/m/internal/action/actions"
-	"tcms/m/internal/action/interfaces"
+	actions2 "tcms/m/internal/automation/action/actions"
+	"tcms/m/internal/automation/action/interfaces"
 	"tcms/m/internal/telegramClient"
 )
 
@@ -11,11 +11,11 @@ func CreateAction(name string, telegram telegramClient.TelegramClient) (interfac
 	var action interfaces.ActionWithModel
 	switch name {
 	case "sendMessage":
-		action = actions.CreateSendMessageAction(telegram)
+		action = actions2.CreateSendMessageAction(telegram)
 	case "muteUser":
-		action = actions.CreateMuteUserAction(telegram)
+		action = actions2.CreateMuteUserAction(telegram)
 	case "muteChat":
-		action = actions.CreateMuteChatAction(telegram)
+		action = actions2.CreateMuteChatAction(telegram)
 	default:
 		return nil, fmt.Errorf("unknown action %s", name)
 	}

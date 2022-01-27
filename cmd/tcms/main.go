@@ -6,14 +6,14 @@ import (
 	"github.com/BlenderistDev/automation/core"
 	"github.com/BlenderistDev/automation/interfaces"
 	"github.com/joho/godotenv"
-	action2 "tcms/m/internal/action"
-	"tcms/m/internal/conditionFactory"
-	"tcms/m/internal/db"
-	"tcms/m/internal/db/repository"
+	"tcms/m/internal/automation/action"
+	"tcms/m/internal/automation/condition"
+	"tcms/m/internal/automation/trigger"
+	"tcms/m/internal/connections/db"
+	"tcms/m/internal/connections/db/repository"
+	"tcms/m/internal/connections/kafka"
 	"tcms/m/internal/dry"
-	"tcms/m/internal/kafka"
 	"tcms/m/internal/telegramClient"
-	trigger2 "tcms/m/internal/trigger"
 	"tcms/m/internal/webserver"
 )
 
@@ -53,15 +53,15 @@ func main() {
 			}
 
 			for _, a := range auto.Actions {
-				act, err := action2.CreateAction(a.Name, telegram)
+				act, err := action.CreateAction(a.Name, telegram)
 				dry.HandleError(err)
-				coreAutomation.AddAction(action2.GetActionWithModel(act, a))
+				coreAutomation.AddAction(action.GetActionWithModel(act, a))
 			}
 
 			if auto.Condition != nil {
-				condition, err := conditionFactory.CreateCondition(auto.Condition)
+				cond, err := condition.CreateCondition(auto.Condition)
 				dry.HandleError(err)
-				coreAutomation.AddCondition(condition)
+				coreAutomation.AddCondition(cond)
 			}
 
 			automationService.AddAutomation(coreAutomation)
@@ -78,8 +78,8 @@ func main() {
 
 	}()
 
-	go trigger2.StartTelegramTrigger(addConsumer, triggerChan)
-	go trigger2.StartTimeTrigger(triggerChan)
+	go trigger.StartTelegramTrigger(addConsumer, triggerChan)
+	go trigger.StartTimeTrigger(triggerChan)
 	go webserver.StartWebServer(telegram, addConsumer)
 
 	select {}

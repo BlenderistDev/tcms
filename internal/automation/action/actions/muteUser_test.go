@@ -4,7 +4,7 @@ import (
 	"fmt"
 	mock_interfaces "github.com/BlenderistDev/automation/testing/interfaces"
 	"github.com/golang/mock/gomock"
-	"tcms/m/internal/db/model"
+	"tcms/m/internal/connections/db/model"
 	"tcms/m/internal/dry"
 	telegramClient2 "tcms/m/internal/testing/telegramClient"
 	"testing"

@@ -1,11 +1,11 @@
-package conditionFactory
+package condition
 
 import (
 	"fmt"
 	condition2 "github.com/BlenderistDev/automation/condition"
 	"github.com/BlenderistDev/automation/datamapper"
 	"github.com/BlenderistDev/automation/interfaces"
-	"tcms/m/internal/db/model"
+	"tcms/m/internal/connections/db/model"
 )
 
 func CreateCondition(conditionData *model.Condition) (interfaces.Condition, error) {

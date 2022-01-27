@@ -4,7 +4,7 @@ import (
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
-	"tcms/m/internal/db/model"
+	"tcms/m/internal/connections/db/model"
 )
 
 type AutomationRepository interface {
