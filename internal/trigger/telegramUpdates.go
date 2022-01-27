@@ -2,7 +2,7 @@ package trigger
 
 import (
 	"encoding/json"
-	"tcms/m/internal/automation/interfaces"
+	"github.com/BlenderistDev/automation/interfaces"
 	"tcms/m/internal/dry"
 )
 

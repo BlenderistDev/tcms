@@ -1,6 +1,6 @@
 package model
 
-import "tcms/m/internal/automation/datamapper"
+import "github.com/BlenderistDev/automation/datamapper"
 
 type Mapping struct {
 	Simple bool   `bson:"simple"`

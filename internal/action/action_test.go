@@ -1,11 +1,11 @@
 package action
 
 import (
+	mock_interfaces2 "github.com/BlenderistDev/automation/testing/interfaces"
 	"github.com/golang/mock/gomock"
 	"tcms/m/internal/db/model"
 	"tcms/m/internal/dry"
 	mock_interfaces "tcms/m/internal/testing/action/interfaces"
-	mock_interfaces2 "tcms/m/internal/testing/automation/interfaces"
 	"testing"
 )
 
