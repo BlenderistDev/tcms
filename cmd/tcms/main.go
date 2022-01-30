@@ -19,6 +19,7 @@ import (
 )
 
 func main() {
+	log := logrus.New()
 	// Load values from .env into the system
 	err := godotenv.Load()
 	dry.HandleErrorPanic(err)
@@ -56,7 +57,7 @@ func main() {
 			for _, a := range auto.Actions {
 				act, err := action.CreateAction(a.Name, telegram)
 				if err != nil {
-					logrus.Error(err)
+					log.Error(err)
 				}
 				coreAutomation.AddAction(action.GetActionWithModel(act, a))
 			}
@@ -64,7 +65,7 @@ func main() {
 			if auto.Condition != nil {
 				cond, err := condition.CreateCondition(auto.Condition)
 				if err != nil {
-					logrus.Error(err)
+					log.Error(err)
 				}
 				coreAutomation.AddCondition(cond)
 			}
@@ -75,7 +76,7 @@ func main() {
 		go func(errChan chan error) {
 			for {
 				err := <-errChan
-				logrus.Error(err)
+				log.Error(err)
 			}
 		}(errChan)
 
@@ -83,7 +84,7 @@ func main() {
 
 	}()
 
-	go trigger.StartTelegramTrigger(addConsumer, triggerChan)
+	go trigger.StartTelegramUpdateTrigger(addConsumer, triggerChan, log)
 	go trigger.StartTimeTrigger(triggerChan)
 	go webserver.StartWebServer(telegram, addConsumer)
 
