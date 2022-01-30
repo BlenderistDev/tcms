@@ -6,6 +6,7 @@ import (
 	"github.com/BlenderistDev/automation/core"
 	"github.com/BlenderistDev/automation/interfaces"
 	"github.com/joho/godotenv"
+	"github.com/sirupsen/logrus"
 	"tcms/m/internal/automation/action"
 	"tcms/m/internal/automation/condition"
 	"tcms/m/internal/automation/trigger"
@@ -23,7 +24,7 @@ func main() {
 	dry.HandleErrorPanic(err)
 
 	telegram, err := telegramClient.NewTelegram()
-	dry.HandleError(err)
+	dry.HandleErrorPanic(err)
 
 	connection, err := db.GetConnection(context.Background())
 	dry.HandleErrorPanic(err)
@@ -54,13 +55,17 @@ func main() {
 
 			for _, a := range auto.Actions {
 				act, err := action.CreateAction(a.Name, telegram)
-				dry.HandleError(err)
+				if err != nil {
+					logrus.Error(err)
+				}
 				coreAutomation.AddAction(action.GetActionWithModel(act, a))
 			}
 
 			if auto.Condition != nil {
 				cond, err := condition.CreateCondition(auto.Condition)
-				dry.HandleError(err)
+				if err != nil {
+					logrus.Error(err)
+				}
 				coreAutomation.AddCondition(cond)
 			}
 
@@ -70,7 +75,7 @@ func main() {
 		go func(errChan chan error) {
 			for {
 				err := <-errChan
-				dry.HandleError(err)
+				logrus.Error(err)
 			}
 		}(errChan)
 

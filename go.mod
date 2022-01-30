@@ -11,6 +11,7 @@ require (
 	github.com/gorilla/websocket v1.4.2
 	github.com/joho/godotenv v1.3.0
 	github.com/segmentio/kafka-go v0.4.25
+	github.com/sirupsen/logrus v1.4.2
 	go.mongodb.org/mongo-driver v1.7.4
 	google.golang.org/grpc v1.43.0
 	google.golang.org/protobuf v1.26.0
@@ -26,6 +27,7 @@ require (
 	github.com/google/go-cmp v0.5.6 // indirect
 	github.com/json-iterator/go v1.1.9 // indirect
 	github.com/klauspost/compress v1.13.6 // indirect
+	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
 	github.com/leodido/go-urn v1.2.0 // indirect
 	github.com/mattn/go-isatty v0.0.12 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421 // indirect
