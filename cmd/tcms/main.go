@@ -81,7 +81,6 @@ func main() {
 		}(errChan)
 
 		automationService.Start(triggerChan, errChan)
-
 	}()
 
 	go trigger.StartTelegramUpdateTrigger(addConsumer, triggerChan, log)
