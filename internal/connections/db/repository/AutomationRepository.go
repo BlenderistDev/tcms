@@ -9,6 +9,7 @@ import (
 
 type AutomationRepository interface {
 	GetAll(ctx context.Context) ([]model.Automation, error)
+	Save(ctx context.Context, automation model.Automation) error
 }
 
 type automationRepository struct {
@@ -35,4 +36,9 @@ func (r automationRepository) GetAll(ctx context.Context) ([]model.Automation, e
 		list[i] = automation
 	}
 	return list, nil
+}
+
+func (r automationRepository) Save(ctx context.Context, automation model.Automation) error {
+	_, err := r.collection.InsertOne(ctx, automation)
+	return err
 }
