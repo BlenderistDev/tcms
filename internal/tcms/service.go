@@ -15,7 +15,21 @@ type gRPCServer struct {
 }
 
 func (s gRPCServer) AddAutomation(ctx context.Context, automation *tcms.Automation) (*tcms.Result, error) {
+	record := model.Automation{
+		Triggers:  automation.GetTriggers(),
+		Condition: nil,
+		Actions:   getActions(automation),
+	}
 
+	err := s.repo.Save(ctx, record)
+	if err != nil {
+		return nil, err
+	}
+
+	return &tcms.Result{}, nil
+}
+
+func getActions(automation *tcms.Automation) []model.Action {
 	actions := make([]model.Action, len(automation.GetActions()))
 	for key, act := range automation.GetActions() {
 		mapping := act.GetMapping()
@@ -35,19 +49,7 @@ func (s gRPCServer) AddAutomation(ctx context.Context, automation *tcms.Automati
 
 		actions[key] = action
 	}
-
-	record := model.Automation{
-		Triggers:  automation.GetTriggers(),
-		Condition: nil,
-		Actions:   actions,
-	}
-
-	err := s.repo.Save(ctx, record)
-	if err != nil {
-		return nil, err
-	}
-
-	return &tcms.Result{}, nil
+	return actions
 }
 
 func StartTcmsGrpc(repo repository.AutomationRepository) error {
