@@ -14,6 +14,7 @@ import (
 	"tcms/m/internal/connections/db/repository"
 	"tcms/m/internal/connections/kafka"
 	"tcms/m/internal/dry"
+	"tcms/m/internal/tcms"
 	"tcms/m/internal/telegramClient"
 	"tcms/m/internal/webserver"
 )
@@ -86,6 +87,12 @@ func main() {
 	go trigger.StartTelegramUpdateTrigger(addConsumer, triggerChan, log)
 	go trigger.StartTimeTrigger(triggerChan)
 	go webserver.StartWebServer(telegram, addConsumer)
+	go func() {
+		err := tcms.StartTcmsGrpc(automationRepo)
+		if err != nil {
+			log.Error(err)
+		}
+	}()
 
 	select {}
 }
