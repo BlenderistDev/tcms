@@ -17,8 +17,8 @@ type gRPCServer struct {
 func (s gRPCServer) AddAutomation(ctx context.Context, automation *tcms.Automation) (*tcms.Result, error) {
 	record := model.Automation{
 		Triggers:  automation.GetTriggers(),
-		Condition: nil,
 		Actions:   getActions(automation),
+		Condition: createCondition(automation.GetCondition()),
 	}
 
 	err := s.repo.Save(ctx, record)
@@ -32,24 +32,45 @@ func (s gRPCServer) AddAutomation(ctx context.Context, automation *tcms.Automati
 func getActions(automation *tcms.Automation) []model.Action {
 	actions := make([]model.Action, len(automation.GetActions()))
 	for key, act := range automation.GetActions() {
-		mapping := act.GetMapping()
-		newMapping := make(map[string]model.Mapping, len(act.GetMapping()))
-		for _, m := range mapping {
-			newMapping[m.GetName()] = model.Mapping{
-				Simple: m.GetSimple(),
-				Name:   m.GetName(),
-				Value:  m.GetValue(),
-			}
-		}
-
 		action := model.Action{
 			Name:    act.GetName(),
-			Mapping: newMapping,
+			Mapping: convertMapping(act.GetMapping()),
 		}
-
 		actions[key] = action
 	}
 	return actions
+}
+
+func convertMapping(mapping map[string]*tcms.Mapping) map[string]model.Mapping {
+	newMapping := make(map[string]model.Mapping, len(mapping))
+	for _, m := range mapping {
+		newMapping[m.GetName()] = model.Mapping{
+			Simple: m.GetSimple(),
+			Name:   m.GetName(),
+			Value:  m.GetValue(),
+		}
+	}
+	return newMapping
+}
+
+func convertSubConditions(list []*tcms.Condition) []model.Condition {
+	if len(list) == 0 {
+		return nil
+	}
+	subConditions := make([]model.Condition, len(list))
+	for i, c := range list {
+		subConditions[i] = *createCondition(c)
+	}
+
+	return subConditions
+}
+
+func createCondition(c *tcms.Condition) *model.Condition {
+	return &model.Condition{
+		Name:          c.GetName(),
+		Mapping:       convertMapping(c.GetMapping()),
+		SubConditions: convertSubConditions(c.GetSubConditions()),
+	}
 }
 
 func StartTcmsGrpc(repo repository.AutomationRepository) error {
