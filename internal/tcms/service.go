@@ -15,7 +15,7 @@ type gRPCServer struct {
 }
 
 func (s gRPCServer) AddAutomation(ctx context.Context, automation *tcms.Automation) (*tcms.Result, error) {
-	record := model.Automation{
+	record := model.NewAutomation{
 		Triggers:  automation.GetTriggers(),
 		Actions:   getActions(automation),
 		Condition: createCondition(automation.GetCondition()),

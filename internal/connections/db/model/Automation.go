@@ -49,3 +49,9 @@ type Automation struct {
 	Condition *Condition `bson:"condition"`
 	Actions   []Action   `bson:"actions"`
 }
+
+type NewAutomation struct {
+	Triggers  []string   `bson:"triggers"`
+	Condition *Condition `bson:"condition"`
+	Actions   []Action   `bson:"actions"`
+}
