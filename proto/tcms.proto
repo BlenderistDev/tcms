@@ -4,8 +4,11 @@ option go_package = "tcms/pkg/tcms";
 
 package tcms;
 
+import "google/protobuf/empty.proto";
+
 service Tcms {
   rpc AddAutomation(Automation) returns (Result) {};
+  rpc GetList(google.protobuf.Empty) returns (Result) {};
 }
 
 message Automation {

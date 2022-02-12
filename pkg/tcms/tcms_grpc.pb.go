@@ -7,6 +7,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -19,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TcmsClient interface {
 	AddAutomation(ctx context.Context, in *Automation, opts ...grpc.CallOption) (*Result, error)
+	GetList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Result, error)
 }
 
 type tcmsClient struct {
@@ -38,11 +40,21 @@ func (c *tcmsClient) AddAutomation(ctx context.Context, in *Automation, opts ...
 	return out, nil
 }
 
+func (c *tcmsClient) GetList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Result, error) {
+	out := new(Result)
+	err := c.cc.Invoke(ctx, "/tcms.Tcms/GetList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TcmsServer is the server API for Tcms service.
 // All implementations must embed UnimplementedTcmsServer
 // for forward compatibility
 type TcmsServer interface {
 	AddAutomation(context.Context, *Automation) (*Result, error)
+	GetList(context.Context, *emptypb.Empty) (*Result, error)
 	mustEmbedUnimplementedTcmsServer()
 }
 
@@ -52,6 +64,9 @@ type UnimplementedTcmsServer struct {
 
 func (UnimplementedTcmsServer) AddAutomation(context.Context, *Automation) (*Result, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddAutomation not implemented")
+}
+func (UnimplementedTcmsServer) GetList(context.Context, *emptypb.Empty) (*Result, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetList not implemented")
 }
 func (UnimplementedTcmsServer) mustEmbedUnimplementedTcmsServer() {}
 
@@ -84,6 +99,24 @@ func _Tcms_AddAutomation_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Tcms_GetList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TcmsServer).GetList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/tcms.Tcms/GetList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TcmsServer).GetList(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Tcms_ServiceDesc is the grpc.ServiceDesc for Tcms service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -94,6 +127,10 @@ var Tcms_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddAutomation",
 			Handler:    _Tcms_AddAutomation_Handler,
+		},
+		{
+			MethodName: "GetList",
+			Handler:    _Tcms_GetList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
