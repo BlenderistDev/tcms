@@ -20,7 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TcmsClient interface {
 	AddAutomation(ctx context.Context, in *Automation, opts ...grpc.CallOption) (*Result, error)
-	GetList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Result, error)
+	GetList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*AutomationList, error)
 }
 
 type tcmsClient struct {
@@ -40,8 +40,8 @@ func (c *tcmsClient) AddAutomation(ctx context.Context, in *Automation, opts ...
 	return out, nil
 }
 
-func (c *tcmsClient) GetList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Result, error) {
-	out := new(Result)
+func (c *tcmsClient) GetList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*AutomationList, error) {
+	out := new(AutomationList)
 	err := c.cc.Invoke(ctx, "/tcms.Tcms/GetList", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -54,7 +54,7 @@ func (c *tcmsClient) GetList(ctx context.Context, in *emptypb.Empty, opts ...grp
 // for forward compatibility
 type TcmsServer interface {
 	AddAutomation(context.Context, *Automation) (*Result, error)
-	GetList(context.Context, *emptypb.Empty) (*Result, error)
+	GetList(context.Context, *emptypb.Empty) (*AutomationList, error)
 	mustEmbedUnimplementedTcmsServer()
 }
 
@@ -65,7 +65,7 @@ type UnimplementedTcmsServer struct {
 func (UnimplementedTcmsServer) AddAutomation(context.Context, *Automation) (*Result, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddAutomation not implemented")
 }
-func (UnimplementedTcmsServer) GetList(context.Context, *emptypb.Empty) (*Result, error) {
+func (UnimplementedTcmsServer) GetList(context.Context, *emptypb.Empty) (*AutomationList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetList not implemented")
 }
 func (UnimplementedTcmsServer) mustEmbedUnimplementedTcmsServer() {}

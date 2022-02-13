@@ -8,7 +8,7 @@ import "google/protobuf/empty.proto";
 
 service Tcms {
   rpc AddAutomation(Automation) returns (Result) {};
-  rpc GetList(google.protobuf.Empty) returns (Result) {};
+  rpc GetList(google.protobuf.Empty) returns (AutomationList) {};
 }
 
 message Automation {
@@ -38,4 +38,8 @@ message Mapping {
 message Result {
   bool success = 1;
   string error = 2;
+}
+
+message AutomationList {
+  repeated Automation automation = 1;
 }
