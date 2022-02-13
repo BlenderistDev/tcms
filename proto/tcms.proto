@@ -41,5 +41,5 @@ message Result {
 }
 
 message AutomationList {
-  repeated Automation automation = 1;
+  repeated Automation automationList = 1;
 }

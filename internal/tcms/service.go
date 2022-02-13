@@ -2,7 +2,9 @@ package tcms
 
 import (
 	"context"
+	"encoding/json"
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"net"
 	"tcms/m/internal/connections/db/model"
 	"tcms/m/internal/connections/db/repository"
@@ -27,6 +29,32 @@ func (s gRPCServer) AddAutomation(ctx context.Context, automation *tcms.Automati
 	}
 
 	return &tcms.Result{}, nil
+}
+
+func (s gRPCServer) GetList(ctx context.Context, _ *emptypb.Empty) (*tcms.AutomationList, error) {
+	automationList, err := s.repo.GetAll(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	resp := tcms.AutomationList{}
+
+	for _, a := range automationList {
+		s, err := json.Marshal(a)
+		if err != nil {
+			return nil, err
+		}
+
+		automation := tcms.Automation{}
+		err = json.Unmarshal(s, &automation)
+		if err != nil {
+			return nil, err
+		}
+
+		resp.AutomationList = append(resp.AutomationList, &automation)
+	}
+
+	return &resp, nil
 }
 
 func getActions(automation *tcms.Automation) []model.Action {
