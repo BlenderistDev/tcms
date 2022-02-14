@@ -6,8 +6,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"net"
-	"tcms/m/internal/connections/db/model"
-	"tcms/m/internal/connections/db/repository"
+	"tcms/m/internal/model"
+	"tcms/m/internal/repository"
 	"tcms/m/pkg/tcms"
 )
 

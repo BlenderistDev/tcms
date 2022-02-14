@@ -5,7 +5,7 @@ import (
 	condition2 "github.com/BlenderistDev/automation/condition"
 	"github.com/BlenderistDev/automation/datamapper"
 	"github.com/BlenderistDev/automation/interfaces"
-	"tcms/m/internal/connections/db/model"
+	"tcms/m/internal/model"
 )
 
 func CreateCondition(conditionData *model.Condition) (interfaces.Condition, error) {

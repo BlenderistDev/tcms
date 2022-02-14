@@ -3,7 +3,7 @@ package action
 import (
 	"github.com/BlenderistDev/automation/interfaces"
 	interfaces2 "tcms/m/internal/automation/action/interfaces"
-	"tcms/m/internal/connections/db/model"
+	"tcms/m/internal/model"
 )
 
 type actionWithModel struct {

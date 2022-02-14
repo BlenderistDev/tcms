@@ -4,7 +4,7 @@ import (
 	"github.com/BlenderistDev/automation/datamapper"
 	"github.com/BlenderistDev/automation/interfaces"
 	interfaces2 "tcms/m/internal/automation/action/interfaces"
-	"tcms/m/internal/connections/db/model"
+	"tcms/m/internal/model"
 	"tcms/m/internal/telegramClient"
 )
 

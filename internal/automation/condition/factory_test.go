@@ -2,8 +2,8 @@ package condition
 
 import (
 	"github.com/BlenderistDev/automation/interfaces"
-	"tcms/m/internal/connections/db/model"
 	"tcms/m/internal/dry"
+	"tcms/m/internal/model"
 	"testing"
 )
 
