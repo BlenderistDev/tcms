@@ -18,8 +18,8 @@ func (t timeTrigger) GetData() map[string]string {
 	return t.Data
 }
 
-func StartTimeTrigger(triggerChan chan interfaces.Trigger) {
-	ticker := time.NewTicker(time.Second)
+func StartTimeTrigger(triggerChan chan interfaces.Trigger, d time.Duration) {
+	ticker := time.NewTicker(d)
 	go func() {
 		for {
 			select {
