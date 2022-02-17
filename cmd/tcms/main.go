@@ -13,10 +13,12 @@ import (
 	"tcms/m/internal/connections/db"
 	"tcms/m/internal/connections/kafka"
 	"tcms/m/internal/dry"
+	"tcms/m/internal/model"
 	"tcms/m/internal/repository"
 	"tcms/m/internal/tcms"
 	"tcms/m/internal/telegramClient"
 	"tcms/m/internal/webserver"
+	"time"
 )
 
 func main() {
@@ -44,6 +46,22 @@ func main() {
 	triggerChan := make(chan interfaces.Trigger)
 	errChan := make(chan error)
 
+	runAutomationService(automations, telegram, log, errChan, triggerChan)
+
+	go trigger.StartTelegramUpdateTrigger(addConsumer, triggerChan, log)
+	go trigger.StartTimeTrigger(triggerChan, time.Second)
+	go webserver.StartWebServer(telegram, addConsumer)
+	go func() {
+		err := tcms.StartTcmsGrpc(automationRepo)
+		if err != nil {
+			log.Error(err)
+		}
+	}()
+
+	select {}
+}
+
+func runAutomationService(automations []model.Automation, telegram telegramClient.TelegramClient, log *logrus.Logger, errChan chan error, triggerChan chan interfaces.Trigger) {
 	go func() {
 		automationService := automation.Service{}
 
@@ -83,16 +101,4 @@ func main() {
 
 		automationService.Start(triggerChan, errChan)
 	}()
-
-	go trigger.StartTelegramUpdateTrigger(addConsumer, triggerChan, log)
-	go trigger.StartTimeTrigger(triggerChan)
-	go webserver.StartWebServer(telegram, addConsumer)
-	go func() {
-		err := tcms.StartTcmsGrpc(automationRepo)
-		if err != nil {
-			log.Error(err)
-		}
-	}()
-
-	select {}
 }
