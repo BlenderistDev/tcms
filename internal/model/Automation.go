@@ -3,9 +3,9 @@ package model
 import "github.com/BlenderistDev/automation/datamapper"
 
 type Mapping struct {
-	Simple bool   `bson:"simple"`
-	Name   string `bson:"name"`
-	Value  string `bson:"value"`
+	Simple bool   `bson:"simple" json:"simple"`
+	Name   string `bson:"name" json:"name"`
+	Value  string `bson:"value" json:"value"`
 }
 
 type DmMapper struct {
@@ -33,14 +33,14 @@ func ConvertMappingToDmMapping(mapping map[string]Mapping) map[string]datamapper
 }
 
 type Action struct {
-	Name    string             `bson:"name"`
-	Mapping map[string]Mapping `bson:"mapping"`
+	Name    string             `bson:"name" json:"name"`
+	Mapping map[string]Mapping `bson:"mapping" json:"mapping"`
 }
 
 type Condition struct {
-	Name          string             `bson:"name"`
-	Mapping       map[string]Mapping `bson:"mapping"`
-	SubConditions []Condition        `bson:"sub_conditions"`
+	Name          string             `bson:"name" json:"name"`
+	Mapping       map[string]Mapping `bson:"mapping" json:"mapping"`
+	SubConditions []Condition        `bson:"sub_conditions" json:"subConditions"`
 }
 
 type Automation struct {
@@ -51,7 +51,7 @@ type Automation struct {
 }
 
 type NewAutomation struct {
-	Triggers  []string   `bson:"triggers"`
-	Condition *Condition `bson:"condition"`
-	Actions   []Action   `bson:"actions"`
+	Triggers  []string   `bson:"triggers" json:"triggers"`
+	Condition *Condition `bson:"condition" json:"condition"`
+	Actions   []Action   `bson:"actions" json:"actions"`
 }
