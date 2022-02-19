@@ -42,24 +42,18 @@ func (s gRPCServer) GetList(ctx context.Context, _ *emptypb.Empty) (*tcms.Automa
 		return nil, err
 	}
 
-	resp := tcms.AutomationList{}
-
-	for _, a := range automationList {
-		s, err := json.Marshal(a)
-		if err != nil {
-			return nil, err
-		}
-
-		automation := tcms.Automation{}
-		err = json.Unmarshal(s, &automation)
-		if err != nil {
-			return nil, err
-		}
-
-		resp.AutomationList = append(resp.AutomationList, &automation)
+	str, err := json.Marshal(automationList)
+	if err != nil {
+		return nil, err
 	}
 
-	return &resp, nil
+	aList := make([]*tcms.Automation, len(automationList))
+	err = json.Unmarshal(str, &aList)
+	if err != nil {
+		return nil, err
+	}
+
+	return &tcms.AutomationList{AutomationList: aList}, nil
 }
 
 func StartTcmsGrpc(repo repository.AutomationRepository) error {
