@@ -80,7 +80,7 @@ func runAutomationService(automations []model.Automation, telegram telegramClien
 			coreAutomation.AddAction(action.GetActionWithModel(act, a))
 		}
 
-		if auto.Condition != nil {
+		if auto.Condition != nil && auto.Condition.Name != "" {
 			cond, err := condition.CreateCondition(auto.Condition)
 			if err != nil {
 				log.Error(err)

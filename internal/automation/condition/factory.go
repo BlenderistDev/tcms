@@ -43,7 +43,7 @@ func CreateCondition(conditionData *model.Condition) (interfaces.Condition, erro
 			return nil, err
 		}
 	default:
-		return nil, fmt.Errorf("unknown action %s", conditionData.Name)
+		return nil, fmt.Errorf("unknown condition %s", conditionData.Name)
 	}
 	return condition, nil
 }
