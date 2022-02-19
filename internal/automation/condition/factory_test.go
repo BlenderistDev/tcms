@@ -27,5 +27,5 @@ func TestCreateCondition_NoCondition(t *testing.T) {
 		Name: name,
 	}
 	_, err := CreateCondition(&conditionModel)
-	dry.TestCheckEqual(t, "unknown action "+name, err.Error())
+	dry.TestCheckEqual(t, "unknown condition "+name, err.Error())
 }
