@@ -46,8 +46,7 @@ func main() {
 	triggerChan := make(chan interfaces.Trigger)
 	errChan := make(chan error)
 
-	runAutomationService(automations, telegram, log, errChan, triggerChan)
-
+	go runAutomationService(automations, telegram, log, errChan, triggerChan)
 	go trigger.StartTelegramUpdateTrigger(addConsumer, triggerChan, log)
 	go trigger.StartTimeTrigger(triggerChan, time.Second)
 	go webserver.StartWebServer(telegram, addConsumer)
@@ -62,43 +61,43 @@ func main() {
 }
 
 func runAutomationService(automations []model.Automation, telegram telegramClient.TelegramClient, log *logrus.Logger, errChan chan error, triggerChan chan interfaces.Trigger) {
-	go func() {
-		automationService := automation.Service{}
 
-		for _, auto := range automations {
+	automationService := automation.Service{}
 
-			coreAutomation := core.GetAutomation()
+	for _, auto := range automations {
 
-			for _, t := range auto.Triggers {
-				coreAutomation.AddTrigger(t)
-			}
+		coreAutomation := core.GetAutomation()
 
-			for _, a := range auto.Actions {
-				act, err := action.CreateAction(a.Name, telegram)
-				if err != nil {
-					log.Error(err)
-				}
-				coreAutomation.AddAction(action.GetActionWithModel(act, a))
-			}
-
-			if auto.Condition != nil {
-				cond, err := condition.CreateCondition(auto.Condition)
-				if err != nil {
-					log.Error(err)
-				}
-				coreAutomation.AddCondition(cond)
-			}
-
-			automationService.AddAutomation(coreAutomation)
+		for _, t := range auto.Triggers {
+			coreAutomation.AddTrigger(t)
 		}
 
-		go func(errChan chan error) {
-			for {
-				err := <-errChan
+		for _, a := range auto.Actions {
+			act, err := action.CreateAction(a.Name, telegram)
+			if err != nil {
 				log.Error(err)
 			}
-		}(errChan)
+			coreAutomation.AddAction(action.GetActionWithModel(act, a))
+		}
 
-		automationService.Start(triggerChan, errChan)
-	}()
+		if auto.Condition != nil {
+			cond, err := condition.CreateCondition(auto.Condition)
+			if err != nil {
+				log.Error(err)
+			}
+			coreAutomation.AddCondition(cond)
+		}
+
+		automationService.AddAutomation(coreAutomation)
+	}
+
+	go func(errChan chan error) {
+		for {
+			err := <-errChan
+			log.Error(err)
+		}
+	}(errChan)
+
+	automationService.Start(triggerChan, errChan)
+
 }
