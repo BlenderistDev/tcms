@@ -2,6 +2,7 @@ package tcms
 
 import (
 	"context"
+	"fmt"
 	"github.com/golang/mock/gomock"
 	"tcms/m/internal/dry"
 	"tcms/m/internal/model"
@@ -166,4 +167,24 @@ func TestGRPCServer_AddAutomation(t *testing.T) {
 
 	_, err := s.AddAutomation(ctx, inputAutomation)
 	dry.TestHandleError(t, err)
+}
+
+func TestGRPCServer_AddAutomation_repoReturnError(t *testing.T) {
+	inputAutomation := &tcms.Automation{}
+
+	ctx := context.Background()
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	repo := mock_repository.NewMockAutomationRepository(ctrl)
+
+	returnError := fmt.Errorf("some error")
+	repo.EXPECT().Save(gomock.Eq(ctx), gomock.Any()).Return(returnError)
+
+	s := gRPCServer{
+		UnimplementedTcmsServer: tcms.UnimplementedTcmsServer{},
+		repo:                    repo,
+	}
+
+	_, err := s.AddAutomation(ctx, inputAutomation)
+	dry.TestCheckEqual(t, returnError, err)
 }
