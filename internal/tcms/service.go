@@ -17,18 +17,12 @@ type gRPCServer struct {
 }
 
 func (s gRPCServer) AddAutomation(ctx context.Context, automation *tcms.Automation) (*tcms.Result, error) {
-	str, err := json.Marshal(automation)
-	if err != nil {
-		return nil, err
-	}
+	str, _ := json.Marshal(automation)
 
 	record := model.NewAutomation{}
-	err = json.Unmarshal(str, &record)
-	if err != nil {
-		return nil, err
-	}
+	_ = json.Unmarshal(str, &record)
 
-	err = s.repo.Save(ctx, record)
+	err := s.repo.Save(ctx, record)
 	if err != nil {
 		return nil, err
 	}
