@@ -1,11 +1,12 @@
 package action
 
 import (
+	"testing"
+
 	"github.com/golang/mock/gomock"
 	"tcms/m/internal/automation/action/interfaces"
 	"tcms/m/internal/dry"
 	telegramClient2 "tcms/m/internal/testing/telegramClient"
-	"testing"
 )
 
 func TestCreateAction_createSendMessage(t *testing.T) {

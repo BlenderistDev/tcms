@@ -1,8 +1,9 @@
 package db
 
 import (
-	"tcms/m/internal/dry"
 	"testing"
+
+	"tcms/m/internal/dry"
 )
 
 func TestGetMongoHost(t *testing.T) {

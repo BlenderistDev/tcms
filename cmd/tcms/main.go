@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"time"
+
 	"github.com/BlenderistDev/automation"
 	"github.com/BlenderistDev/automation/core"
 	"github.com/BlenderistDev/automation/interfaces"
@@ -18,7 +20,6 @@ import (
 	"tcms/m/internal/tcms"
 	"tcms/m/internal/telegramClient"
 	"tcms/m/internal/webserver"
-	"time"
 )
 
 func main() {

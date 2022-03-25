@@ -2,6 +2,7 @@ package condition
 
 import (
 	"fmt"
+
 	condition2 "github.com/BlenderistDev/automation/condition"
 	"github.com/BlenderistDev/automation/datamapper"
 	"github.com/BlenderistDev/automation/interfaces"

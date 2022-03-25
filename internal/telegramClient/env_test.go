@@ -1,8 +1,9 @@
 package telegramClient
 
 import (
-	"tcms/m/internal/dry"
 	"testing"
+
+	"tcms/m/internal/dry"
 )
 
 func TestGetTelegramBridgeHost(t *testing.T) {

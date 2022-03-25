@@ -1,8 +1,9 @@
 package kafka
 
 import (
-	"tcms/m/internal/dry"
 	"testing"
+
+	"tcms/m/internal/dry"
 )
 
 func TestGetKafkaHost(t *testing.T) {

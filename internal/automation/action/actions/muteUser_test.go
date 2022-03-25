@@ -2,12 +2,13 @@ package actions
 
 import (
 	"fmt"
+	"testing"
+
 	mock_interfaces "github.com/BlenderistDev/automation/testing/interfaces"
 	"github.com/golang/mock/gomock"
 	"tcms/m/internal/dry"
 	"tcms/m/internal/model"
 	telegramClient2 "tcms/m/internal/testing/telegramClient"
-	"testing"
 )
 
 func TestCreateMuteUserAction(t *testing.T) {

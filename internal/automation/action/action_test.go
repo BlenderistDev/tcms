@@ -1,12 +1,13 @@
 package action
 
 import (
+	"testing"
+
 	mock_interfaces2 "github.com/BlenderistDev/automation/testing/interfaces"
 	"github.com/golang/mock/gomock"
 	"tcms/m/internal/dry"
 	"tcms/m/internal/model"
 	mock_interfaces "tcms/m/internal/testing/action/interfaces"
-	"testing"
 )
 
 func TestGetActionWithModel(t *testing.T) {

@@ -1,8 +1,9 @@
 package trigger
 
 import (
-	"github.com/BlenderistDev/automation/interfaces"
 	"time"
+
+	"github.com/BlenderistDev/automation/interfaces"
 )
 
 type timeTrigger struct {

@@ -2,6 +2,7 @@ package trigger
 
 import (
 	"encoding/json"
+
 	"github.com/BlenderistDev/automation/interfaces"
 	"github.com/sirupsen/logrus"
 )
