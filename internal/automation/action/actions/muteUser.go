@@ -18,7 +18,7 @@ func CreateMuteUserAction(client telegramClient.TelegramClient) interfaces2.Acti
 	}
 }
 
-func (a muteUserAction) Execute(action model.Action, trigger interfaces.Trigger) error {
+func (a muteUserAction) Execute(action model.Action, trigger interfaces.TriggerEvent) error {
 	dm := datamapper.DataMapper{Mapping: model.ConvertMappingToDmMapping(action.Mapping)}
 	peer, err := dm.GetFromMap(trigger.GetData(), "peer")
 	if err != nil {

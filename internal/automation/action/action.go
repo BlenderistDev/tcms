@@ -18,6 +18,6 @@ func GetActionWithModel(action interfaces2.ActionWithModel, model model.Action) 
 	}
 }
 
-func (m *actionWithModel) Execute(trigger interfaces.Trigger) error {
+func (m *actionWithModel) Execute(trigger interfaces.TriggerEvent) error {
 	return m.action.Execute(m.model, trigger)
 }

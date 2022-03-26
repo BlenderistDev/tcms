@@ -44,7 +44,7 @@ func main() {
 
 	go kafka.CreateKafkaSubscription(addConsumer, kafkaError, quitKafka)
 
-	triggerChan := make(chan interfaces.Trigger)
+	triggerChan := make(chan interfaces.TriggerEvent)
 	errChan := make(chan error)
 
 	go runAutomationService(automations, telegram, log, errChan, triggerChan)
@@ -61,7 +61,7 @@ func main() {
 	select {}
 }
 
-func runAutomationService(automations []model.Automation, telegram telegramClient.TelegramClient, log *logrus.Logger, errChan chan error, triggerChan chan interfaces.Trigger) {
+func runAutomationService(automations []model.Automation, telegram telegramClient.TelegramClient, log *logrus.Logger, errChan chan error, triggerChan chan interfaces.TriggerEvent) {
 
 	automationService := automation.Service{}
 

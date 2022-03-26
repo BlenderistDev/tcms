@@ -3,12 +3,13 @@ package tcms
 import (
 	"context"
 	"fmt"
+	"testing"
+
 	"github.com/golang/mock/gomock"
 	"tcms/m/internal/dry"
 	"tcms/m/internal/model"
 	mock_repository "tcms/m/internal/testing/repository"
 	"tcms/m/pkg/tcms"
-	"testing"
 )
 
 func TestGRPCServer_AddAutomation(t *testing.T) {

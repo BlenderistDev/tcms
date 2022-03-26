@@ -47,7 +47,7 @@ func TestMuteChatAction_Execute_idError(t *testing.T) {
 		},
 	}
 
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTriggerEvent(ctrl)
 	trigger.EXPECT().GetData().Return(make(map[string]string))
 
 	muteUserAction := CreateMuteChatAction(telegramClient)
@@ -77,7 +77,7 @@ func TestMuteChatAction_Execute_unMuteError(t *testing.T) {
 		},
 	}
 
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTriggerEvent(ctrl)
 	trigger.EXPECT().GetData().Return(make(map[string]string))
 	trigger.EXPECT().GetData().Return(make(map[string]string))
 
@@ -118,7 +118,7 @@ func TestMuteChatAction_Execute(t *testing.T) {
 		},
 	}
 
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTriggerEvent(ctrl)
 	trigger.EXPECT().GetData().Return(make(map[string]string))
 	trigger.EXPECT().GetData().Return(make(map[string]string))
 
@@ -161,7 +161,7 @@ func TestMuteChatAction_Execute_telegramError(t *testing.T) {
 		},
 	}
 
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTriggerEvent(ctrl)
 	trigger.EXPECT().GetData().Return(make(map[string]string))
 	trigger.EXPECT().GetData().Return(make(map[string]string))
 

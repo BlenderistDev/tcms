@@ -14,7 +14,7 @@ func TestGetActionWithModel(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	trigger := mock_interfaces2.NewMockTrigger(ctrl)
+	trigger := mock_interfaces2.NewMockTriggerEvent(ctrl)
 
 	m := model.Action{}
 	action := mock_interfaces.NewMockActionWithModel(ctrl)

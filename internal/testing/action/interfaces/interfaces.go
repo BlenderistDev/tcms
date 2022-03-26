@@ -6,7 +6,7 @@ package mock_interfaces
 
 import (
 	reflect "reflect"
-	"tcms/m/internal/model"
+	model "tcms/m/internal/model"
 
 	interfaces "github.com/BlenderistDev/automation/interfaces"
 	gomock "github.com/golang/mock/gomock"
@@ -36,7 +36,7 @@ func (m *MockActionWithModel) EXPECT() *MockActionWithModelMockRecorder {
 }
 
 // Execute mocks base method.
-func (m *MockActionWithModel) Execute(action model.Action, trigger interfaces.Trigger) error {
+func (m *MockActionWithModel) Execute(action model.Action, trigger interfaces.TriggerEvent) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Execute", action, trigger)
 	ret0, _ := ret[0].(error)

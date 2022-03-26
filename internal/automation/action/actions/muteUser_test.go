@@ -47,7 +47,7 @@ func TestMuteUserAction_Execute_peerError(t *testing.T) {
 		},
 	}
 
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTriggerEvent(ctrl)
 	trigger.EXPECT().GetData().Return(make(map[string]string))
 
 	muteUserAction := CreateMuteUserAction(telegramClient)
@@ -77,7 +77,7 @@ func TestMuteUserAction_Execute_accessHashError(t *testing.T) {
 		},
 	}
 
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTriggerEvent(ctrl)
 	trigger.EXPECT().GetData().Return(make(map[string]string))
 	trigger.EXPECT().GetData().Return(make(map[string]string))
 
@@ -115,7 +115,7 @@ func TestMuteUserAction_Execute_unMuteError(t *testing.T) {
 		},
 	}
 
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTriggerEvent(ctrl)
 	trigger.EXPECT().GetData().Return(make(map[string]string))
 	trigger.EXPECT().GetData().Return(make(map[string]string))
 	trigger.EXPECT().GetData().Return(make(map[string]string))
@@ -164,7 +164,7 @@ func TestMuteUserAction_Execute(t *testing.T) {
 		},
 	}
 
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTriggerEvent(ctrl)
 	trigger.EXPECT().GetData().Return(make(map[string]string)).Times(3)
 
 	muteUserAction := CreateMuteUserAction(telegramClient)
@@ -213,7 +213,7 @@ func TestMuteUserAction_Execute_telegramError(t *testing.T) {
 		},
 	}
 
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTriggerEvent(ctrl)
 	trigger.EXPECT().GetData().Return(make(map[string]string)).Times(3)
 
 	muteUserAction := CreateMuteUserAction(telegramClient)

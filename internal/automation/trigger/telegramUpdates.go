@@ -20,7 +20,7 @@ func (t telegramUpdateTrigger) GetData() map[string]string {
 	return t.Data
 }
 
-func StartTelegramUpdateTrigger(addConsumer chan chan []uint8, triggerChan chan interfaces.Trigger, log *logrus.Logger) {
+func StartTelegramUpdateTrigger(addConsumer chan chan []uint8, triggerChan chan interfaces.TriggerEvent, log *logrus.Logger) {
 	ch := make(chan []uint8)
 	addConsumer <- ch
 	for {

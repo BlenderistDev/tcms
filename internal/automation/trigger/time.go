@@ -19,7 +19,7 @@ func (t timeTrigger) GetData() map[string]string {
 	return t.Data
 }
 
-func StartTimeTrigger(triggerChan chan interfaces.Trigger, d time.Duration) {
+func StartTimeTrigger(triggerChan chan interfaces.TriggerEvent, d time.Duration) {
 	ticker := time.NewTicker(d)
 	go func() {
 		for {

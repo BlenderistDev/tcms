@@ -57,7 +57,7 @@ func TestSendMessageAction_Execute(t *testing.T) {
 		},
 	}
 
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTriggerEvent(ctrl)
 	trigger.EXPECT().GetData().Return(make(map[string]string))
 	trigger.EXPECT().GetData().Return(make(map[string]string))
 
@@ -95,7 +95,7 @@ func TestSendMessageAction_Execute_peerError(t *testing.T) {
 		},
 	}
 
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTriggerEvent(ctrl)
 	trigger.EXPECT().GetData().Return(make(map[string]string))
 
 	sendMessageAction := CreateSendMessageAction(telegramClient)
@@ -125,7 +125,7 @@ func TestSendMessageAction_Execute_messageError(t *testing.T) {
 		},
 	}
 
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTriggerEvent(ctrl)
 	trigger.EXPECT().GetData().Return(make(map[string]string))
 	trigger.EXPECT().GetData().Return(make(map[string]string))
 
@@ -168,7 +168,7 @@ func TestSendMessageAction_Execute_telegramError(t *testing.T) {
 		},
 	}
 
-	trigger := mock_interfaces.NewMockTrigger(ctrl)
+	trigger := mock_interfaces.NewMockTriggerEvent(ctrl)
 	trigger.EXPECT().GetData().Return(make(map[string]string))
 	trigger.EXPECT().GetData().Return(make(map[string]string))
 

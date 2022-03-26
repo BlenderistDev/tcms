@@ -3,7 +3,7 @@ module tcms/m
 go 1.17
 
 require (
-	github.com/BlenderistDev/automation v0.0.2
+	github.com/BlenderistDev/automation v0.0.3
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-gonic/gin v1.7.4
 	github.com/golang/mock v1.6.0

@@ -6,5 +6,5 @@ import (
 )
 
 type ActionWithModel interface {
-	Execute(action model.Action, trigger interfaces.Trigger) error
+	Execute(action model.Action, trigger interfaces.TriggerEvent) error
 }
