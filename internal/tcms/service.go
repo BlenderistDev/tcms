@@ -51,6 +51,15 @@ func (s gRPCServer) GetList(ctx context.Context, _ *emptypb.Empty) (*tcms.Automa
 	return &tcms.AutomationList{AutomationList: aList}, nil
 }
 
+func (s gRPCServer) RemoveAutomation(ctx context.Context, r *tcms.RemoveAutomationRequest) (*tcms.Result, error) {
+	err := s.repo.Remove(ctx, r.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	return &tcms.Result{}, nil
+}
+
 func StartTcmsGrpc(repo repository.AutomationRepository) error {
 	addr, err := getTcmsHost()
 	if err != nil {
