@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion7
 type TcmsClient interface {
 	AddAutomation(ctx context.Context, in *Automation, opts ...grpc.CallOption) (*Result, error)
 	GetList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*AutomationList, error)
+	RemoveAutomation(ctx context.Context, in *RemoveAutomationRequest, opts ...grpc.CallOption) (*Result, error)
 }
 
 type tcmsClient struct {
@@ -49,12 +50,22 @@ func (c *tcmsClient) GetList(ctx context.Context, in *emptypb.Empty, opts ...grp
 	return out, nil
 }
 
+func (c *tcmsClient) RemoveAutomation(ctx context.Context, in *RemoveAutomationRequest, opts ...grpc.CallOption) (*Result, error) {
+	out := new(Result)
+	err := c.cc.Invoke(ctx, "/tcms.Tcms/RemoveAutomation", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TcmsServer is the server API for Tcms service.
 // All implementations must embed UnimplementedTcmsServer
 // for forward compatibility
 type TcmsServer interface {
 	AddAutomation(context.Context, *Automation) (*Result, error)
 	GetList(context.Context, *emptypb.Empty) (*AutomationList, error)
+	RemoveAutomation(context.Context, *RemoveAutomationRequest) (*Result, error)
 	mustEmbedUnimplementedTcmsServer()
 }
 
@@ -67,6 +78,9 @@ func (UnimplementedTcmsServer) AddAutomation(context.Context, *Automation) (*Res
 }
 func (UnimplementedTcmsServer) GetList(context.Context, *emptypb.Empty) (*AutomationList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetList not implemented")
+}
+func (UnimplementedTcmsServer) RemoveAutomation(context.Context, *RemoveAutomationRequest) (*Result, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveAutomation not implemented")
 }
 func (UnimplementedTcmsServer) mustEmbedUnimplementedTcmsServer() {}
 
@@ -117,6 +131,24 @@ func _Tcms_GetList_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Tcms_RemoveAutomation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveAutomationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TcmsServer).RemoveAutomation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/tcms.Tcms/RemoveAutomation",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TcmsServer).RemoveAutomation(ctx, req.(*RemoveAutomationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Tcms_ServiceDesc is the grpc.ServiceDesc for Tcms service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -131,6 +163,10 @@ var Tcms_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetList",
 			Handler:    _Tcms_GetList_Handler,
+		},
+		{
+			MethodName: "RemoveAutomation",
+			Handler:    _Tcms_RemoveAutomation_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

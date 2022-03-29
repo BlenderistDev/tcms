@@ -9,6 +9,7 @@ import "google/protobuf/empty.proto";
 service Tcms {
   rpc AddAutomation(Automation) returns (Result) {};
   rpc GetList(google.protobuf.Empty) returns (AutomationList) {};
+  rpc RemoveAutomation(RemoveAutomationRequest) returns (Result) {};
 }
 
 message Automation {
@@ -42,4 +43,8 @@ message Result {
 
 message AutomationList {
   repeated Automation automationList = 1;
+}
+
+message RemoveAutomationRequest {
+  string id = 1;
 }
