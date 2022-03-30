@@ -50,6 +50,20 @@ func (mr *MockAutomationRepositoryMockRecorder) GetAll(ctx interface{}) *gomock.
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAll", reflect.TypeOf((*MockAutomationRepository)(nil).GetAll), ctx)
 }
 
+// Remove mocks base method.
+func (m *MockAutomationRepository) Remove(ctx context.Context, id string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Remove", ctx, id)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Remove indicates an expected call of Remove.
+func (mr *MockAutomationRepositoryMockRecorder) Remove(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Remove", reflect.TypeOf((*MockAutomationRepository)(nil).Remove), ctx, id)
+}
+
 // Save mocks base method.
 func (m *MockAutomationRepository) Save(ctx context.Context, automation model.NewAutomation) error {
 	m.ctrl.T.Helper()
