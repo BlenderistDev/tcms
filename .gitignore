@@ -1,7 +1,5 @@
 .env
-session.json
 tcms.code-workspace
-tg_public_keys.pem
 .idea
 .vscode
 bin
