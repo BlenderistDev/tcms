@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/BlenderistDev/automation/interfaces"
@@ -11,7 +12,6 @@ import (
 	"tcms/m/internal/automation/trigger"
 	"tcms/m/internal/connections/db"
 	"tcms/m/internal/connections/kafka"
-	"tcms/m/internal/dry"
 	"tcms/m/internal/repository"
 	"tcms/m/internal/tcms"
 	"tcms/m/internal/telegramClient"
@@ -26,14 +26,20 @@ func main() {
 	}
 
 	telegram, err := telegramClient.NewTelegram()
-	dry.HandleErrorPanic(err)
+	if err != nil {
+		panic(fmt.Sprintf("no telegram bridge connection. Error: %v", err))
+	}
 
 	connection, err := db.GetConnection(context.Background())
-	dry.HandleErrorPanic(err)
+	if err != nil {
+		panic(fmt.Sprintf("no mongodb connection. Error: %v", err))
+	}
 
 	automationRepo := repository.CreateAutomationRepository(connection)
 	automations, err := automationRepo.GetAll(context.Background())
-	dry.HandleErrorPanic(err)
+	if err != nil {
+		panic(fmt.Sprintf("automation fetch error. Error: %v", err))
+	}
 
 	addConsumer := make(chan chan []uint8)
 	quitKafka := make(chan bool)
