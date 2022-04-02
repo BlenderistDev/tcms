@@ -41,11 +41,7 @@ func main() {
 		panic(fmt.Sprintf("automation fetch error. Error: %v", err))
 	}
 
-	addConsumer := make(chan chan []uint8)
-	quitKafka := make(chan bool)
-	kafkaError := make(chan error)
-
-	go kafka.CreateKafkaSubscription(addConsumer, kafkaError, quitKafka)
+	addConsumer := runKafkaConnection(log)
 
 	triggerChan := make(chan interfaces.TriggerEvent)
 	errChan := make(chan error)
@@ -61,4 +57,21 @@ func main() {
 	}()
 
 	select {}
+}
+
+func runKafkaConnection(log *logrus.Logger) chan chan []uint8 {
+	addConsumer := make(chan chan []uint8)
+	quitKafka := make(chan bool)
+	kafkaError := make(chan error)
+
+	go kafka.CreateKafkaSubscription(addConsumer, kafkaError, quitKafka)
+
+	go func() {
+		for {
+			err := <-kafkaError
+			log.Error(err)
+		}
+	}()
+
+	return addConsumer
 }
