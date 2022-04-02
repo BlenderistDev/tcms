@@ -15,7 +15,6 @@ import (
 	"tcms/m/internal/repository"
 	"tcms/m/internal/tcms"
 	"tcms/m/internal/telegramClient"
-	"tcms/m/internal/webserver"
 )
 
 func main() {
@@ -48,7 +47,6 @@ func main() {
 	go automation.RunAutomationService(automations, telegram, log, errChan, triggerChan)
 	go trigger.StartTelegramUpdateTrigger(addConsumer, triggerChan, log)
 	go trigger.StartTimeTrigger(triggerChan, time.Second)
-	go webserver.StartWebServer(telegram, addConsumer)
 	go func() {
 		err := tcms.StartTcmsGrpc(automationRepo)
 		if err != nil {
