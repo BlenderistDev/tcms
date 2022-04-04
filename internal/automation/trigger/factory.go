@@ -1,6 +1,6 @@
 package trigger
 
-import "tcms/m/pkg/tcms"
+import "tcms/pkg/tcms"
 
 func GetList() *tcms.TriggerList {
 	return &tcms.TriggerList{Triggers: []*tcms.TriggerDescription{

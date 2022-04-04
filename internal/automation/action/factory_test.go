@@ -4,9 +4,9 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"tcms/m/internal/automation/action/interfaces"
-	"tcms/m/internal/dry"
-	telegramClient2 "tcms/m/internal/testing/telegramClient"
+	"tcms/internal/automation/action/interfaces"
+	"tcms/internal/dry"
+	telegramClient2 "tcms/internal/testing/telegramClient"
 )
 
 func TestCreateAction_createSendMessage(t *testing.T) {

@@ -3,7 +3,7 @@ package db
 import (
 	"testing"
 
-	"tcms/m/internal/dry"
+	"tcms/internal/dry"
 )
 
 func TestGetMongoHost(t *testing.T) {

@@ -1,7 +1,7 @@
 package db
 
 import (
-	"tcms/m/internal/dry"
+	"tcms/internal/dry"
 )
 
 func getMongoHost() (string, error) {

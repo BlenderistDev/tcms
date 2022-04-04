@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"github.com/BlenderistDev/automation/interfaces"
-	"tcms/m/internal/dry"
-	"tcms/m/internal/model"
+	"tcms/internal/dry"
+	"tcms/internal/model"
 )
 
 func TestCreateCondition_createEqual(t *testing.T) {

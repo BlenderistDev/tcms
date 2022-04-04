@@ -3,10 +3,10 @@ package action
 import (
 	"fmt"
 
-	"tcms/m/internal/automation/action/actions"
-	"tcms/m/internal/automation/action/interfaces"
-	"tcms/m/internal/telegramClient"
-	"tcms/m/pkg/tcms"
+	"tcms/internal/automation/action/actions"
+	"tcms/internal/automation/action/interfaces"
+	"tcms/internal/telegramClient"
+	"tcms/pkg/tcms"
 )
 
 func CreateAction(name string, telegram telegramClient.TelegramClient) (interfaces.ActionWithModel, error) {

@@ -2,8 +2,8 @@ package action
 
 import (
 	"github.com/BlenderistDev/automation/interfaces"
-	interfaces2 "tcms/m/internal/automation/action/interfaces"
-	"tcms/m/internal/model"
+	interfaces2 "tcms/internal/automation/action/interfaces"
+	"tcms/internal/model"
 )
 
 type actionWithModel struct {

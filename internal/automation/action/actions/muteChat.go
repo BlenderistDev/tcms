@@ -3,9 +3,9 @@ package actions
 import (
 	"github.com/BlenderistDev/automation/datamapper"
 	"github.com/BlenderistDev/automation/interfaces"
-	interfaces2 "tcms/m/internal/automation/action/interfaces"
-	"tcms/m/internal/model"
-	"tcms/m/internal/telegramClient"
+	interfaces2 "tcms/internal/automation/action/interfaces"
+	"tcms/internal/model"
+	"tcms/internal/telegramClient"
 )
 
 type muteChatAction struct {

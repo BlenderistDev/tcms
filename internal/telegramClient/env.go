@@ -1,7 +1,7 @@
 package telegramClient
 
 import (
-	"tcms/m/internal/dry"
+	"tcms/internal/dry"
 )
 
 func getTelegramBridgeHost() (string, error) {

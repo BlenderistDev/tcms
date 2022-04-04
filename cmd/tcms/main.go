@@ -8,13 +8,13 @@ import (
 	"github.com/BlenderistDev/automation/interfaces"
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
-	"tcms/m/internal/automation"
-	"tcms/m/internal/automation/trigger"
-	"tcms/m/internal/connections/db"
-	"tcms/m/internal/connections/kafka"
-	"tcms/m/internal/repository"
-	"tcms/m/internal/tcms"
-	"tcms/m/internal/telegramClient"
+	"tcms/internal/automation"
+	"tcms/internal/automation/trigger"
+	"tcms/internal/connections/db"
+	"tcms/internal/connections/kafka"
+	"tcms/internal/repository"
+	"tcms/internal/tcms"
+	"tcms/internal/telegramClient"
 )
 
 func main() {

@@ -5,10 +5,10 @@ import (
 	"github.com/BlenderistDev/automation/core"
 	"github.com/BlenderistDev/automation/interfaces"
 	"github.com/sirupsen/logrus"
-	"tcms/m/internal/automation/action"
-	"tcms/m/internal/automation/condition"
-	"tcms/m/internal/model"
-	"tcms/m/internal/telegramClient"
+	"tcms/internal/automation/action"
+	"tcms/internal/automation/condition"
+	"tcms/internal/model"
+	"tcms/internal/telegramClient"
 )
 
 //RunAutomationService launch automation service

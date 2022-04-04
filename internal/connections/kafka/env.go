@@ -1,7 +1,7 @@
 package kafka
 
 import (
-	"tcms/m/internal/dry"
+	"tcms/internal/dry"
 )
 
 func getKafkaHost() (string, error) {

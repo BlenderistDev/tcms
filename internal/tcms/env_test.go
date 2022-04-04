@@ -3,7 +3,7 @@ package tcms
 import (
 	"testing"
 
-	"tcms/m/internal/dry"
+	"tcms/internal/dry"
 )
 
 func TestTcmsHost(t *testing.T) {

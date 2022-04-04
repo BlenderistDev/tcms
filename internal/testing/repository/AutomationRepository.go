@@ -7,7 +7,7 @@ package mock_repository
 import (
 	context "context"
 	reflect "reflect"
-	model "tcms/m/internal/model"
+	model "tcms/internal/model"
 
 	gomock "github.com/golang/mock/gomock"
 )

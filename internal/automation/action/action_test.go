@@ -5,9 +5,9 @@ import (
 
 	mock_interfaces2 "github.com/BlenderistDev/automation/testing/interfaces"
 	"github.com/golang/mock/gomock"
-	"tcms/m/internal/dry"
-	"tcms/m/internal/model"
-	mock_interfaces "tcms/m/internal/testing/action/interfaces"
+	"tcms/internal/dry"
+	"tcms/internal/model"
+	mock_interfaces "tcms/internal/testing/action/interfaces"
 )
 
 func TestGetActionWithModel(t *testing.T) {

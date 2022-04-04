@@ -6,9 +6,9 @@ import (
 
 	mock_interfaces "github.com/BlenderistDev/automation/testing/interfaces"
 	"github.com/golang/mock/gomock"
-	"tcms/m/internal/dry"
-	"tcms/m/internal/model"
-	telegramClient2 "tcms/m/internal/testing/telegramClient"
+	"tcms/internal/dry"
+	"tcms/internal/model"
+	telegramClient2 "tcms/internal/testing/telegramClient"
 )
 
 func TestCreateSendMessageAction(t *testing.T) {

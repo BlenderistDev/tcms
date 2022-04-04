@@ -2,7 +2,7 @@ package interfaces
 
 import (
 	"github.com/BlenderistDev/automation/interfaces"
-	"tcms/m/internal/model"
+	"tcms/internal/model"
 )
 
 type ActionWithModel interface {

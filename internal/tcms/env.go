@@ -1,7 +1,7 @@
 package tcms
 
 import (
-	"tcms/m/internal/dry"
+	"tcms/internal/dry"
 )
 
 func getTcmsHost() (string, error) {

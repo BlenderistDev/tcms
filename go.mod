@@ -1,4 +1,4 @@
-module tcms/m
+module tcms
 
 go 1.17
 

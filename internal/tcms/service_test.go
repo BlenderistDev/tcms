@@ -6,10 +6,10 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"tcms/m/internal/dry"
-	"tcms/m/internal/model"
-	mock_repository "tcms/m/internal/testing/repository"
-	"tcms/m/pkg/tcms"
+	"tcms/internal/dry"
+	"tcms/internal/model"
+	mock_repository "tcms/internal/testing/repository"
+	"tcms/pkg/tcms"
 )
 
 func TestGRPCServer_AddAutomation(t *testing.T) {

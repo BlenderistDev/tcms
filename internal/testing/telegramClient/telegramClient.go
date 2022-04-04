@@ -6,7 +6,7 @@ package mock_telegramClient
 
 import (
 	reflect "reflect"
-	telegram "tcms/m/pkg/telegram"
+	telegram "tcms/pkg/telegram"
 
 	gomock "github.com/golang/mock/gomock"
 )

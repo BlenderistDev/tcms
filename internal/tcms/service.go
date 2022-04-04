@@ -7,12 +7,12 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/emptypb"
-	"tcms/m/internal/automation/action"
-	"tcms/m/internal/automation/condition"
-	"tcms/m/internal/automation/trigger"
-	"tcms/m/internal/model"
-	"tcms/m/internal/repository"
-	"tcms/m/pkg/tcms"
+	"tcms/internal/automation/action"
+	"tcms/internal/automation/condition"
+	"tcms/internal/automation/trigger"
+	"tcms/internal/model"
+	"tcms/internal/repository"
+	"tcms/pkg/tcms"
 )
 
 type gRPCServer struct {
