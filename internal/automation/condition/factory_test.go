@@ -30,3 +30,7 @@ func TestCreateCondition_NoCondition(t *testing.T) {
 	_, err := CreateCondition(&conditionModel)
 	dry.TestCheckEqual(t, "unknown condition "+name, err.Error())
 }
+
+func TestGetList(t *testing.T) {
+	GetList()
+}
