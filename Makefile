@@ -29,3 +29,10 @@ gen-tcms:
 	@protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative proto/tcms.proto
 	@mv proto/tcms*.go pkg/tcms/
 
+gen:
+	@make gen-telegram
+	@make gen-tcms
+	@make gen-telegramclient-mock
+	@make gen-action-mock
+	@make gen-repository-mock
+
