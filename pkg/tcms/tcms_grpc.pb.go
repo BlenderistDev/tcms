@@ -24,6 +24,7 @@ type TcmsClient interface {
 	RemoveAutomation(ctx context.Context, in *RemoveAutomationRequest, opts ...grpc.CallOption) (*Result, error)
 	GetConditionList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ConditionList, error)
 	GetActionList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ActionList, error)
+	GetTriggerList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*TriggerList, error)
 }
 
 type tcmsClient struct {
@@ -79,6 +80,15 @@ func (c *tcmsClient) GetActionList(ctx context.Context, in *emptypb.Empty, opts 
 	return out, nil
 }
 
+func (c *tcmsClient) GetTriggerList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*TriggerList, error) {
+	out := new(TriggerList)
+	err := c.cc.Invoke(ctx, "/tcms.Tcms/GetTriggerList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TcmsServer is the server API for Tcms service.
 // All implementations must embed UnimplementedTcmsServer
 // for forward compatibility
@@ -88,6 +98,7 @@ type TcmsServer interface {
 	RemoveAutomation(context.Context, *RemoveAutomationRequest) (*Result, error)
 	GetConditionList(context.Context, *emptypb.Empty) (*ConditionList, error)
 	GetActionList(context.Context, *emptypb.Empty) (*ActionList, error)
+	GetTriggerList(context.Context, *emptypb.Empty) (*TriggerList, error)
 	mustEmbedUnimplementedTcmsServer()
 }
 
@@ -109,6 +120,9 @@ func (UnimplementedTcmsServer) GetConditionList(context.Context, *emptypb.Empty)
 }
 func (UnimplementedTcmsServer) GetActionList(context.Context, *emptypb.Empty) (*ActionList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetActionList not implemented")
+}
+func (UnimplementedTcmsServer) GetTriggerList(context.Context, *emptypb.Empty) (*TriggerList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTriggerList not implemented")
 }
 func (UnimplementedTcmsServer) mustEmbedUnimplementedTcmsServer() {}
 
@@ -213,6 +227,24 @@ func _Tcms_GetActionList_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Tcms_GetTriggerList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TcmsServer).GetTriggerList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/tcms.Tcms/GetTriggerList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TcmsServer).GetTriggerList(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Tcms_ServiceDesc is the grpc.ServiceDesc for Tcms service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -239,6 +271,10 @@ var Tcms_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetActionList",
 			Handler:    _Tcms_GetActionList_Handler,
+		},
+		{
+			MethodName: "GetTriggerList",
+			Handler:    _Tcms_GetTriggerList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
