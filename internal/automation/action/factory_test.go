@@ -65,3 +65,7 @@ func TestCreateAction_unknownAction(t *testing.T) {
 	_, err := CreateAction(name, telegramClient)
 	dry.TestCheckEqual(t, "unknown action "+name, err.Error())
 }
+
+func TestGetList(t *testing.T) {
+	GetList()
+}

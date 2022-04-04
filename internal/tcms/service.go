@@ -7,6 +7,7 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"tcms/m/internal/automation/action"
 	"tcms/m/internal/model"
 	"tcms/m/internal/repository"
 	"tcms/m/pkg/tcms"
@@ -58,6 +59,10 @@ func (s gRPCServer) RemoveAutomation(ctx context.Context, r *tcms.RemoveAutomati
 	}
 
 	return &tcms.Result{}, nil
+}
+
+func (s gRPCServer) GetActionList(_ context.Context, _ *emptypb.Empty) (*tcms.ActionList, error) {
+	return action.GetList(), nil
 }
 
 func StartTcmsGrpc(repo repository.AutomationRepository) error {
