@@ -32,6 +32,5 @@ func StartTelegramUpdateTrigger(addConsumer chan chan []uint8, triggerChan chan 
 		} else {
 			log.Info(err)
 		}
-
 	}
 }
