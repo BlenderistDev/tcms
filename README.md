@@ -1,7 +1,7 @@
 # tcms
 Telegram client automation system.
 
-Package provides gRPC interface to store automations and launch automations.
+Package provides gRPC interface to store and launch automations.
 ## Preparation
 System support GoLang 1.17 or higher.
 
