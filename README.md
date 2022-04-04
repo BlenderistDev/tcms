@@ -1,4 +1,4 @@
-# tcms
+# TCMS
 Telegram client automation system.
 
 Package provides gRPC interface to store and launch automations.
