@@ -28,7 +28,7 @@ func GetList() *tcms.ActionList {
 	return &tcms.ActionList{Actions: []*tcms.ActionDescription{
 		{
 			Name: "sendMessage",
-			ActionFields: []*tcms.Field{
+			Fields: []*tcms.Field{
 				{
 					Name:     "peer",
 					Type:     "string",
@@ -43,7 +43,7 @@ func GetList() *tcms.ActionList {
 		},
 		{
 			Name: "muteUser",
-			ActionFields: []*tcms.Field{
+			Fields: []*tcms.Field{
 				{
 					Name:     "peer",
 					Type:     "string",
@@ -63,7 +63,7 @@ func GetList() *tcms.ActionList {
 		},
 		{
 			Name: "muteChat",
-			ActionFields: []*tcms.Field{
+			Fields: []*tcms.Field{
 				{
 					Name:     "id",
 					Type:     "string",

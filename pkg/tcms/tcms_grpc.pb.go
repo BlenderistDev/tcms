@@ -22,6 +22,7 @@ type TcmsClient interface {
 	AddAutomation(ctx context.Context, in *Automation, opts ...grpc.CallOption) (*Result, error)
 	GetList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*AutomationList, error)
 	RemoveAutomation(ctx context.Context, in *RemoveAutomationRequest, opts ...grpc.CallOption) (*Result, error)
+	GetConditionList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ConditionList, error)
 	GetActionList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ActionList, error)
 }
 
@@ -60,6 +61,15 @@ func (c *tcmsClient) RemoveAutomation(ctx context.Context, in *RemoveAutomationR
 	return out, nil
 }
 
+func (c *tcmsClient) GetConditionList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ConditionList, error) {
+	out := new(ConditionList)
+	err := c.cc.Invoke(ctx, "/tcms.Tcms/GetConditionList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *tcmsClient) GetActionList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ActionList, error) {
 	out := new(ActionList)
 	err := c.cc.Invoke(ctx, "/tcms.Tcms/GetActionList", in, out, opts...)
@@ -76,6 +86,7 @@ type TcmsServer interface {
 	AddAutomation(context.Context, *Automation) (*Result, error)
 	GetList(context.Context, *emptypb.Empty) (*AutomationList, error)
 	RemoveAutomation(context.Context, *RemoveAutomationRequest) (*Result, error)
+	GetConditionList(context.Context, *emptypb.Empty) (*ConditionList, error)
 	GetActionList(context.Context, *emptypb.Empty) (*ActionList, error)
 	mustEmbedUnimplementedTcmsServer()
 }
@@ -92,6 +103,9 @@ func (UnimplementedTcmsServer) GetList(context.Context, *emptypb.Empty) (*Automa
 }
 func (UnimplementedTcmsServer) RemoveAutomation(context.Context, *RemoveAutomationRequest) (*Result, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveAutomation not implemented")
+}
+func (UnimplementedTcmsServer) GetConditionList(context.Context, *emptypb.Empty) (*ConditionList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetConditionList not implemented")
 }
 func (UnimplementedTcmsServer) GetActionList(context.Context, *emptypb.Empty) (*ActionList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetActionList not implemented")
@@ -163,6 +177,24 @@ func _Tcms_RemoveAutomation_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Tcms_GetConditionList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TcmsServer).GetConditionList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/tcms.Tcms/GetConditionList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TcmsServer).GetConditionList(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Tcms_GetActionList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
@@ -199,6 +231,10 @@ var Tcms_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RemoveAutomation",
 			Handler:    _Tcms_RemoveAutomation_Handler,
+		},
+		{
+			MethodName: "GetConditionList",
+			Handler:    _Tcms_GetConditionList_Handler,
 		},
 		{
 			MethodName: "GetActionList",

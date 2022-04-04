@@ -7,6 +7,7 @@ import (
 	"github.com/BlenderistDev/automation/datamapper"
 	"github.com/BlenderistDev/automation/interfaces"
 	"tcms/m/internal/model"
+	"tcms/m/pkg/tcms"
 )
 
 func CreateCondition(conditionData *model.Condition) (interfaces.Condition, error) {
@@ -47,4 +48,37 @@ func CreateCondition(conditionData *model.Condition) (interfaces.Condition, erro
 		return nil, fmt.Errorf("unknown condition %s", conditionData.Name)
 	}
 	return condition, nil
+}
+
+func GetList() *tcms.ConditionList {
+	return &tcms.ConditionList{Conditions: []*tcms.ConditionDescription{
+		{
+			Name: "equal",
+			Fields: []*tcms.Field{
+				{
+					Name:     "value1",
+					Type:     "string",
+					Required: true,
+				},
+				{
+					Name:     "value2",
+					Type:     "string",
+					Required: true,
+				},
+			},
+		},
+		{
+			Name:                 "not",
+			MinSubConditionCount: 1,
+			MaxSubConditionCount: 1,
+		},
+		{
+			Name:                 "or",
+			MinSubConditionCount: 2,
+		},
+		{
+			Name:                 "and",
+			MinSubConditionCount: 2,
+		},
+	}}
 }

@@ -10,6 +10,7 @@ service Tcms {
   rpc AddAutomation(Automation) returns (Result) {};
   rpc GetList(google.protobuf.Empty) returns (AutomationList) {};
   rpc RemoveAutomation(RemoveAutomationRequest) returns (Result) {};
+  rpc GetConditionList(google.protobuf.Empty) returns (ConditionList) {};
   rpc GetActionList(google.protobuf.Empty) returns (ActionList) {};
 }
 
@@ -56,11 +57,22 @@ message ActionList {
 
 message ActionDescription {
   string name = 1;
-  repeated Field actionFields = 2;
+  repeated Field fields = 2;
 }
 
 message Field {
   string name = 1;
   string type = 2;
   bool required = 3;
+}
+
+message ConditionList {
+  repeated ConditionDescription conditions = 1;
+}
+
+message ConditionDescription {
+  string name = 1;
+  repeated Field fields = 2;
+  int32 minSubConditionCount = 3;
+  int32 maxSubConditionCount = 4;
 }
