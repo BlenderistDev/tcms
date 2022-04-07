@@ -12,6 +12,7 @@ import (
 type AutomationRepository interface {
 	GetAll(ctx context.Context) ([]model.Automation, error)
 	Save(ctx context.Context, automation model.NewAutomation) error
+	Update(ctx context.Context, id string, automation model.NewAutomation) error
 	Remove(ctx context.Context, id string) error
 }
 
@@ -43,6 +44,17 @@ func (r automationRepository) GetAll(ctx context.Context) ([]model.Automation, e
 
 func (r automationRepository) Save(ctx context.Context, automation model.NewAutomation) error {
 	_, err := r.collection.InsertOne(ctx, automation)
+	return err
+}
+
+func (r automationRepository) Update(ctx context.Context, id string, automation model.NewAutomation) error {
+	idPrimitive, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return err
+	}
+
+	_, err = r.collection.ReplaceOne(ctx, bson.M{"_id": idPrimitive}, automation)
+
 	return err
 }
 

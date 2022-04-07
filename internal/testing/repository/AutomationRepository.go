@@ -77,3 +77,17 @@ func (mr *MockAutomationRepositoryMockRecorder) Save(ctx, automation interface{}
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Save", reflect.TypeOf((*MockAutomationRepository)(nil).Save), ctx, automation)
 }
+
+// Update mocks base method.
+func (m *MockAutomationRepository) Update(ctx context.Context, id string, automation model.NewAutomation) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Update", ctx, id, automation)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Update indicates an expected call of Update.
+func (mr *MockAutomationRepositoryMockRecorder) Update(ctx, id, automation interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockAutomationRepository)(nil).Update), ctx, id, automation)
+}

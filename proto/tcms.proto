@@ -8,6 +8,7 @@ import "google/protobuf/empty.proto";
 
 service Tcms {
   rpc AddAutomation(Automation) returns (Result) {};
+  rpc UpdateAutomation(UpdateAutomationRequest) returns (Result) {};
   rpc GetList(google.protobuf.Empty) returns (AutomationList) {};
   rpc RemoveAutomation(RemoveAutomationRequest) returns (Result) {};
   rpc GetConditionList(google.protobuf.Empty) returns (ConditionList) {};
@@ -89,4 +90,9 @@ message TriggerDescription {
     string description = 2;
   }
   repeated Field fields = 2;
+}
+
+message UpdateAutomationRequest {
+  string id = 1;
+  Automation automation = 2;
 }

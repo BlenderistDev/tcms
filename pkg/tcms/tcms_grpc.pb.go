@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TcmsClient interface {
 	AddAutomation(ctx context.Context, in *Automation, opts ...grpc.CallOption) (*Result, error)
+	UpdateAutomation(ctx context.Context, in *UpdateAutomationRequest, opts ...grpc.CallOption) (*Result, error)
 	GetList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*AutomationList, error)
 	RemoveAutomation(ctx context.Context, in *RemoveAutomationRequest, opts ...grpc.CallOption) (*Result, error)
 	GetConditionList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ConditionList, error)
@@ -38,6 +39,15 @@ func NewTcmsClient(cc grpc.ClientConnInterface) TcmsClient {
 func (c *tcmsClient) AddAutomation(ctx context.Context, in *Automation, opts ...grpc.CallOption) (*Result, error) {
 	out := new(Result)
 	err := c.cc.Invoke(ctx, "/tcms.Tcms/AddAutomation", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *tcmsClient) UpdateAutomation(ctx context.Context, in *UpdateAutomationRequest, opts ...grpc.CallOption) (*Result, error) {
+	out := new(Result)
+	err := c.cc.Invoke(ctx, "/tcms.Tcms/UpdateAutomation", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -94,6 +104,7 @@ func (c *tcmsClient) GetTriggerList(ctx context.Context, in *emptypb.Empty, opts
 // for forward compatibility
 type TcmsServer interface {
 	AddAutomation(context.Context, *Automation) (*Result, error)
+	UpdateAutomation(context.Context, *UpdateAutomationRequest) (*Result, error)
 	GetList(context.Context, *emptypb.Empty) (*AutomationList, error)
 	RemoveAutomation(context.Context, *RemoveAutomationRequest) (*Result, error)
 	GetConditionList(context.Context, *emptypb.Empty) (*ConditionList, error)
@@ -108,6 +119,9 @@ type UnimplementedTcmsServer struct {
 
 func (UnimplementedTcmsServer) AddAutomation(context.Context, *Automation) (*Result, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddAutomation not implemented")
+}
+func (UnimplementedTcmsServer) UpdateAutomation(context.Context, *UpdateAutomationRequest) (*Result, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateAutomation not implemented")
 }
 func (UnimplementedTcmsServer) GetList(context.Context, *emptypb.Empty) (*AutomationList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetList not implemented")
@@ -151,6 +165,24 @@ func _Tcms_AddAutomation_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(TcmsServer).AddAutomation(ctx, req.(*Automation))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Tcms_UpdateAutomation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateAutomationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TcmsServer).UpdateAutomation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/tcms.Tcms/UpdateAutomation",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TcmsServer).UpdateAutomation(ctx, req.(*UpdateAutomationRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -255,6 +287,10 @@ var Tcms_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddAutomation",
 			Handler:    _Tcms_AddAutomation_Handler,
+		},
+		{
+			MethodName: "UpdateAutomation",
+			Handler:    _Tcms_UpdateAutomation_Handler,
 		},
 		{
 			MethodName: "GetList",

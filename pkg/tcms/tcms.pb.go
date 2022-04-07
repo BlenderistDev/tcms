@@ -807,6 +807,61 @@ func (x *TriggerDescription) GetFields() []*TriggerDescription_Field {
 	return nil
 }
 
+type UpdateAutomationRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id         string      `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Automation *Automation `protobuf:"bytes,2,opt,name=automation,proto3" json:"automation,omitempty"`
+}
+
+func (x *UpdateAutomationRequest) Reset() {
+	*x = UpdateAutomationRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_tcms_proto_msgTypes[14]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UpdateAutomationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateAutomationRequest) ProtoMessage() {}
+
+func (x *UpdateAutomationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_tcms_proto_msgTypes[14]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateAutomationRequest.ProtoReflect.Descriptor instead.
+func (*UpdateAutomationRequest) Descriptor() ([]byte, []int) {
+	return file_proto_tcms_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *UpdateAutomationRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *UpdateAutomationRequest) GetAutomation() *Automation {
+	if x != nil {
+		return x.Automation
+	}
+	return nil
+}
+
 type TriggerDescription_Field struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -819,7 +874,7 @@ type TriggerDescription_Field struct {
 func (x *TriggerDescription_Field) Reset() {
 	*x = TriggerDescription_Field{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_tcms_proto_msgTypes[16]
+		mi := &file_proto_tcms_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -832,7 +887,7 @@ func (x *TriggerDescription_Field) String() string {
 func (*TriggerDescription_Field) ProtoMessage() {}
 
 func (x *TriggerDescription_Field) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_tcms_proto_msgTypes[16]
+	mi := &file_proto_tcms_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -961,10 +1016,20 @@ var file_proto_tcms_proto_rawDesc = []byte{
 	0x69, 0x65, 0x6c, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01,
 	0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x20, 0x0a, 0x0b, 0x64, 0x65, 0x73, 0x63,
 	0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x64,
-	0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x32, 0xf6, 0x02, 0x0a, 0x04, 0x54,
-	0x63, 0x6d, 0x73, 0x12, 0x31, 0x0a, 0x0d, 0x41, 0x64, 0x64, 0x41, 0x75, 0x74, 0x6f, 0x6d, 0x61,
-	0x74, 0x69, 0x6f, 0x6e, 0x12, 0x10, 0x2e, 0x74, 0x63, 0x6d, 0x73, 0x2e, 0x41, 0x75, 0x74, 0x6f,
-	0x6d, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x1a, 0x0c, 0x2e, 0x74, 0x63, 0x6d, 0x73, 0x2e, 0x52, 0x65,
+	0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0x5b, 0x0a, 0x17, 0x55, 0x70,
+	0x64, 0x61, 0x74, 0x65, 0x41, 0x75, 0x74, 0x6f, 0x6d, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x30, 0x0a, 0x0a, 0x61, 0x75, 0x74, 0x6f, 0x6d, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x10, 0x2e, 0x74, 0x63, 0x6d, 0x73,
+	0x2e, 0x41, 0x75, 0x74, 0x6f, 0x6d, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x0a, 0x61, 0x75, 0x74,
+	0x6f, 0x6d, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x32, 0xb9, 0x03, 0x0a, 0x04, 0x54, 0x63, 0x6d, 0x73,
+	0x12, 0x31, 0x0a, 0x0d, 0x41, 0x64, 0x64, 0x41, 0x75, 0x74, 0x6f, 0x6d, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x12, 0x10, 0x2e, 0x74, 0x63, 0x6d, 0x73, 0x2e, 0x41, 0x75, 0x74, 0x6f, 0x6d, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x1a, 0x0c, 0x2e, 0x74, 0x63, 0x6d, 0x73, 0x2e, 0x52, 0x65, 0x73, 0x75, 0x6c,
+	0x74, 0x22, 0x00, 0x12, 0x41, 0x0a, 0x10, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x41, 0x75, 0x74,
+	0x6f, 0x6d, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x1d, 0x2e, 0x74, 0x63, 0x6d, 0x73, 0x2e, 0x55,
+	0x70, 0x64, 0x61, 0x74, 0x65, 0x41, 0x75, 0x74, 0x6f, 0x6d, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x0c, 0x2e, 0x74, 0x63, 0x6d, 0x73, 0x2e, 0x52, 0x65,
 	0x73, 0x75, 0x6c, 0x74, 0x22, 0x00, 0x12, 0x39, 0x0a, 0x07, 0x47, 0x65, 0x74, 0x4c, 0x69, 0x73,
 	0x74, 0x12, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
 	0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x1a, 0x14, 0x2e, 0x74, 0x63, 0x6d, 0x73,
@@ -1001,7 +1066,7 @@ func file_proto_tcms_proto_rawDescGZIP() []byte {
 	return file_proto_tcms_proto_rawDescData
 }
 
-var file_proto_tcms_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
+var file_proto_tcms_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
 var file_proto_tcms_proto_goTypes = []interface{}{
 	(*Automation)(nil),               // 0: tcms.Automation
 	(*Condition)(nil),                // 1: tcms.Condition
@@ -1017,43 +1082,47 @@ var file_proto_tcms_proto_goTypes = []interface{}{
 	(*ConditionDescription)(nil),     // 11: tcms.ConditionDescription
 	(*TriggerList)(nil),              // 12: tcms.TriggerList
 	(*TriggerDescription)(nil),       // 13: tcms.TriggerDescription
-	nil,                              // 14: tcms.Condition.MappingEntry
-	nil,                              // 15: tcms.Action.MappingEntry
-	(*TriggerDescription_Field)(nil), // 16: tcms.TriggerDescription.Field
-	(*emptypb.Empty)(nil),            // 17: google.protobuf.Empty
+	(*UpdateAutomationRequest)(nil),  // 14: tcms.UpdateAutomationRequest
+	nil,                              // 15: tcms.Condition.MappingEntry
+	nil,                              // 16: tcms.Action.MappingEntry
+	(*TriggerDescription_Field)(nil), // 17: tcms.TriggerDescription.Field
+	(*emptypb.Empty)(nil),            // 18: google.protobuf.Empty
 }
 var file_proto_tcms_proto_depIdxs = []int32{
 	1,  // 0: tcms.Automation.condition:type_name -> tcms.Condition
 	2,  // 1: tcms.Automation.actions:type_name -> tcms.Action
-	14, // 2: tcms.Condition.mapping:type_name -> tcms.Condition.MappingEntry
+	15, // 2: tcms.Condition.mapping:type_name -> tcms.Condition.MappingEntry
 	1,  // 3: tcms.Condition.subConditions:type_name -> tcms.Condition
-	15, // 4: tcms.Action.mapping:type_name -> tcms.Action.MappingEntry
+	16, // 4: tcms.Action.mapping:type_name -> tcms.Action.MappingEntry
 	0,  // 5: tcms.AutomationList.automationList:type_name -> tcms.Automation
 	8,  // 6: tcms.ActionList.actions:type_name -> tcms.ActionDescription
 	9,  // 7: tcms.ActionDescription.fields:type_name -> tcms.Field
 	11, // 8: tcms.ConditionList.conditions:type_name -> tcms.ConditionDescription
 	9,  // 9: tcms.ConditionDescription.fields:type_name -> tcms.Field
 	13, // 10: tcms.TriggerList.triggers:type_name -> tcms.TriggerDescription
-	16, // 11: tcms.TriggerDescription.fields:type_name -> tcms.TriggerDescription.Field
-	3,  // 12: tcms.Condition.MappingEntry.value:type_name -> tcms.Mapping
-	3,  // 13: tcms.Action.MappingEntry.value:type_name -> tcms.Mapping
-	0,  // 14: tcms.Tcms.AddAutomation:input_type -> tcms.Automation
-	17, // 15: tcms.Tcms.GetList:input_type -> google.protobuf.Empty
-	6,  // 16: tcms.Tcms.RemoveAutomation:input_type -> tcms.RemoveAutomationRequest
-	17, // 17: tcms.Tcms.GetConditionList:input_type -> google.protobuf.Empty
-	17, // 18: tcms.Tcms.GetActionList:input_type -> google.protobuf.Empty
-	17, // 19: tcms.Tcms.GetTriggerList:input_type -> google.protobuf.Empty
-	4,  // 20: tcms.Tcms.AddAutomation:output_type -> tcms.Result
-	5,  // 21: tcms.Tcms.GetList:output_type -> tcms.AutomationList
-	4,  // 22: tcms.Tcms.RemoveAutomation:output_type -> tcms.Result
-	10, // 23: tcms.Tcms.GetConditionList:output_type -> tcms.ConditionList
-	7,  // 24: tcms.Tcms.GetActionList:output_type -> tcms.ActionList
-	12, // 25: tcms.Tcms.GetTriggerList:output_type -> tcms.TriggerList
-	20, // [20:26] is the sub-list for method output_type
-	14, // [14:20] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	17, // 11: tcms.TriggerDescription.fields:type_name -> tcms.TriggerDescription.Field
+	0,  // 12: tcms.UpdateAutomationRequest.automation:type_name -> tcms.Automation
+	3,  // 13: tcms.Condition.MappingEntry.value:type_name -> tcms.Mapping
+	3,  // 14: tcms.Action.MappingEntry.value:type_name -> tcms.Mapping
+	0,  // 15: tcms.Tcms.AddAutomation:input_type -> tcms.Automation
+	14, // 16: tcms.Tcms.UpdateAutomation:input_type -> tcms.UpdateAutomationRequest
+	18, // 17: tcms.Tcms.GetList:input_type -> google.protobuf.Empty
+	6,  // 18: tcms.Tcms.RemoveAutomation:input_type -> tcms.RemoveAutomationRequest
+	18, // 19: tcms.Tcms.GetConditionList:input_type -> google.protobuf.Empty
+	18, // 20: tcms.Tcms.GetActionList:input_type -> google.protobuf.Empty
+	18, // 21: tcms.Tcms.GetTriggerList:input_type -> google.protobuf.Empty
+	4,  // 22: tcms.Tcms.AddAutomation:output_type -> tcms.Result
+	4,  // 23: tcms.Tcms.UpdateAutomation:output_type -> tcms.Result
+	5,  // 24: tcms.Tcms.GetList:output_type -> tcms.AutomationList
+	4,  // 25: tcms.Tcms.RemoveAutomation:output_type -> tcms.Result
+	10, // 26: tcms.Tcms.GetConditionList:output_type -> tcms.ConditionList
+	7,  // 27: tcms.Tcms.GetActionList:output_type -> tcms.ActionList
+	12, // 28: tcms.Tcms.GetTriggerList:output_type -> tcms.TriggerList
+	22, // [22:29] is the sub-list for method output_type
+	15, // [15:22] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_proto_tcms_proto_init() }
@@ -1230,7 +1299,19 @@ func file_proto_tcms_proto_init() {
 				return nil
 			}
 		}
-		file_proto_tcms_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+		file_proto_tcms_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*UpdateAutomationRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_tcms_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*TriggerDescription_Field); i {
 			case 0:
 				return &v.state
@@ -1249,7 +1330,7 @@ func file_proto_tcms_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_proto_tcms_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   17,
+			NumMessages:   18,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

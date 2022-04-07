@@ -34,6 +34,20 @@ func (s gRPCServer) AddAutomation(ctx context.Context, automation *tcms.Automati
 	return &tcms.Result{}, nil
 }
 
+func (s gRPCServer) UpdateAutomation(ctx context.Context, request *tcms.UpdateAutomationRequest) (*tcms.Result, error) {
+	str, _ := json.Marshal(request.Automation)
+
+	record := model.NewAutomation{}
+	_ = json.Unmarshal(str, &record)
+
+	err := s.repo.Update(ctx, request.Id, record)
+	if err != nil {
+		return nil, err
+	}
+
+	return &tcms.Result{}, nil
+}
+
 func (s gRPCServer) GetList(ctx context.Context, _ *emptypb.Empty) (*tcms.AutomationList, error) {
 	automationList, err := s.repo.GetAll(ctx)
 	if err != nil {
