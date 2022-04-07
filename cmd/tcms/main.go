@@ -10,6 +10,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"tcms/internal/automation"
 	"tcms/internal/automation/action"
+	"tcms/internal/automation/condition"
 	"tcms/internal/automation/trigger"
 	"tcms/internal/connections/db"
 	"tcms/internal/connections/kafka"
@@ -48,8 +49,11 @@ func main() {
 	errChan := make(chan error)
 
 	actionFactory := action.NewFactory(telegram)
+	conditionFactory := condition.NewFactory()
 
-	go automation.RunAutomationService(automations, telegram, log, errChan, triggerChan)
+	automationService := automation.NewService(telegram, log, errChan, triggerChan, actionFactory, conditionFactory)
+
+	go automationService.RunAutomationService(automations)
 	go trigger.StartTelegramUpdateTrigger(addConsumer, triggerChan, log)
 	go trigger.StartTimeTrigger(triggerChan, time.Second)
 	go func() {

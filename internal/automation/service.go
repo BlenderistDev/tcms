@@ -11,41 +11,69 @@ import (
 	"tcms/internal/telegramClient"
 )
 
+type Service interface {
+	RunAutomationService(automations []model.Automation)
+}
+
+type service struct {
+	tg               telegramClient.TelegramClient
+	log              *logrus.Logger
+	errChan          chan error
+	triggerChan      chan interfaces.TriggerEvent
+	actionFactory    action.Factory
+	conditionFactory condition.Factory
+}
+
+func NewService(
+	tg telegramClient.TelegramClient,
+	log *logrus.Logger,
+	errChan chan error,
+	triggerChan chan interfaces.TriggerEvent,
+	actionFactory action.Factory,
+	conditionFactory condition.Factory,
+) Service {
+	return &service{
+		tg:               tg,
+		log:              log,
+		errChan:          errChan,
+		triggerChan:      triggerChan,
+		actionFactory:    actionFactory,
+		conditionFactory: conditionFactory,
+	}
+}
+
 //RunAutomationService launch automation service
-func RunAutomationService(automations []model.Automation, telegram telegramClient.TelegramClient, log *logrus.Logger, errChan chan error, triggerChan chan interfaces.TriggerEvent) {
+func (s *service) RunAutomationService(automations []model.Automation) {
 
 	automationService := automation.Service{}
 
 	for _, automationModel := range automations {
-		a, err := buildAutomation(&automationModel, telegram)
+		a, err := s.buildAutomation(&automationModel)
 		if err != nil {
-			log.Error(err)
+			s.log.Error(err)
 		}
 		automationService.AddAutomation(a)
 	}
 
-	go automationService.Start(triggerChan, errChan)
+	go automationService.Start(s.triggerChan, s.errChan)
 
 	go func(errChan chan error) {
 		for {
 			err := <-errChan
-			log.Error(err)
+			s.log.Error(err)
 		}
-	}(errChan)
+	}(s.errChan)
 }
 
-func buildAutomation(auto *model.Automation, telegram telegramClient.TelegramClient) (interfaces.Automation, error) {
+func (s *service) buildAutomation(auto *model.Automation) (interfaces.Automation, error) {
 	coreAutomation := core.GetAutomation()
 
 	for _, t := range auto.Triggers {
 		coreAutomation.AddTrigger(t)
 	}
 
-	actionFactory := action.NewFactory(telegram)
-	conditionFactory := condition.NewFactory()
-
 	for _, a := range auto.Actions {
-		act, err := actionFactory.CreateAction(a.Name)
+		act, err := s.actionFactory.CreateAction(a.Name)
 		if err != nil {
 			return nil, err
 		}
@@ -53,7 +81,7 @@ func buildAutomation(auto *model.Automation, telegram telegramClient.TelegramCli
 	}
 
 	if auto.Condition != nil && auto.Condition.Name != "" {
-		cond, err := conditionFactory.CreateCondition(auto.Condition)
+		cond, err := s.conditionFactory.CreateCondition(auto.Condition)
 		if err != nil {
 			return nil, err
 		}
