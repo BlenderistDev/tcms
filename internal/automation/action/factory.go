@@ -18,10 +18,12 @@ type factory struct {
 	tg telegramClient.TelegramClient
 }
 
+// NewFactory creates new action factory instance
 func NewFactory(tg telegramClient.TelegramClient) Factory {
 	return factory{tg: tg}
 }
 
+// CreateAction creates action by its name
 func (f factory) CreateAction(name string) (interfaces.ActionWithModel, error) {
 	var action interfaces.ActionWithModel
 	switch name {
@@ -37,6 +39,7 @@ func (f factory) CreateAction(name string) (interfaces.ActionWithModel, error) {
 	return action, nil
 }
 
+// GetList returns list of supported actions
 func (f factory) GetList() *tcms.ActionList {
 	return &tcms.ActionList{Actions: []*tcms.ActionDescription{
 		{
