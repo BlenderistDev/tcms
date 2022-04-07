@@ -17,7 +17,8 @@ import (
 
 type gRPCServer struct {
 	tcms.UnimplementedTcmsServer
-	repo repository.AutomationRepository
+	repo          repository.AutomationRepository
+	actionFactory action.Factory
 }
 
 func (s gRPCServer) AddAutomation(ctx context.Context, automation *tcms.Automation) (*tcms.Result, error) {
@@ -78,7 +79,7 @@ func (s gRPCServer) RemoveAutomation(ctx context.Context, r *tcms.RemoveAutomati
 }
 
 func (s gRPCServer) GetActionList(_ context.Context, _ *emptypb.Empty) (*tcms.ActionList, error) {
-	return action.GetList(), nil
+	return s.actionFactory.GetList(), nil
 }
 
 func (s gRPCServer) GetConditionList(_ context.Context, _ *emptypb.Empty) (*tcms.ConditionList, error) {
@@ -89,7 +90,7 @@ func (s gRPCServer) GetTriggerList(_ context.Context, _ *emptypb.Empty) (*tcms.T
 	return trigger.GetList(), nil
 }
 
-func StartTcmsGrpc(repo repository.AutomationRepository) error {
+func StartTcmsGrpc(repo repository.AutomationRepository, actionFactory action.Factory) error {
 	addr, err := getTcmsHost()
 	if err != nil {
 		return err
@@ -102,7 +103,8 @@ func StartTcmsGrpc(repo repository.AutomationRepository) error {
 
 	s := grpc.NewServer()
 	tcms.RegisterTcmsServer(s, &gRPCServer{
-		repo: repo,
+		repo:          repo,
+		actionFactory: actionFactory,
 	})
 
 	return s.Serve(lis)

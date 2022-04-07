@@ -9,22 +9,35 @@ import (
 	"tcms/pkg/tcms"
 )
 
-func CreateAction(name string, telegram telegramClient.TelegramClient) (interfaces.ActionWithModel, error) {
+type Factory interface {
+	CreateAction(name string) (interfaces.ActionWithModel, error)
+	GetList() *tcms.ActionList
+}
+
+type factory struct {
+	tg telegramClient.TelegramClient
+}
+
+func NewFactory(tg telegramClient.TelegramClient) Factory {
+	return factory{tg: tg}
+}
+
+func (f factory) CreateAction(name string) (interfaces.ActionWithModel, error) {
 	var action interfaces.ActionWithModel
 	switch name {
 	case "sendMessage":
-		action = actions.CreateSendMessageAction(telegram)
+		action = actions.CreateSendMessageAction(f.tg)
 	case "muteUser":
-		action = actions.CreateMuteUserAction(telegram)
+		action = actions.CreateMuteUserAction(f.tg)
 	case "muteChat":
-		action = actions.CreateMuteChatAction(telegram)
+		action = actions.CreateMuteChatAction(f.tg)
 	default:
 		return nil, fmt.Errorf("unknown action %s", name)
 	}
 	return action, nil
 }
 
-func GetList() *tcms.ActionList {
+func (f factory) GetList() *tcms.ActionList {
 	return &tcms.ActionList{Actions: []*tcms.ActionDescription{
 		{
 			Name: "sendMessage",

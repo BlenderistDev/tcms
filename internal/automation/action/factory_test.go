@@ -9,13 +9,14 @@ import (
 	telegramClient2 "tcms/internal/testing/telegramClient"
 )
 
-func TestCreateAction_createSendMessage(t *testing.T) {
+func TestFactory_CreateAction(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	telegramClient := telegramClient2.NewMockTelegramClient(ctrl)
+	tg := telegramClient2.NewMockTelegramClient(ctrl)
+	actionFactory := NewFactory(tg)
 
-	action, err := CreateAction("sendMessage", telegramClient)
+	action, err := actionFactory.CreateAction("sendMessage")
 	dry.TestHandleError(t, err)
 	switch action.(type) {
 	case interfaces.ActionWithModel:
@@ -28,9 +29,10 @@ func TestCreateAction_createMuteUser(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	telegramClient := telegramClient2.NewMockTelegramClient(ctrl)
+	tg := telegramClient2.NewMockTelegramClient(ctrl)
+	actionFactory := NewFactory(tg)
 
-	action, err := CreateAction("muteUser", telegramClient)
+	action, err := actionFactory.CreateAction("muteUser")
 	dry.TestHandleError(t, err)
 	switch action.(type) {
 	case interfaces.ActionWithModel:
@@ -43,9 +45,10 @@ func TestCreateAction_createMuteChat(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	telegramClient := telegramClient2.NewMockTelegramClient(ctrl)
+	tg := telegramClient2.NewMockTelegramClient(ctrl)
+	actionFactory := NewFactory(tg)
 
-	action, err := CreateAction("muteChat", telegramClient)
+	action, err := actionFactory.CreateAction("muteChat")
 	dry.TestHandleError(t, err)
 	switch action.(type) {
 	case interfaces.ActionWithModel:
@@ -60,12 +63,18 @@ func TestCreateAction_unknownAction(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	telegramClient := telegramClient2.NewMockTelegramClient(ctrl)
+	tg := telegramClient2.NewMockTelegramClient(ctrl)
+	actionFactory := NewFactory(tg)
 
-	_, err := CreateAction(name, telegramClient)
+	_, err := actionFactory.CreateAction(name)
 	dry.TestCheckEqual(t, "unknown action "+name, err.Error())
 }
 
 func TestGetList(t *testing.T) {
-	GetList()
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	tg := telegramClient2.NewMockTelegramClient(ctrl)
+	actionFactory := NewFactory(tg)
+	actionFactory.GetList()
 }

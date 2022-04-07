@@ -9,6 +9,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 	"tcms/internal/automation"
+	"tcms/internal/automation/action"
 	"tcms/internal/automation/trigger"
 	"tcms/internal/connections/db"
 	"tcms/internal/connections/kafka"
@@ -46,11 +47,13 @@ func main() {
 	triggerChan := make(chan interfaces.TriggerEvent)
 	errChan := make(chan error)
 
+	actionFactory := action.NewFactory(telegram)
+
 	go automation.RunAutomationService(automations, telegram, log, errChan, triggerChan)
 	go trigger.StartTelegramUpdateTrigger(addConsumer, triggerChan, log)
 	go trigger.StartTimeTrigger(triggerChan, time.Second)
 	go func() {
-		err := tcms.StartTcmsGrpc(automationRepo)
+		err := tcms.StartTcmsGrpc(automationRepo, actionFactory)
 		if err != nil {
 			log.Error(err)
 		}

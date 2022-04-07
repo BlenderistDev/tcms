@@ -41,8 +41,10 @@ func buildAutomation(auto *model.Automation, telegram telegramClient.TelegramCli
 		coreAutomation.AddTrigger(t)
 	}
 
+	actionFactory := action.NewFactory(telegram)
+
 	for _, a := range auto.Actions {
-		act, err := action.CreateAction(a.Name, telegram)
+		act, err := actionFactory.CreateAction(a.Name)
 		if err != nil {
 			return nil, err
 		}
