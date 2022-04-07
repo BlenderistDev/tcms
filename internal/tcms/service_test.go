@@ -103,6 +103,48 @@ func TestGRPCServer_UpdateAutomation_repoReturnError(t *testing.T) {
 	dry.TestCheckEqual(t, returnError, err)
 }
 
+func TestGRPCServer_RemoveAutomation(t *testing.T) {
+	const id = "some_id"
+
+	ctx := context.Background()
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	repo := mock_repository.NewMockAutomationRepository(ctrl)
+	repo.EXPECT().Remove(gomock.Eq(ctx), gomock.Eq(id))
+
+	request := &tcms.RemoveAutomationRequest{Id: id}
+
+	s := gRPCServer{
+		UnimplementedTcmsServer: tcms.UnimplementedTcmsServer{},
+		repo:                    repo,
+	}
+
+	_, err := s.RemoveAutomation(ctx, request)
+	dry.TestHandleError(t, err)
+}
+
+func TestGRPCServer_RemoveAutomation_repoReturnError(t *testing.T) {
+	const id = "some_id"
+
+	ctx := context.Background()
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	repo := mock_repository.NewMockAutomationRepository(ctrl)
+
+	returnError := fmt.Errorf("some error")
+	repo.EXPECT().Remove(gomock.Eq(ctx), gomock.Eq(id)).Return(returnError)
+
+	request := &tcms.RemoveAutomationRequest{Id: id}
+
+	s := gRPCServer{
+		UnimplementedTcmsServer: tcms.UnimplementedTcmsServer{},
+		repo:                    repo,
+	}
+
+	_, err := s.RemoveAutomation(ctx, request)
+	dry.TestCheckEqual(t, returnError, err)
+}
+
 func getInputAutomation() *tcms.Automation {
 	inputAutomation := &tcms.Automation{
 		Triggers: []string{"test1", "test2"},
