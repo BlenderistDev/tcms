@@ -13,6 +13,97 @@ import (
 )
 
 func TestGRPCServer_AddAutomation(t *testing.T) {
+	inputAutomation := getInputAutomation()
+	outputAutomation := getOutputAutomation()
+
+	ctx := context.Background()
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	repo := mock_repository.NewMockAutomationRepository(ctrl)
+	repo.EXPECT().Save(gomock.Eq(ctx), gomock.Eq(outputAutomation))
+
+	s := gRPCServer{
+		UnimplementedTcmsServer: tcms.UnimplementedTcmsServer{},
+		repo:                    repo,
+	}
+
+	_, err := s.AddAutomation(ctx, inputAutomation)
+	dry.TestHandleError(t, err)
+}
+
+func TestGRPCServer_AddAutomation_repoReturnError(t *testing.T) {
+	inputAutomation := &tcms.Automation{}
+
+	ctx := context.Background()
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	repo := mock_repository.NewMockAutomationRepository(ctrl)
+
+	returnError := fmt.Errorf("some error")
+	repo.EXPECT().Save(gomock.Eq(ctx), gomock.Any()).Return(returnError)
+
+	s := gRPCServer{
+		UnimplementedTcmsServer: tcms.UnimplementedTcmsServer{},
+		repo:                    repo,
+	}
+
+	_, err := s.AddAutomation(ctx, inputAutomation)
+	dry.TestCheckEqual(t, returnError, err)
+}
+
+func TestGRPCServer_UpdateAutomation(t *testing.T) {
+	const id string = "some_id"
+
+	inputAutomation := getInputAutomation()
+	request := &tcms.UpdateAutomationRequest{
+		Id:         id,
+		Automation: inputAutomation,
+	}
+	outputAutomation := getOutputAutomation()
+
+	ctx := context.Background()
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	repo := mock_repository.NewMockAutomationRepository(ctrl)
+	repo.EXPECT().Update(gomock.Eq(ctx), gomock.Eq(id), gomock.Eq(outputAutomation))
+
+	s := gRPCServer{
+		UnimplementedTcmsServer: tcms.UnimplementedTcmsServer{},
+		repo:                    repo,
+	}
+
+	_, err := s.UpdateAutomation(ctx, request)
+	dry.TestHandleError(t, err)
+}
+
+func TestGRPCServer_UpdateAutomation_repoReturnError(t *testing.T) {
+	const id string = "some_id"
+
+	inputAutomation := getInputAutomation()
+	request := &tcms.UpdateAutomationRequest{
+		Id:         id,
+		Automation: inputAutomation,
+	}
+	outputAutomation := getOutputAutomation()
+
+	ctx := context.Background()
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	repo := mock_repository.NewMockAutomationRepository(ctrl)
+
+	returnError := fmt.Errorf("some error")
+	repo.EXPECT().Update(gomock.Eq(ctx), gomock.Eq(id), gomock.Eq(outputAutomation)).Return(returnError)
+
+	s := gRPCServer{
+		UnimplementedTcmsServer: tcms.UnimplementedTcmsServer{},
+		repo:                    repo,
+	}
+
+	_, err := s.UpdateAutomation(ctx, request)
+	dry.TestCheckEqual(t, returnError, err)
+}
+
+func getInputAutomation() *tcms.Automation {
 	inputAutomation := &tcms.Automation{
 		Triggers: []string{"test1", "test2"},
 		Condition: &tcms.Condition{
@@ -83,7 +174,10 @@ func TestGRPCServer_AddAutomation(t *testing.T) {
 			},
 		},
 	}
+	return inputAutomation
+}
 
+func getOutputAutomation() model.NewAutomation {
 	outputAutomation := model.NewAutomation{
 		Triggers: []string{"test1", "test2"},
 		Condition: &model.Condition{
@@ -154,38 +248,5 @@ func TestGRPCServer_AddAutomation(t *testing.T) {
 			},
 		},
 	}
-
-	ctx := context.Background()
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-	repo := mock_repository.NewMockAutomationRepository(ctrl)
-	repo.EXPECT().Save(gomock.Eq(ctx), gomock.Eq(outputAutomation))
-
-	s := gRPCServer{
-		UnimplementedTcmsServer: tcms.UnimplementedTcmsServer{},
-		repo:                    repo,
-	}
-
-	_, err := s.AddAutomation(ctx, inputAutomation)
-	dry.TestHandleError(t, err)
-}
-
-func TestGRPCServer_AddAutomation_repoReturnError(t *testing.T) {
-	inputAutomation := &tcms.Automation{}
-
-	ctx := context.Background()
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-	repo := mock_repository.NewMockAutomationRepository(ctrl)
-
-	returnError := fmt.Errorf("some error")
-	repo.EXPECT().Save(gomock.Eq(ctx), gomock.Any()).Return(returnError)
-
-	s := gRPCServer{
-		UnimplementedTcmsServer: tcms.UnimplementedTcmsServer{},
-		repo:                    repo,
-	}
-
-	_, err := s.AddAutomation(ctx, inputAutomation)
-	dry.TestCheckEqual(t, returnError, err)
+	return outputAutomation
 }
