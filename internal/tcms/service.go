@@ -17,8 +17,9 @@ import (
 
 type gRPCServer struct {
 	tcms.UnimplementedTcmsServer
-	repo          repository.AutomationRepository
-	actionFactory action.Factory
+	repo             repository.AutomationRepository
+	actionFactory    action.Factory
+	conditionFactory condition.Factory
 }
 
 func (s gRPCServer) AddAutomation(ctx context.Context, automation *tcms.Automation) (*tcms.Result, error) {
@@ -83,7 +84,7 @@ func (s gRPCServer) GetActionList(_ context.Context, _ *emptypb.Empty) (*tcms.Ac
 }
 
 func (s gRPCServer) GetConditionList(_ context.Context, _ *emptypb.Empty) (*tcms.ConditionList, error) {
-	return condition.GetList(), nil
+	return s.conditionFactory.GetList(), nil
 }
 
 func (s gRPCServer) GetTriggerList(_ context.Context, _ *emptypb.Empty) (*tcms.TriggerList, error) {

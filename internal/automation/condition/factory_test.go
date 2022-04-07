@@ -13,7 +13,8 @@ func TestCreateCondition_createEqual(t *testing.T) {
 		Name:    "equal",
 		Mapping: nil,
 	}
-	condition, err := CreateCondition(&conditionModel)
+	conditionFactory := NewFactory()
+	condition, err := conditionFactory.CreateCondition(&conditionModel)
 	dry.TestHandleError(t, err)
 	switch condition.(type) {
 	case interfaces.Condition:
@@ -27,10 +28,12 @@ func TestCreateCondition_NoCondition(t *testing.T) {
 	conditionModel := model.Condition{
 		Name: name,
 	}
-	_, err := CreateCondition(&conditionModel)
+	conditionFactory := NewFactory()
+	_, err := conditionFactory.CreateCondition(&conditionModel)
 	dry.TestCheckEqual(t, "unknown condition "+name, err.Error())
 }
 
 func TestGetList(t *testing.T) {
-	GetList()
+	conditionFactory := NewFactory()
+	conditionFactory.GetList()
 }

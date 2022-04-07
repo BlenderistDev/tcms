@@ -42,6 +42,7 @@ func buildAutomation(auto *model.Automation, telegram telegramClient.TelegramCli
 	}
 
 	actionFactory := action.NewFactory(telegram)
+	conditionFactory := condition.NewFactory()
 
 	for _, a := range auto.Actions {
 		act, err := actionFactory.CreateAction(a.Name)
@@ -52,7 +53,7 @@ func buildAutomation(auto *model.Automation, telegram telegramClient.TelegramCli
 	}
 
 	if auto.Condition != nil && auto.Condition.Name != "" {
-		cond, err := condition.CreateCondition(auto.Condition)
+		cond, err := conditionFactory.CreateCondition(auto.Condition)
 		if err != nil {
 			return nil, err
 		}

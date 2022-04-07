@@ -10,7 +10,18 @@ import (
 	"tcms/pkg/tcms"
 )
 
-func CreateCondition(conditionData *model.Condition) (interfaces.Condition, error) {
+type Factory interface {
+	CreateCondition(conditionData *model.Condition) (interfaces.Condition, error)
+	GetList() *tcms.ConditionList
+}
+
+type factory struct{}
+
+func NewFactory() Factory {
+	return factory{}
+}
+
+func (f factory) CreateCondition(conditionData *model.Condition) (interfaces.Condition, error) {
 	var condition interfaces.Condition
 	var err error
 
@@ -19,7 +30,7 @@ func CreateCondition(conditionData *model.Condition) (interfaces.Condition, erro
 	var subConditions []interfaces.Condition
 
 	for _, subCondition := range conditionData.SubConditions {
-		c, err := CreateCondition(&subCondition)
+		c, err := f.CreateCondition(&subCondition)
 		if err != nil {
 			return nil, err
 		}
@@ -50,7 +61,7 @@ func CreateCondition(conditionData *model.Condition) (interfaces.Condition, erro
 	return condition, nil
 }
 
-func GetList() *tcms.ConditionList {
+func (f factory) GetList() *tcms.ConditionList {
 	return &tcms.ConditionList{Conditions: []*tcms.ConditionDescription{
 		{
 			Name: "equal",
