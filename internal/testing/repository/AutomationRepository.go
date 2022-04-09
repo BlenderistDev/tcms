@@ -50,6 +50,21 @@ func (mr *MockAutomationRepositoryMockRecorder) GetAll(ctx interface{}) *gomock.
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAll", reflect.TypeOf((*MockAutomationRepository)(nil).GetAll), ctx)
 }
 
+// GetOne mocks base method.
+func (m *MockAutomationRepository) GetOne(ctx context.Context, id string) (*model.Automation, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetOne", ctx, id)
+	ret0, _ := ret[0].(*model.Automation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetOne indicates an expected call of GetOne.
+func (mr *MockAutomationRepositoryMockRecorder) GetOne(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetOne", reflect.TypeOf((*MockAutomationRepository)(nil).GetOne), ctx, id)
+}
+
 // Remove mocks base method.
 func (m *MockAutomationRepository) Remove(ctx context.Context, id string) error {
 	m.ctrl.T.Helper()

@@ -70,6 +70,26 @@ func (s gRPCServer) GetList(ctx context.Context, _ *emptypb.Empty) (*tcms.Automa
 	return &tcms.AutomationList{AutomationList: aList}, nil
 }
 
+func (s gRPCServer) GetOne(ctx context.Context, request *tcms.AutomationRequest) (*tcms.Automation, error) {
+	automation, err := s.repo.GetOne(ctx, request.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	str, err := json.Marshal(automation)
+	if err != nil {
+		return nil, err
+	}
+
+	var response tcms.Automation
+	err = json.Unmarshal(str, &response)
+	if err != nil {
+		return nil, err
+	}
+
+	return &response, nil
+}
+
 func (s gRPCServer) RemoveAutomation(ctx context.Context, r *tcms.RemoveAutomationRequest) (*tcms.Result, error) {
 	err := s.repo.Remove(ctx, r.Id)
 	if err != nil {

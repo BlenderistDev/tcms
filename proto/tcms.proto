@@ -10,6 +10,7 @@ service Tcms {
   rpc AddAutomation(Automation) returns (Result) {};
   rpc UpdateAutomation(UpdateAutomationRequest) returns (Result) {};
   rpc GetList(google.protobuf.Empty) returns (AutomationList) {};
+  rpc GetOne(AutomationRequest) returns (Automation) {};
   rpc RemoveAutomation(RemoveAutomationRequest) returns (Result) {};
   rpc GetConditionList(google.protobuf.Empty) returns (ConditionList) {};
   rpc GetActionList(google.protobuf.Empty) returns (ActionList) {};
@@ -95,4 +96,8 @@ message TriggerDescription {
 message UpdateAutomationRequest {
   string id = 1;
   Automation automation = 2;
+}
+
+message AutomationRequest {
+  string id = 1;
 }

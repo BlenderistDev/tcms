@@ -22,6 +22,7 @@ type TcmsClient interface {
 	AddAutomation(ctx context.Context, in *Automation, opts ...grpc.CallOption) (*Result, error)
 	UpdateAutomation(ctx context.Context, in *UpdateAutomationRequest, opts ...grpc.CallOption) (*Result, error)
 	GetList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*AutomationList, error)
+	GetOne(ctx context.Context, in *AutomationRequest, opts ...grpc.CallOption) (*Automation, error)
 	RemoveAutomation(ctx context.Context, in *RemoveAutomationRequest, opts ...grpc.CallOption) (*Result, error)
 	GetConditionList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ConditionList, error)
 	GetActionList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ActionList, error)
@@ -57,6 +58,15 @@ func (c *tcmsClient) UpdateAutomation(ctx context.Context, in *UpdateAutomationR
 func (c *tcmsClient) GetList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*AutomationList, error) {
 	out := new(AutomationList)
 	err := c.cc.Invoke(ctx, "/tcms.Tcms/GetList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *tcmsClient) GetOne(ctx context.Context, in *AutomationRequest, opts ...grpc.CallOption) (*Automation, error) {
+	out := new(Automation)
+	err := c.cc.Invoke(ctx, "/tcms.Tcms/GetOne", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -106,6 +116,7 @@ type TcmsServer interface {
 	AddAutomation(context.Context, *Automation) (*Result, error)
 	UpdateAutomation(context.Context, *UpdateAutomationRequest) (*Result, error)
 	GetList(context.Context, *emptypb.Empty) (*AutomationList, error)
+	GetOne(context.Context, *AutomationRequest) (*Automation, error)
 	RemoveAutomation(context.Context, *RemoveAutomationRequest) (*Result, error)
 	GetConditionList(context.Context, *emptypb.Empty) (*ConditionList, error)
 	GetActionList(context.Context, *emptypb.Empty) (*ActionList, error)
@@ -125,6 +136,9 @@ func (UnimplementedTcmsServer) UpdateAutomation(context.Context, *UpdateAutomati
 }
 func (UnimplementedTcmsServer) GetList(context.Context, *emptypb.Empty) (*AutomationList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetList not implemented")
+}
+func (UnimplementedTcmsServer) GetOne(context.Context, *AutomationRequest) (*Automation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOne not implemented")
 }
 func (UnimplementedTcmsServer) RemoveAutomation(context.Context, *RemoveAutomationRequest) (*Result, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveAutomation not implemented")
@@ -201,6 +215,24 @@ func _Tcms_GetList_Handler(srv interface{}, ctx context.Context, dec func(interf
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(TcmsServer).GetList(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Tcms_GetOne_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AutomationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TcmsServer).GetOne(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/tcms.Tcms/GetOne",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TcmsServer).GetOne(ctx, req.(*AutomationRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -295,6 +327,10 @@ var Tcms_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetList",
 			Handler:    _Tcms_GetList_Handler,
+		},
+		{
+			MethodName: "GetOne",
+			Handler:    _Tcms_GetOne_Handler,
 		},
 		{
 			MethodName: "RemoveAutomation",

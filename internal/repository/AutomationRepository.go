@@ -11,6 +11,7 @@ import (
 
 type AutomationRepository interface {
 	GetAll(ctx context.Context) ([]model.Automation, error)
+	GetOne(ctx context.Context, id string) (*model.Automation, error)
 	Save(ctx context.Context, automation model.NewAutomation) error
 	Update(ctx context.Context, id string, automation model.NewAutomation) error
 	Remove(ctx context.Context, id string) error
@@ -40,6 +41,19 @@ func (r automationRepository) GetAll(ctx context.Context) ([]model.Automation, e
 		list[i] = automation
 	}
 	return list, nil
+}
+
+func (r automationRepository) GetOne(ctx context.Context, id string) (*model.Automation, error) {
+	idPrimitive, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return nil, err
+	}
+	res := r.collection.FindOne(ctx, bson.M{"_id": idPrimitive})
+	var automation model.Automation
+	if err := res.Decode(&automation); err != nil {
+		return nil, err
+	}
+	return &automation, nil
 }
 
 func (r automationRepository) Save(ctx context.Context, automation model.NewAutomation) error {
