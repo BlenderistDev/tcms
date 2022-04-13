@@ -8,12 +8,14 @@ require (
 	github.com/joho/godotenv v1.3.0
 	github.com/segmentio/kafka-go v0.4.25
 	github.com/sirupsen/logrus v1.4.2
+	github.com/stretchr/testify v1.7.0
 	go.mongodb.org/mongo-driver v1.7.4
 	google.golang.org/grpc v1.43.0
 	google.golang.org/protobuf v1.26.0
 )
 
 require (
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
@@ -22,6 +24,7 @@ require (
 	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
 	github.com/pierrec/lz4 v2.6.0+incompatible // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
 	github.com/xdg-go/scram v1.0.2 // indirect
 	github.com/xdg-go/stringprep v1.0.2 // indirect

@@ -6,6 +6,7 @@ import (
 
 	mock_interfaces "github.com/BlenderistDev/automation/testing/interfaces"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/assert"
 	"tcms/internal/dry"
 	"tcms/internal/model"
 	telegramClient2 "tcms/internal/testing/telegramClient"
@@ -169,7 +170,7 @@ func TestMuteUserAction_Execute(t *testing.T) {
 
 	muteUserAction := CreateMuteUserAction(telegramClient)
 	err := muteUserAction.Execute(actionModel, trigger)
-	dry.TestHandleError(t, err)
+	assert.Nil(t, err)
 }
 
 func TestMuteUserAction_Execute_telegramError(t *testing.T) {

@@ -5,7 +5,7 @@ import (
 
 	mock_interfaces2 "github.com/BlenderistDev/automation/testing/interfaces"
 	"github.com/golang/mock/gomock"
-	"tcms/internal/dry"
+	"github.com/stretchr/testify/assert"
 	"tcms/internal/model"
 	mock_interfaces "tcms/internal/testing/action/interfaces"
 )
@@ -23,5 +23,5 @@ func TestGetActionWithModel(t *testing.T) {
 	a := GetActionWithModel(action, m)
 
 	err := a.Execute(trigger)
-	dry.TestHandleError(t, err)
+	assert.Nil(t, err)
 }

@@ -6,6 +6,7 @@ import (
 
 	mock_interfaces "github.com/BlenderistDev/automation/testing/interfaces"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/assert"
 	"tcms/internal/dry"
 	"tcms/internal/model"
 	telegramClient2 "tcms/internal/testing/telegramClient"
@@ -63,7 +64,7 @@ func TestSendMessageAction_Execute(t *testing.T) {
 
 	sendMessageAction := CreateSendMessageAction(telegramClient)
 	err := sendMessageAction.Execute(actionModel, trigger)
-	dry.TestHandleError(t, err)
+	assert.Nil(t, err)
 }
 
 func TestSendMessageAction_Execute_peerError(t *testing.T) {

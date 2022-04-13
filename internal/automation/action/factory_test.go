@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/assert"
 	"tcms/internal/automation/action/interfaces"
 	"tcms/internal/dry"
 	telegramClient2 "tcms/internal/testing/telegramClient"
@@ -17,7 +18,7 @@ func TestFactory_CreateAction(t *testing.T) {
 	actionFactory := NewFactory(tg)
 
 	action, err := actionFactory.CreateAction("sendMessage")
-	dry.TestHandleError(t, err)
+	assert.Nil(t, err)
 	switch action.(type) {
 	case interfaces.ActionWithModel:
 	default:
@@ -33,7 +34,7 @@ func TestCreateAction_createMuteUser(t *testing.T) {
 	actionFactory := NewFactory(tg)
 
 	action, err := actionFactory.CreateAction("muteUser")
-	dry.TestHandleError(t, err)
+	assert.Nil(t, err)
 	switch action.(type) {
 	case interfaces.ActionWithModel:
 	default:
@@ -49,7 +50,7 @@ func TestCreateAction_createMuteChat(t *testing.T) {
 	actionFactory := NewFactory(tg)
 
 	action, err := actionFactory.CreateAction("muteChat")
-	dry.TestHandleError(t, err)
+	assert.Nil(t, err)
 	switch action.(type) {
 	case interfaces.ActionWithModel:
 	default:

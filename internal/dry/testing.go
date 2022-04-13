@@ -5,13 +5,9 @@ import (
 	"os"
 	"reflect"
 	"testing"
-)
 
-func TestHandleError(t *testing.T, err error) {
-	if err != nil {
-		t.Error(err)
-	}
-}
+	"github.com/stretchr/testify/assert"
+)
 
 func TestCheckEqual(t *testing.T, expected, testing interface{}) {
 	if !reflect.DeepEqual(expected, testing) {
@@ -22,9 +18,9 @@ func TestCheckEqual(t *testing.T, expected, testing interface{}) {
 func TestEnvString(t *testing.T, name string, f func() (string, error)) {
 	value := "testing"
 	err := os.Setenv(name, value)
-	TestHandleError(t, err)
+	assert.Nil(t, err)
 	result, err := f()
-	TestHandleError(t, err)
+	assert.Nil(t, err)
 	TestCheckEqual(t, value, result)
 
 	os.Clearenv()
@@ -35,9 +31,9 @@ func TestEnvString(t *testing.T, name string, f func() (string, error)) {
 func TestEnvStringWithDefault(t *testing.T, name string, def string, f func() string) {
 	value := "testing"
 	err := os.Setenv(name, value)
-	TestHandleError(t, err)
+	assert.Nil(t, err)
 	result := f()
-	TestHandleError(t, err)
+	assert.Nil(t, err)
 	TestCheckEqual(t, value, result)
 
 	os.Clearenv()
@@ -49,18 +45,18 @@ func TestEnvIntWithDefault(t *testing.T, name string, def int, f func() (int, er
 	value := 3
 	valueStr := "3"
 	err := os.Setenv(name, valueStr)
-	TestHandleError(t, err)
+	assert.Nil(t, err)
 	result, err := f()
-	TestHandleError(t, err)
+	assert.Nil(t, err)
 	TestCheckEqual(t, value, result)
 
 	os.Clearenv()
 	result, err = f()
-	TestHandleError(t, err)
+	assert.Nil(t, err)
 	TestCheckEqual(t, def, result)
 
 	os.Clearenv()
 	value, err = f()
-	TestHandleError(t, err)
+	assert.Nil(t, err)
 	TestCheckEqual(t, def, value)
 }

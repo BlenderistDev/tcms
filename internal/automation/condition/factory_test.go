@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/BlenderistDev/automation/interfaces"
+	"github.com/stretchr/testify/assert"
 	"tcms/internal/dry"
 	"tcms/internal/model"
 )
@@ -15,7 +16,7 @@ func TestCreateCondition_createEqual(t *testing.T) {
 	}
 	conditionFactory := NewFactory()
 	condition, err := conditionFactory.CreateCondition(&conditionModel)
-	dry.TestHandleError(t, err)
+	assert.Nil(t, err)
 	switch condition.(type) {
 	case interfaces.Condition:
 	default:
