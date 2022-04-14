@@ -8,6 +8,7 @@ import (
 	"github.com/BlenderistDev/automation/interfaces"
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
+	"gopkg.in/errgo.v2/fmt/errors"
 	"tcms/internal/automation"
 	"tcms/internal/automation/action"
 	"tcms/internal/automation/condition"
@@ -29,12 +30,12 @@ func main() {
 
 	telegram, err := telegramClient.NewTelegram()
 	if err != nil {
-		panic(fmt.Sprintf("no telegram bridge connection. Error: %v", err))
+		panic(errors.Newf("no telegram bridge connection. Error: %v", err))
 	}
 
 	connection, err := db.GetConnection(context.Background())
 	if err != nil {
-		panic(fmt.Sprintf("no mongodb connection. Error: %v", err))
+		panic(errors.Newf("no mongodb connection. Error: %v", err))
 	}
 
 	automationRepo := repository.CreateAutomationRepository(connection)
