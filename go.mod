@@ -12,6 +12,7 @@ require (
 	go.mongodb.org/mongo-driver v1.7.4
 	google.golang.org/grpc v1.43.0
 	google.golang.org/protobuf v1.26.0
+	gopkg.in/errgo.v2 v2.1.0
 )
 
 require (
