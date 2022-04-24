@@ -7,7 +7,6 @@ import (
 	mock_interfaces "github.com/BlenderistDev/automation/testing/interfaces"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-	"tcms/internal/dry"
 	"tcms/internal/model"
 	telegramClient2 "tcms/internal/testing/telegramClient"
 )
@@ -53,7 +52,7 @@ func TestMuteUserAction_Execute_peerError(t *testing.T) {
 
 	muteUserAction := CreateMuteUserAction(telegramClient)
 	err := muteUserAction.Execute(actionModel, trigger)
-	dry.TestCheckEqual(t, "key peer not found", err.Error())
+	assert.Equal(t, "key peer not found", err.Error())
 }
 
 func TestMuteUserAction_Execute_accessHashError(t *testing.T) {
@@ -84,7 +83,7 @@ func TestMuteUserAction_Execute_accessHashError(t *testing.T) {
 
 	muteUserAction := CreateMuteUserAction(telegramClient)
 	err := muteUserAction.Execute(actionModel, trigger)
-	dry.TestCheckEqual(t, "key accessHash not found", err.Error())
+	assert.Equal(t, "key accessHash not found", err.Error())
 }
 
 func TestMuteUserAction_Execute_unMuteError(t *testing.T) {
@@ -123,7 +122,7 @@ func TestMuteUserAction_Execute_unMuteError(t *testing.T) {
 
 	muteUserAction := CreateMuteUserAction(telegramClient)
 	err := muteUserAction.Execute(actionModel, trigger)
-	dry.TestCheckEqual(t, "key unMute not found", err.Error())
+	assert.Equal(t, "key unMute not found", err.Error())
 }
 
 func TestMuteUserAction_Execute(t *testing.T) {
@@ -219,5 +218,5 @@ func TestMuteUserAction_Execute_telegramError(t *testing.T) {
 
 	muteUserAction := CreateMuteUserAction(telegramClient)
 	err := muteUserAction.Execute(actionModel, trigger)
-	dry.TestCheckEqual(t, errorText, err.Error())
+	assert.Equal(t, errorText, err.Error())
 }

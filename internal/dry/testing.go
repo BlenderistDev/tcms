@@ -3,17 +3,10 @@ package dry
 import (
 	"fmt"
 	"os"
-	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
-
-func TestCheckEqual(t *testing.T, expected, testing interface{}) {
-	if !reflect.DeepEqual(expected, testing) {
-		t.Errorf("expect %v, got %v", expected, testing)
-	}
-}
 
 func TestEnvString(t *testing.T, name string, f func() (string, error)) {
 	value := "testing"
@@ -21,11 +14,11 @@ func TestEnvString(t *testing.T, name string, f func() (string, error)) {
 	assert.Nil(t, err)
 	result, err := f()
 	assert.Nil(t, err)
-	TestCheckEqual(t, value, result)
+	assert.Equal(t, value, result)
 
 	os.Clearenv()
 	_, err = f()
-	TestCheckEqual(t, fmt.Sprintf("no %s env", name), err.Error())
+	assert.Equal(t, fmt.Sprintf("no %s env", name), err.Error())
 }
 
 func TestEnvStringWithDefault(t *testing.T, name string, def string, f func() string) {
@@ -34,11 +27,11 @@ func TestEnvStringWithDefault(t *testing.T, name string, def string, f func() st
 	assert.Nil(t, err)
 	result := f()
 	assert.Nil(t, err)
-	TestCheckEqual(t, value, result)
+	assert.Equal(t, value, result)
 
 	os.Clearenv()
 	value = f()
-	TestCheckEqual(t, def, value)
+	assert.Equal(t, def, value)
 }
 
 func TestEnvIntWithDefault(t *testing.T, name string, def int, f func() (int, error)) {
@@ -48,15 +41,15 @@ func TestEnvIntWithDefault(t *testing.T, name string, def int, f func() (int, er
 	assert.Nil(t, err)
 	result, err := f()
 	assert.Nil(t, err)
-	TestCheckEqual(t, value, result)
+	assert.Equal(t, value, result)
 
 	os.Clearenv()
 	result, err = f()
 	assert.Nil(t, err)
-	TestCheckEqual(t, def, result)
+	assert.Equal(t, def, result)
 
 	os.Clearenv()
 	value, err = f()
 	assert.Nil(t, err)
-	TestCheckEqual(t, def, value)
+	assert.Equal(t, def, value)
 }

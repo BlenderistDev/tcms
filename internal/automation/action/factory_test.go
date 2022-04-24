@@ -6,7 +6,6 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"tcms/internal/automation/action/interfaces"
-	"tcms/internal/dry"
 	telegramClient2 "tcms/internal/testing/telegramClient"
 )
 
@@ -68,7 +67,7 @@ func TestCreateAction_unknownAction(t *testing.T) {
 	actionFactory := NewFactory(tg)
 
 	_, err := actionFactory.CreateAction(name)
-	dry.TestCheckEqual(t, "unknown action "+name, err.Error())
+	assert.Equal(t, "unknown action "+name, err.Error())
 }
 
 func TestGetList(t *testing.T) {

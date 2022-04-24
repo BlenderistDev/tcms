@@ -7,7 +7,6 @@ import (
 	mock_interfaces "github.com/BlenderistDev/automation/testing/interfaces"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-	"tcms/internal/dry"
 	"tcms/internal/model"
 	telegramClient2 "tcms/internal/testing/telegramClient"
 )
@@ -101,7 +100,7 @@ func TestSendMessageAction_Execute_peerError(t *testing.T) {
 
 	sendMessageAction := CreateSendMessageAction(telegramClient)
 	err := sendMessageAction.Execute(actionModel, trigger)
-	dry.TestCheckEqual(t, "key peer not found", err.Error())
+	assert.Equal(t, "key peer not found", err.Error())
 }
 
 func TestSendMessageAction_Execute_messageError(t *testing.T) {
@@ -132,7 +131,7 @@ func TestSendMessageAction_Execute_messageError(t *testing.T) {
 
 	sendMessageAction := CreateSendMessageAction(telegramClient)
 	err := sendMessageAction.Execute(actionModel, trigger)
-	dry.TestCheckEqual(t, "key message not found", err.Error())
+	assert.Equal(t, "key message not found", err.Error())
 }
 
 func TestSendMessageAction_Execute_telegramError(t *testing.T) {
@@ -175,5 +174,5 @@ func TestSendMessageAction_Execute_telegramError(t *testing.T) {
 
 	sendMessageAction := CreateSendMessageAction(telegramClient)
 	err := sendMessageAction.Execute(actionModel, trigger)
-	dry.TestCheckEqual(t, errorTexxt, err.Error())
+	assert.Equal(t, errorTexxt, err.Error())
 }

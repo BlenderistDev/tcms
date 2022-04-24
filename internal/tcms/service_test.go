@@ -7,7 +7,6 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-	"tcms/internal/dry"
 	"tcms/internal/model"
 	mock_repository "tcms/internal/testing/repository"
 	"tcms/pkg/tcms"
@@ -49,7 +48,7 @@ func TestGRPCServer_AddAutomation_repoReturnError(t *testing.T) {
 	}
 
 	_, err := s.AddAutomation(ctx, inputAutomation)
-	dry.TestCheckEqual(t, returnError, err)
+	assert.Equal(t, returnError, err)
 }
 
 func TestGRPCServer_UpdateAutomation(t *testing.T) {
@@ -101,7 +100,7 @@ func TestGRPCServer_UpdateAutomation_repoReturnError(t *testing.T) {
 	}
 
 	_, err := s.UpdateAutomation(ctx, request)
-	dry.TestCheckEqual(t, returnError, err)
+	assert.Equal(t, returnError, err)
 }
 
 func TestGRPCServer_RemoveAutomation(t *testing.T) {
@@ -143,7 +142,7 @@ func TestGRPCServer_RemoveAutomation_repoReturnError(t *testing.T) {
 	}
 
 	_, err := s.RemoveAutomation(ctx, request)
-	dry.TestCheckEqual(t, returnError, err)
+	assert.Equal(t, returnError, err)
 }
 
 func getInputAutomation() *tcms.Automation {

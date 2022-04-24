@@ -7,7 +7,6 @@ import (
 	mock_interfaces "github.com/BlenderistDev/automation/testing/interfaces"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-	"tcms/internal/dry"
 	"tcms/internal/model"
 	telegramClient2 "tcms/internal/testing/telegramClient"
 )
@@ -53,7 +52,7 @@ func TestMuteChatAction_Execute_idError(t *testing.T) {
 
 	muteUserAction := CreateMuteChatAction(telegramClient)
 	err := muteUserAction.Execute(actionModel, trigger)
-	dry.TestCheckEqual(t, "key id not found", err.Error())
+	assert.Equal(t, "key id not found", err.Error())
 }
 
 func TestMuteChatAction_Execute_unMuteError(t *testing.T) {
@@ -84,7 +83,7 @@ func TestMuteChatAction_Execute_unMuteError(t *testing.T) {
 
 	muteUserAction := CreateMuteChatAction(telegramClient)
 	err := muteUserAction.Execute(actionModel, trigger)
-	dry.TestCheckEqual(t, "key unMute not found", err.Error())
+	assert.Equal(t, "key unMute not found", err.Error())
 }
 
 func TestMuteChatAction_Execute(t *testing.T) {
@@ -168,5 +167,5 @@ func TestMuteChatAction_Execute_telegramError(t *testing.T) {
 
 	muteUserAction := CreateMuteChatAction(telegramClient)
 	err := muteUserAction.Execute(actionModel, trigger)
-	dry.TestCheckEqual(t, errorText, err.Error())
+	assert.Equal(t, errorText, err.Error())
 }

@@ -5,7 +5,6 @@ import (
 
 	"github.com/BlenderistDev/automation/interfaces"
 	"github.com/stretchr/testify/assert"
-	"tcms/internal/dry"
 	"tcms/internal/model"
 )
 
@@ -31,7 +30,7 @@ func TestCreateCondition_NoCondition(t *testing.T) {
 	}
 	conditionFactory := NewFactory()
 	_, err := conditionFactory.CreateCondition(&conditionModel)
-	dry.TestCheckEqual(t, "unknown condition "+name, err.Error())
+	assert.Equal(t, "unknown condition "+name, err.Error())
 }
 
 func TestGetList(t *testing.T) {
