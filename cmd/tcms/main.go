@@ -28,23 +28,25 @@ func main() {
 		log.Error(err)
 	}
 
+	ctx := context.Background()
+
 	telegram, err := telegramClient.NewTelegram()
 	if err != nil {
 		panic(errors.Newf("no telegram bridge connection. Error: %v", err))
 	}
 
-	connection, err := db.GetConnection(context.Background())
+	connection, err := db.GetConnection(ctx)
 	if err != nil {
 		panic(errors.Newf("no mongodb connection. Error: %v", err))
 	}
 
 	automationRepo := repository.CreateAutomationRepository(connection)
-	automations, err := automationRepo.GetAll(context.Background())
+	automations, err := automationRepo.GetAll(ctx)
 	if err != nil {
 		panic(fmt.Sprintf("automation fetch error. Error: %v", err))
 	}
 
-	addConsumer := runKafkaConnection(log)
+	addConsumer := runKafkaConnection(ctx, log)
 
 	triggerChan := make(chan interfaces.TriggerEvent)
 	errChan := make(chan error)
@@ -67,12 +69,12 @@ func main() {
 	select {}
 }
 
-func runKafkaConnection(log *logrus.Logger) chan chan []uint8 {
+func runKafkaConnection(ctx context.Context, log *logrus.Logger) chan chan []uint8 {
 	addConsumer := make(chan chan []uint8)
 	quitKafka := make(chan bool)
 	kafkaError := make(chan error)
 
-	go kafka.CreateKafkaSubscription(addConsumer, kafkaError, quitKafka)
+	go kafka.CreateKafkaSubscription(ctx, addConsumer, kafkaError, quitKafka)
 
 	go func() {
 		for {

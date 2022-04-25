@@ -8,7 +8,7 @@ import (
 	kafka2 "github.com/segmentio/kafka-go"
 )
 
-func CreateKafkaSubscription(addConsumer chan chan []uint8, errChan chan error, quit chan bool) {
+func CreateKafkaSubscription(ctx context.Context, addConsumer chan chan []uint8, errChan chan error, quit chan bool) {
 	var consumers []chan []uint8
 
 	kafkaURL, err := getKafkaHost()
@@ -41,7 +41,6 @@ func CreateKafkaSubscription(addConsumer chan chan []uint8, errChan chan error, 
 		ReadBackoffMax:    time.Millisecond * 100,
 	})
 
-	ctx := context.Background()
 	for {
 		select {
 		case <-quit:
