@@ -45,12 +45,14 @@ type Condition struct {
 
 type Automation struct {
 	Id        string     `bson:"_id"`
+	UserId    string     `bson:"user_id"`
 	Triggers  []string   `bson:"triggers"`
 	Condition *Condition `bson:"condition"`
 	Actions   []Action   `bson:"actions"`
 }
 
 type NewAutomation struct {
+	UserId    string     `bson:"user_id"`
 	Triggers  []string   `bson:"triggers" json:"triggers"`
 	Condition *Condition `bson:"condition" json:"condition"`
 	Actions   []Action   `bson:"actions" json:"actions"`
