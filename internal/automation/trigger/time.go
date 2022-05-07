@@ -4,20 +4,8 @@ import (
 	"time"
 
 	"github.com/BlenderistDev/automation/interfaces"
+	trigger2 "github.com/BlenderistDev/automation/trigger"
 )
-
-type timeTrigger struct {
-	Name string
-	Data map[string]string
-}
-
-func (t timeTrigger) GetName() string {
-	return t.Name
-}
-
-func (t timeTrigger) GetData() map[string]string {
-	return t.Data
-}
 
 func StartTimeTrigger(triggerChan chan interfaces.TriggerEvent, d time.Duration) {
 	ticker := time.NewTicker(d)
@@ -25,13 +13,10 @@ func StartTimeTrigger(triggerChan chan interfaces.TriggerEvent, d time.Duration)
 		for {
 			select {
 			case <-ticker.C:
-				trigger := timeTrigger{
-					Name: "time",
-					Data: map[string]string{
-						"timestamp": time.Now().String(),
-					},
-				}
-				triggerChan <- trigger
+				t := &trigger2.Trigger{}
+				t.SetName("time")
+				t.SetData("timestamp", time.Now().String())
+				triggerChan <- t
 			}
 		}
 	}()

@@ -3,12 +3,12 @@ module tcms
 go 1.17
 
 require (
-	github.com/BlenderistDev/automation v0.0.3
+	github.com/BlenderistDev/automation v0.0.5
 	github.com/golang/mock v1.6.0
 	github.com/joho/godotenv v1.3.0
 	github.com/segmentio/kafka-go v0.4.25
 	github.com/sirupsen/logrus v1.4.2
-	github.com/stretchr/testify v1.7.0
+	github.com/stretchr/testify v1.7.1
 	go.mongodb.org/mongo-driver v1.7.4
 	google.golang.org/grpc v1.43.0
 	google.golang.org/protobuf v1.26.0
