@@ -43,6 +43,19 @@ func (r *automationRepository) GetAll(ctx context.Context) ([]model.Automation, 
 	return list, nil
 }
 
+func (r *automationRepository) GetAllGroupedByUserId(ctx context.Context) (map[string][]model.Automation, error) {
+	list, err := r.GetAll(ctx)
+	if err != nil {
+		return nil, err
+	}
+	var res map[string][]model.Automation
+	for _, v := range list {
+		res[v.UserId] = append(res[v.UserId], v)
+	}
+
+	return res, nil
+}
+
 func (r *automationRepository) GetOne(ctx context.Context, id string) (*model.Automation, error) {
 	idPrimitive, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
