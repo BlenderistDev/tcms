@@ -23,10 +23,10 @@ type automationRepository struct {
 
 func CreateAutomationRepository(db *mongo.Database) AutomationRepository {
 	collection := db.Collection("automation")
-	return automationRepository{collection: collection}
+	return &automationRepository{collection: collection}
 }
 
-func (r automationRepository) GetAll(ctx context.Context) ([]model.Automation, error) {
+func (r *automationRepository) GetAll(ctx context.Context) ([]model.Automation, error) {
 	cur, err := r.collection.Find(ctx, bson.D{})
 	if err != nil {
 		return nil, err
@@ -43,7 +43,7 @@ func (r automationRepository) GetAll(ctx context.Context) ([]model.Automation, e
 	return list, nil
 }
 
-func (r automationRepository) GetOne(ctx context.Context, id string) (*model.Automation, error) {
+func (r *automationRepository) GetOne(ctx context.Context, id string) (*model.Automation, error) {
 	idPrimitive, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, err
@@ -56,12 +56,12 @@ func (r automationRepository) GetOne(ctx context.Context, id string) (*model.Aut
 	return &automation, nil
 }
 
-func (r automationRepository) Save(ctx context.Context, automation model.NewAutomation) error {
+func (r *automationRepository) Save(ctx context.Context, automation model.NewAutomation) error {
 	_, err := r.collection.InsertOne(ctx, automation)
 	return err
 }
 
-func (r automationRepository) Update(ctx context.Context, id string, automation model.NewAutomation) error {
+func (r *automationRepository) Update(ctx context.Context, id string, automation model.NewAutomation) error {
 	idPrimitive, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return err
@@ -72,7 +72,7 @@ func (r automationRepository) Update(ctx context.Context, id string, automation 
 	return err
 }
 
-func (r automationRepository) Remove(ctx context.Context, id string) error {
+func (r *automationRepository) Remove(ctx context.Context, id string) error {
 	idPrimitive, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return err
